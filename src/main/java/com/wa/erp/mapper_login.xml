@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--***************************************************-->
+<!-- mapper 태그 선언하기 -->
+<!-- mapper 태그 안의 namespace 값은 -->
+<!-- [원하는 인터페이스 저장 패키지 경로]하고 일치해야한다. -->
+<!--***************************************************-->
+<mapper namespace="com.wa.erp.LoginDAO">
+
+	<!--=========================================================-->
+	<!-- 로그인 아이디와 암호의 존재를 개수를 검색하는  -->
+	<!-- select 구문을 내포한 <select> 태그 선언하기    -->
+	<!--=========================================================-->	
+	<select id="getMem" parameterType="java.util.HashMap" resultType="com.wa.erp.BoardDTO">
+		select 
+			<if test="board=='person_mem' and mid!='admin'">
+			p_no
+			,nickname
+			,name
+			,is_block
+			</if>
+			<if test="board=='company_mem' and mid!='admin'">
+			c_no
+			,name
+			</if>
+			<if test="mid=='admin' ">
+			admin_no
+			</if>
+		from 
+			<choose>
+			<when test = "mid=='admin' " >
+			admin
+			</when> 
+			<otherwise>
+			${board}
+			</otherwise>
+		</choose>
+		<if test = "mid!='admin'">
+		
+		where 
+		</if>
+		<if test="board=='person_mem' and mid!='admin'">
+			pid=#{mid}
+		</if>
+		<if test="board=='company_mem' and mid!='admin'">
+			cid=#{mid}
+		</if>
+		
+
+	</select>
+
+	<select id="checkpid" parameterType="java.util.HashMap" resultType="int">
+		select count(*) from person_mem where pid=#{mid} and pwd=#{pwd}
+ 	</select>
+ 	
+ 	<select id="checkcid" parameterType="java.util.HashMap" resultType="int">
+ 		select count(*) from company_mem where cid=#{mid} and pwd=#{pwd}
+ 	</select>
+ 	 	<select id="checkaid" parameterType="java.util.HashMap" resultType="int">
+ 		select count(*) from admin where id=#{mid} and pwd=#{pwd}
+ 		</select>
+ 	<select id="getIs_resume" parameterType="java.util.HashMap" resultType="int">
+ 		select
+ 			count(*)
+ 		from
+ 			person_mem
+ 		where
+ 			p_no not in (select p_no from resume)
+ 			and
+ 			pid=#{mid}
+ 	</select>
+
+ 	<select id="getIs_info" parameterType="java.util.HashMap" resultType="int">
+ 		select
+ 			count(*)
+ 		from
+ 			company_mem
+ 		where
+ 			c_no not in (select c_no from company_info)
+ 			and
+ 			cid=#{mid}
+ 	</select>
+ 	
+</mapper>
+ 

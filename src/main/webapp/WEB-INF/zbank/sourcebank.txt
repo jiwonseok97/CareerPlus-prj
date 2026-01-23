@@ -1,0 +1,49 @@
+		function checkLoginForm(){
+			var id = $(".mid").val();
+			var pwd = $(".pwd").val();
+			
+			if(typeof(id)!="string"){id="";}
+			if(typeof(pwd)!="string"){pwd="";}
+			//방법1-------------------------
+			//id = id.trim();
+			//pwd = pwd.trim();
+			/*방법2------------------------
+			mid = $.trim(mid);
+			pwd = $.trim(pwd);
+			------------------------*/
+			alert(id.length);
+			if(id.length==0){
+				alert("아이디를 입력해주십시오.")
+			}
+			if(pwd.length==0){
+				alert("암호를 입력해주세요.")
+			}
+		}
+		//----------------------------------
+		//-----------regExp 객체 사용-------------
+		function checkLoginForm2(){
+			var id = $(".mid").val();
+			var pwd = $(".pwd").val();
+			
+			if(typeof(id)!="string"){id="";}
+			if(typeof(pwd)!="string"){pwd="";}
+			
+			if(/[^ ]+/.test(id)==false){
+				alert("아이디를 입력해주십시오.")
+			}
+			if(/[^ ]+/.test(pwd)==false){
+				alert("암호를 입력해주십시오.")
+			}
+		}
+		/------------------------------------
+		$.ajax() 사용 형식
+		$.ajax(
+			{
+				url:
+				,type:
+				,data:
+				,success:
+				,error:
+			}		
+		);
+		/-----------------------------------

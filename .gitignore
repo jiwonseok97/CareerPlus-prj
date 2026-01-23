@@ -1,0 +1,34 @@
+# Compiled class files
+target/
+*.class
+
+# Log files
+*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+build/
+out/
+.gradle/
+
+# Temp
+*.tmp
+/tmp/
+
+# Credentials (if any)
+*.env
+
+# Claude
+.claude/
+
+# Windows reserved
+nul

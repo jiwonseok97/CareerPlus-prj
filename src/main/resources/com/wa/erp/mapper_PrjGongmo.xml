@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--***************************************************-->
+<!-- mapper 태그 선언하기 -->
+<!-- mapper 태그 안의 namespace 값은 -->
+<!-- [원하는 인터페이스 저장 패키지 경로]하고 일치해야한다. -->
+<!--***************************************************-->
+<mapper namespace="com.wa.erp.BoardDAO">
+	
+	
+	<!-- 프로젝트 등록  -->
+	<insert id="insertPrj" parameterType="com.wa.erp.BoardDTO">
+	
+	    insert into project (
+	        prj_no
+	        ,p_no
+	        ,subject
+	        ,project_type
+	        ,field_code
+	        ,people_to
+	        ,start_time
+	        ,end_time
+	        ,skill_name
+	        ,content
+	        ,pwd
+	        
+	        ,read_count
+	        ,reg_date
+	        
+	        <if test= "img_name!=null and img_name.length()>0">
+			  ,img_name
+			</if>
+
+	    ) values (
+	        (select nvl(max(prj_no),0)+1 from project)
+	        ,#{p_no}
+	        ,#{subject}
+	        ,#{project_type}
+	        ,#{field_code}
+	        ,#{people_to}
+	        ,#{start_time}
+	        ,#{end_time}
+	        ,#{skill_name}
+	        ,#{content}
+	        ,#{pwd}
+	        ,0
+	        ,sysdate
+	        <if test= "img_name!=null and img_name.length()>0">
+			 ,#{img_name}
+			</if>
+		        
+	     
+	    )
+	    
+	</insert>
+	
+	<!-- 프로젝트 조회수 증가 -->
+	<update id="prjUpdateReadcount" parameterType="int">
+	
+		update
+			project
+		set
+			read_count = read_count+1
+		where
+			prj_no=#{prj_no}
+			and
+			pwd=#{pwd}
+			and
+			p_no=#{p_no}
+	
+	</update>
+	
+	<!-- 프로젝트 작성된 글 리스트 추출 -->
+	<select id="getPrjList"  resultType="com.wa.erp.BoardDTO" parameterType="com.wa.erp.BoardSearchDTO">
+		
+		select * from ( select rownum RNUM, zxcvb.* from (
+	
+		select	
+			prj_no
+			,subject
+			,project_type
+			,to_char(reg_date, 'MM-DD') as "reg_date"
+			,to_char(start_time, 'YYYY-MM-DD') as "start_time"
+    		,to_char(end_time, 'YYYY-MM-DD') as "end_time"
+			,read_count
+		from
+			project
+		where
+			1=1
+			<if test="ing!=null and ing.length()>0">
+		      and      
+		        to_number(to_char(end_time,'YYYYMMDD')) - to_number(to_char(sysdate,'YYYYMMDD'))>0
+		      and
+		      <![CDATA[      
+		        to_number(to_char(start_time,'YYYYMMDD')) - to_number(to_char(sysdate,'YYYYMMDD'))<0
+		      ]]>
+		        
+		       </if>
+			<if test="(keyword != null and keyword.length()>0)">
+		      and
+		         (
+		         upper(subject) like upper('%${keyword}%')
+		         or
+		         upper(content) like upper('%${keyword}%')
+		         )
+		      </if>
+		    
+		    <if test="project_type != null">
+		    	and(
+		    		upper(project_type) like upper('%${project_type}%')
+		    	)
+		    </if>
+		    
+		    <if test="sort==null or sort.length()==0">   
+			order by
+			prj_no desc
+			</if>
+			
+			<if test="sort!=null and sort.length()>0">
+			order by ${sort}
+			</if>
+		<![CDATA[	
+			) zxcvb) where RNUM >= #{begin_rowNo} and RNUM <= #{end_rowNo} 
+		]]>	
+				
+	</select>
+	
+	<!-- 프로젝트 상세글 불러오기 -->
+	<select id="getPrj" parameterType="int" resultType="com.wa.erp.BoardDTO">
+    	select
+    		m.p_no
+    		 ,prj_no
+    		,subject
+    		,to_char(p.reg_date, 'YYYY-MM-DD') as "reg_date"
+    		,field_name
+    		,skill_name
+    		,project_type
+    		,people_to
+    		,to_char(start_time, 'YYYY-MM-DD') as "start_time"
+    		,to_char(end_time, 'YYYY-MM-DD') as "end_time"
+    		,content
+    		,nickname
+    		,img_name     "img_name"
+    	from 
+    		project p, competition_project_field_code c, person_mem m 
+    	where 
+    		p.prj_no = #{prj_no}
+    		and
+    		p.field_code = c.code_field
+    		and
+    		m.p_no = p.p_no
+	</select>
+
+		<update id="updatePrj" parameterType="com.wa.erp.BoardDTO">
+	
+		update
+			project
+		set
+			subject = #{subject}
+			,field_code = #{field_code}
+			,project_type = #{project_type}
+			,people_to = #{people_to}
+			,start_time = #{start_time}
+			,end_time = #{end_time}
+			,content = #{content}
+			
+   	        <if test="img_name!=null and img_name.length()>0">
+				,img_name   = #{img_name}
+			</if>
+			
+			<if test="img_name==null and isdel!=null and isdel.length()>0">
+				,img_name   = null
+			</if>
+			
+		where
+			prj_no = #{prj_no}
+			and
+			pwd = #{pwd}
+			and
+			p_no=#{p_no}
+			
+		</update>
+	
+		<select id="getPrjCnt" parameterType="int"  resultType="int">
+		    select count(*) from 
+		    (
+		        select	
+		            prj_no
+		            ,subject
+		            ,project_type
+		            ,to_char(reg_date, 'YYYY-MM-DD') as "reg_date"
+		            ,read_count
+		        from
+		            project
+		        where
+		            1=1
+		           
+		    ) 
+		</select>
+
+
+		
+		<select id = "getPrjPwdCnt" parameterType="com.wa.erp.BoardDTO" resultType="int">
+			select count(*) from project where prj_no=#{prj_no} and pwd = #{pwd}
+		</select>
+		
+		<delete id="deldatePrj" parameterType="com.wa.erp.BoardDTO" >
+	
+		delete from
+			project
+		where
+			prj_no = #{prj_no}
+			and
+			pwd = #{pwd}
+			and
+			p_no=#{p_no}
+		</delete>
+		
+		<select id="getPrjListCnt" parameterType="com.wa.erp.BoardSearchDTO" resultType="int">
+	
+		select 
+			count(*) 
+		from 
+			project p, competition_project_field_code c
+    	where 
+    		p.field_code = c.code_field
+			<if test="(keyword != null and keyword.length()>0)">
+			      and
+			         (
+			         upper(p.subject) like upper('%${keyword}%')
+			         or
+			         upper(p.content) like upper('%${keyword}%')
+			         )
+			       
+			</if>
+			<if test="ing!=null and ing.length()>0">
+		      and      
+		        to_number(to_char(end_time,'YYYYMMDD')) - to_number(to_char(sysdate,'YYYYMMDD'))>0
+		      and
+		      <![CDATA[      
+		        to_number(to_char(start_time,'YYYYMMDD')) - to_number(to_char(sysdate,'YYYYMMDD'))<0
+		      ]]>  
+		       </if>
+			<if test="project_type != null">
+		    	and(
+		    		upper(project_type) like upper('%${project_type}%')
+		    	)
+		    </if>
+		    
+		    	
+				
+		</select>
+		
+		<!-- 게시판 모든 행의 개수 구하는 select 문 내포하는 select 구문 태그 선언하기 -->
+		<select id="getPrjListAllCnt" resultType="int">
+			select count(*) from project
+		</select>
+		
+	<!-- 공모전 등록  -->
+	<insert id="insertGongMo" parameterType="com.wa.erp.BoardDTO">
+	    insert into competition(
+	        comp_pk
+	        ,c_no
+	        ,subject
+	        ,field_code
+	        ,start_time
+	        ,end_time
+	        ,content
+	        ,pwd
+	        ,read_count
+	        ,reg_date
+	       <if test= "img_name!=null and img_name.length()>0">
+			  ,img_name
+			</if>
+	    ) values (
+	        (select nvl(max(comp_pk),0)+1 from competition)
+	        ,#{c_no}
+	        ,#{subject}
+	        ,#{field_code}
+	        ,#{start_time}
+	        ,#{end_time}
+	        ,#{content}
+	        ,#{pwd}
+	        ,0
+	        ,sysdate
+	       <if test= "img_name!=null and img_name.length()>0">
+			 ,#{img_name}
+			</if>   
+	    )
+	</insert>
+	
+	<select id="getGongMoList" parameterType="com.wa.erp.BoardDTO" resultType="com.wa.erp.BoardDTO">
+	
+		select * from ( select rownum RNUM, zxcvb.* from (
+		
+		select	
+			comp_pk
+			,subject
+			,field_name
+			
+			,read_count
+			,to_char(c.reg_date, 'MM-DD') as "reg_date"
+			,to_char(c.start_time, 'YYYY-MM-DD') as "start_time"
+    		,to_char(c.end_time, 'YYYY-MM-DD') as "end_time"
+    		
+		from
+			competition c, competition_project_field_code p
+		where
+			c.field_code = p.code_field
+			
+			
+			<if test="field_name != null">
+		    	and(
+		    		upper(p.field_name) like upper('%${field_name}%')
+		    	)
+		    </if>
+			
+			<if test="ing!=null and ing.length()>0">
+		      and      
+		        to_number(to_char(c.end_time,'YYYYMMDD')) - to_number(to_char(sysdate,'YYYYMMDD'))>0
+		      and
+		      <![CDATA[      
+		        to_number(to_char(c.start_time,'YYYYMMDD')) - to_number(to_char(sysdate,'YYYYMMDD'))<0
+		      ]]>  
+		       </if>
+		       
+		       <if test="(keyword != null and keyword.length()>0)">
+			      and
+			         (
+			         upper(c.subject) like upper('%${keyword}%')
+			         or
+			         upper(c.content) like upper('%${keyword}%')
+			         )
+			       
+			</if>
+			
+			
+			
+			<if test="sort==null or sort.length()==0">
+			order by
+			comp_pk desc
+			</if>	
+			<if test="sort!=null and sort.length()>0">
+			order by ${sort}
+			</if>
+			
+			<![CDATA[	
+			) zxcvb) where RNUM >= #{begin_rowNo} and RNUM <= #{end_rowNo} 
+			]]>	
+	</select>
+	
+	<!-- 공모전 상세글 불러오기 -->
+	<select id="getGongMo" parameterType="int" resultType="com.wa.erp.BoardDTO">
+    	select
+    		m.c_no
+    		,comp_pk
+    		,subject
+    		,name
+    		,field_name
+    		,to_char(c.reg_date, 'YYYY-MM-DD') as "reg_date"
+			,to_char(start_time, 'YYYY-MM-DD') as "start_time"
+    		,to_char(end_time, 'YYYY-MM-DD') as "end_time"
+    		,content
+    		,img_name     "img_name"
+    	from 
+    		competition c, company_mem m, competition_project_field_code p 
+    	where 
+    		c.comp_pk = #{comp_pk}
+    		and
+    		c.c_no = m.c_no
+    		and
+    		c.field_code = p.code_field
+	</select>
+	
+	<update id="updateGongMo" parameterType="com.wa.erp.BoardDTO">
+	
+		update
+			competition
+		set
+			subject = #{subject}
+			,start_time = #{start_time}
+			,end_time = #{end_time}
+			,field_code = #{field_code}
+			,content = #{content}
+			        <if test="img_name!=null and img_name.length()>0">
+				,img_name   = #{img_name}
+			</if>
+			
+			<if test="img_name==null and isdel!=null and isdel.length()>0">
+				,img_name   = null
+			</if>
+		
+		where
+			comp_pk = #{comp_pk}
+			and
+			pwd = #{pwd}
+			
+		</update>
+	
+		<select  id="getGongMoCnt" parameterType="int"  resultType="int">
+			select count(*) from competition where comp_pk=#{comp_pk} 
+		</select>
+		
+		<select id = "getGongMoPwdCnt" parameterType="com.wa.erp.BoardDTO" resultType="int">
+			select count(*) from competition where comp_pk=#{comp_pk} and pwd = #{pwd}
+		</select>
+		
+		<delete id="deldateGongMo" parameterType="com.wa.erp.BoardDTO">
+	
+		delete from
+			competition
+		where
+			comp_pk = #{comp_pk}
+			and
+			pwd = #{pwd}
+			
+		</delete>
+		
+		<update id="gongMoUpdateReadcount" parameterType="int">
+	
+		update
+			competition
+		set
+			read_count = read_count+1
+		where
+			comp_pk=#{comp_pk}
+	
+	</update>
+	
+		<!-- 게시판 모든 행의 개수 구하는 select 문 내포하는 select 구문 태그 선언하기 -->
+		<select id="getGongMoListAllCnt" resultType="int">
+			select count(*) from competition
+		</select>
+		
+		<select id="getGongMoListCnt" parameterType="com.wa.erp.BoardSearchDTO" resultType="int">
+		
+		select 
+			count(*) 
+		from 
+			competition c, competition_project_field_code p 
+    	where
+    		c.field_code = p.code_field 
+			<if test="(keyword != null and keyword.length()>0)">
+			      and
+			         (
+			         upper(c.subject) like upper('%${keyword}%')
+			         or
+			         upper(c.content) like upper('%${keyword}%')
+			         )
+			       
+			</if>
+			<if test="ing!=null and ing.length()>0">
+		      and      
+		        to_number(to_char(c.end_time,'YYYYMMDD')) - to_number(to_char(sysdate,'YYYYMMDD'))>0
+		      and
+		      <![CDATA[      
+		        to_number(to_char(c.start_time,'YYYYMMDD')) - to_number(to_char(sysdate,'YYYYMMDD'))<0
+		      ]]> 
+		      </if>
+		      
+		      <if test="field_name != null">
+		    	and(
+		    		upper(p.field_name) like upper('%${field_name}%')
+		    	)
+		    </if>
+				
+				
+		</select>
+	
+</mapper>
+
+
+
+
+ 

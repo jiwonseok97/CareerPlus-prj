@@ -1,0 +1,1009 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wa.erp.GonggoDAO">
+
+    <!-- 공고 -->
+
+	<!-- 공고 리스트 가져오기 -->
+	<select id="getgongGoList" resultType="com.wa.erp.GonggoDTO"
+		parameterType="com.wa.erp.BoardSearchDTO">
+		select * from (select rownum RNUM, zxcvb.* from (
+		SELECT
+		g.g_no ,
+		g.c_no,
+		g.manager_name,
+		g.work_place,
+		g.career,
+		g.seeker_sex,
+		g.seeker_age,
+		g.salary,
+		g.attendencetime,
+		g.leaveworktime,
+		g.graduation,
+		to_char(g.gonggoreg_date, 'YYYY-MM-DD') as "gonggoreg_date",
+		trunc(closedate-sysdate) as "due_date",
+		g.content,
+		g.opendate,
+		g.closedate,
+		c.name,
+		i.business_industry
+
+		FROM
+		gonggo
+		g,
+		company_mem c, company_info i
+		where
+		1=1
+		and
+		c.c_no=g.c_no and
+		g.c_no=i.c_no
+
+		<if test="keyword !=null and keyword.length()>0">
+			and (
+			upper(graduation) like upper('%${keyword}%')
+			or
+			upper(career) like upper('%${keyword}%')
+			or
+			upper(c.name) like
+			upper('%${keyword}%')
+			)
+		</if>
+
+		<if test="industry !=null and industry.length()>0">
+			and(
+			upper(i.business_industry) like upper('%${industry}%')
+			)
+		</if>
+
+		<if test="work_place !=null and work_place.length()>0">
+			and(
+			upper(g.work_place) like upper('%${work_place}%')
+			)
+
+		</if>
+		<if test="gonggoStatus == 'ing' ">
+		    and (
+		    trunc(closedate-sysdate) >= 0
+		    )
+		</if>
+	
+			<if test="gonggoStatus ==  'end' ">
+		    and (
+		    <![CDATA[
+		     TRUNC(closedate-sysdate) < 0 
+		     ]]>
+		    )
+		</if>
+		
+		<if test="sort!=null and sort.length()>0">
+			order by ${sort}
+			,13 asc
+	, gonggoreg_date
+	,business_industry asc
+	,work_place asc
+		</if>
+		
+		
+		
+		
+		
+	
+				<![CDATA[
+			 ) zxcvb) where RNUM >= #{begin_rowNo} and RNUM <= #{end_rowNo}
+				]]>
+
+
+	</select>
+	<!-- 공고리스트 총개수 -->
+	<select id="getGonggoListCnt"
+		parameterType="com.wa.erp.BoardSearchDTO" resultType="int">
+
+		select count(*)
+		from
+		(
+			select g.g_no
+			from gonggo g, company_mem c, company_info i
+			where 1=1
+			and c.c_no = g.c_no
+			and g.c_no = i.c_no
+
+			<if test="keyword !=null and keyword.length()>0">
+				and (
+				upper(g.graduation) like upper('%${keyword}%')
+				or
+				upper(g.career) like upper('%${keyword}%')
+				or
+				upper(c.name) like
+				upper('%${keyword}%')
+				)
+			</if>
+
+			<if test="industry !=null and industry.length()>0">
+				and(
+				upper(i.business_industry) like upper('%${industry}%')
+				)
+			</if>
+
+			<if test="work_place !=null and work_place.length()>0">
+				and(
+				upper(g.work_place) like upper('%${work_place}%')
+				)
+
+			</if>
+			<if test="gonggoStatus == 'ing' ">
+			    and (
+			    trunc(g.closedate-sysdate) >= 0
+			    )
+			</if>
+
+			<if test="gonggoStatus ==  'end' ">
+			    and (
+			    <![CDATA[
+			     TRUNC(g.closedate-sysdate) < 0 
+			     ]]>
+			    )
+			</if>
+		)
+	</select>
+	
+	
+
+	<select id="getGonggoListAllCnt" 
+	parameterType="com.wa.erp.BoardSearchDTO" 	resultType="int">
+
+		select count(*) from
+		gonggo
+	</select>
+	
+	<!-- 공고 디테일 가져오기 -->
+	<select id="getgonggoDetailForm" parameterType="int"
+		resultType="com.wa.erp.GonggoDTO">
+
+		select
+		g_no
+		,c_no
+		,manager_name
+		,work_place
+		,career
+		,seeker_sex
+		,replace(substr(seeker_age,'1','2'),',','') as "seeker_age1"
+		,replace(substr(seeker_age,'4','2'),',','') as "seeker_age2"
+<!--   		,substr(seeker_age,1,2) as "seeker_age1" -->
+<!--   		,substr(seeker_age,4,2) as "seeker_age2" -->
+
+
+        , salary
+  
+
+
+
+		,attendencetime
+		,leaveworktime
+		,graduation
+		,content
+		,opendate
+		,closedate
+		,content
+		,ph_d_candidate
+
+		,closedate
+		,opendate
+		,round(closedate - sysdate) as "gonggoreg_date"
+		,(select  c.process_name from gonggo g, gonggo_process p, code_process c where g.g_no=p.g_no  and p.process_code1=c.process_code and g.g_no=#{g_no} and p.order_no1 = 1) as "process_name1"
+		,(select  c.process_name from gonggo g, gonggo_process p, code_process c where g.g_no=p.g_no  and p.process_code2=c.process_code and g.g_no=#{g_no} and p.order_no2 = 2) as "process_name2"
+		,(select  c.process_name from gonggo g, gonggo_process p, code_process c where g.g_no=p.g_no  and p.process_code3=c.process_code and g.g_no=#{g_no} and p.order_no3 = 3) as "process_name3"
+		,(select  c.process_name from gonggo g, gonggo_process p, code_process c where g.g_no=p.g_no  and p.process_code4=c.process_code and g.g_no=#{g_no} and p.order_no4 = 4) as "process_name4"
+		,(select  c.process_name from gonggo g, gonggo_process p, code_process c where g.g_no=p.g_no  and p.process_code5=c.process_code and g.g_no=#{g_no} and p.order_no5 = 5) as "process_name5"
+		,(select  c.process_name from gonggo g, gonggo_process p, code_process c where g.g_no=p.g_no  and p.process_code6=c.process_code and g.g_no=#{g_no} and p.order_no6 = 6) as "process_name6"
+		,(select  c.process_name from gonggo g, gonggo_process p, code_process c where g.g_no=p.g_no  and p.process_code7=c.process_code and g.g_no=#{g_no} and p.order_no7 = 7) as "process_name7"
+		
+		
+		,(select replace(r.field_detail1, ',','') from gonggo g, role_detail r where g.g_no=r.g_no
+		and g.g_no=#{g_no}) as "field_detail1"
+		,(select r.content1 from gonggo g, role_detail r where g.g_no=r.g_no
+		and g.g_no=#{g_no}) as "content1"
+		,(select c.dept_name from gonggo g, role_detail r, code_dept c where g.g_no= r.g_no and r.dept_code1= c.dept_code
+		and g.g_no=#{g_no}) as "dept_name"
+		,(select c.position_name from gonggo g, role_detail r, code_position c where g.g_no= r.g_no and r.position_code1= c.position_code
+		and g.g_no=#{g_no}) as "position_name"
+		
+		,(select replace(r.field_detail2, ',','') from gonggo g, role_detail r where g.g_no=r.g_no
+		and g.g_no=#{g_no}) as "field_detail2"
+		,(select r.content2 from gonggo g, role_detail r where g.g_no=r.g_no 
+		and g.g_no=#{g_no}) as "content2" 
+ 		,(select c.dept_name from gonggo g, role_detail r, code_dept c where g.g_no= r.g_no and r.dept_code2= c.dept_code
+ 		and g.g_no=#{g_no}) as "dept_name2" 
+ 		,(select c.position_name from gonggo g, role_detail r, code_position c where g.g_no= r.g_no and r.position_code2= c.position_code
+ 		and g.g_no=#{g_no}) as "position_name2"
+ 		
+ 		,(select replace(r.field_detail3, ',','') from gonggo g, role_detail r where g.g_no=r.g_no
+		and g.g_no=#{g_no}) as "field_detail3"
+ 		,(select r.content3 from gonggo g, role_detail r where g.g_no=r.g_no 
+		and g.g_no=#{g_no}) as "content3" 
+  		,(select c.dept_name from gonggo g, role_detail r, code_dept c where g.g_no= r.g_no and r.dept_code3= c.dept_code
+  		and g.g_no=#{g_no}) as "dept_name3"  
+  		,(select c.position_name from gonggo g, role_detail r, code_position c where g.g_no= r.g_no and r.position_code3= c.position_code
+  		and g.g_no=#{g_no}) as "position_name3" 
+  		
+  		<!--  필수  -->
+  		 ,(select c.benefit_name from gonggo g, benefit_code b, code_benefit c where g.g_no=b.g_no and 
+        b.benefit_code1= c.benefit_code and choice1='필수'and g.g_no=#{g_no}) as "benefit_name_essential1"      
+         ,(select c.benefit_name from gonggo g, benefit_code b, code_benefit c where g.g_no=b.g_no and 
+        b.benefit_code2= c.benefit_code and choice2='필수'and g.g_no=#{g_no}) as "benefit_name_essential2"
+         ,(select c.benefit_name from gonggo g, benefit_code b, code_benefit c where g.g_no=b.g_no and 
+        b.benefit_code3= c.benefit_code and choice3='필수'and g.g_no=#{g_no}) as "benefit_name_essential3"
+                 ,(select c.benefit_name from gonggo g, benefit_code b, code_benefit c where g.g_no=b.g_no and 
+        b.benefit_code4= c.benefit_code and choice4='필수'and g.g_no=#{g_no}) as "benefit_name_essential4"
+                 ,(select c.benefit_name from gonggo g, benefit_code b, code_benefit c where g.g_no=b.g_no and 
+        b.benefit_code5= c.benefit_code and choice5='필수'and g.g_no=#{g_no}) as "benefit_name_essential5"
+        <!--  우대  -->
+         ,(select c.benefit_name from gonggo g, benefit_code b, code_benefit c where g.g_no=b.g_no and 
+        b.benefit_code1= c.benefit_code and choice1='우대'and g.g_no=#{g_no}) as "benefit_name_preferential1"
+         ,(select c.benefit_name from gonggo g, benefit_code b, code_benefit c where g.g_no=b.g_no and 
+        b.benefit_code2= c.benefit_code and choice2='우대'and g.g_no=#{g_no}) as "benefit_name_preferential2"
+         ,(select c.benefit_name from gonggo g, benefit_code b, code_benefit c where g.g_no=b.g_no and 
+        b.benefit_code3= c.benefit_code and choice3='우대'and g.g_no=#{g_no}) as "benefit_name_preferential3"
+         ,(select c.benefit_name from gonggo g, benefit_code b, code_benefit c where g.g_no=b.g_no and 
+        b.benefit_code4= c.benefit_code and choice4='우대'and g.g_no=#{g_no}) as "benefit_name_preferential4"
+         ,(select c.benefit_name from gonggo g, benefit_code b, code_benefit c where g.g_no=b.g_no and 
+        b.benefit_code5= c.benefit_code and choice5='우대'and g.g_no=#{g_no}) as "benefit_name_preferential5"
+      
+		,(select distinct i.volume from gonggo g, company_mem m, company_info i where g.c_no=m.c_no and m.c_no=i.c_no and g.g_no=#{g_no}) as "volume"
+	,(select LISTAGG(
+        c.welfare_name,', ') WITHIN GROUP (ORDER BY c.welfare_name) from
+        gonggo g, company_mem m, company_welfare w, code_welfare c where
+        g.c_no=m.c_no and m.c_no=w.c_no and w.welfare_code= c.welfare_code and
+        g.g_no=#{g_no}
+        ) as "welfare_name"
+		
+ 		,(select c.name from gonggo g, company_mem c where g.c_no=c.c_no and g.g_no=#{g_no})  as "name"
+		from 
+	
+		gonggo
+		where
+		g_no=#{g_no}
+
+
+
+
+	</select>
+	
+	
+	<!-- 공고등록 -->
+	<insert id="insertGonggo"  parameterType="com.wa.erp.GonggoDTO" useGeneratedKeys="true" keyProperty="gonggo_no">
+	<selectKey keyProperty="gonggo_no" resultType="int" order="BEFORE">
+	       select nvl(max(g_no),0)+1 from gonggo
+	    </selectKey>
+    insert into gonggo (
+        g_no,
+        c_no,
+        manager_name,
+        work_place,
+        career,
+        seeker_sex,
+        seeker_age,
+        salary,
+        attendencetime,
+        leaveworktime,
+        graduation,
+        content,
+        opendate,
+        closedate,
+        gonggoreg_date,
+        ph_d_candidate
+      
+        
+    ) values (
+        #{gonggo_no},
+        #{c_no},
+        #{manager_name},
+        #{work_place1} ||' '|| #{work_place2} ||' '|| #{work_place3},
+        #{career},
+        #{seeker_sex},
+        #{seeker_age},
+         #{salary},
+<!--          <choose> -->
+<!--        	<when test="salary == 0"> -->
+<!--        		null, -->
+<!--        	</when> -->
+<!--        	<otherwise> -->
+<!--        		#{salary}, -->
+<!--        	</otherwise>   -->
+<!--        </choose> -->
+       
+       
+        #{attendencetime},
+        #{leaveworktime},
+        #{graduation},
+        #{content},
+        #{opendate},
+        #{closedate},
+        sysdate
+       
+       
+
+
+        <if test="ph_d_candidate != null and ph_d_candidate != ''"> ,#{ph_d_candidate} </if>
+        <if test="ph_d_candidate == null or ph_d_candidate == ''"> ,' ' </if>
+    )
+</insert>
+
+	<!-- (select nvl2(age_irrelevant,'없음','나이무관') from gonggo where g_no=#{g_no}) -->
+	<!-- 필수/우대 -->
+ 	<insert id="insertBenefit_code"
+		parameterType="com.wa.erp.GonggoDTO">
+
+		insert into benefit_code(
+		g_no
+		,benefit_code1
+		,choice1
+		,benefit_code2
+		 <if test="choice2 != null and choice2 != ''">
+        ,choice2
+        </if>
+        ,benefit_code3
+		 <if test="choice3 != null and choice3 != ''">
+        ,choice3
+        </if>
+        ,benefit_code4
+		 <if test="choice4 != null and choice4 != ''">
+        ,choice4
+        </if>
+        ,benefit_code5
+		 <if test="choice5 != null and choice5 != ''">
+        ,choice5
+        </if>
+
+		) values (
+		#{gonggo_no}
+		,#{benefit_code1}
+		,#{choice1}
+		 <choose>
+       	<when test="benefit_code2 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{benefit_code2}
+       	</otherwise>  
+       </choose>
+       
+        <if test="choice2 != null and choice2 != ''">
+        ,#{choice2}
+        </if>
+        
+         <choose>
+       	<when test="benefit_code3 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{benefit_code3}
+       	</otherwise>  
+       </choose>
+       
+        <if test="choice3 != null and choice3 != ''">
+        ,#{choice3}
+        </if>
+        
+         <choose>
+       	<when test="benefit_code4 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{benefit_code4}
+       	</otherwise>  
+       </choose>
+       
+        <if test="choice4 != null and choice4 != ''">
+        ,#{choice4}
+        </if>
+         <choose>
+       	<when test="benefit_code5 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{benefit_code5}
+       	</otherwise>  
+       </choose>
+       
+        <if test="choice5 != null and choice5 != ''">
+        ,#{choice5}
+        </if>
+       
+
+
+
+
+		)
+
+	</insert>	
+	
+	<!-- 담당업무 -->
+ 	<insert id="insertRole_Detail" parameterType="com.wa.erp.GonggoDTO">
+      INSERT INTO role_detail (
+        g_no,
+        dept_code1,
+        position_code1,
+        field_detail1,
+        content1       
+        ,dept_code2      
+        ,position_code2     
+        <if test="field_detail2 != null and field_detail2 != ''">
+        ,field_detail2
+        </if>
+          <if test="content2 != null and content2 != ''">
+        ,content2
+        </if>
+        ,dept_code3
+        ,position_code3
+        <if test="field_detail3 != null and field_detail3 != ''">
+        ,field_detail3
+        </if>
+          <if test="content3 != null and content3 != ''">
+        ,content3
+        </if>
+        
+    
+        
+    )
+    VALUES (
+        #{gonggo_no},
+        #{dept_code1},
+        #{position_code1},
+        #{field_detail1},
+        #{content1}
+        <choose>
+       	<when test="dept_code2 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{dept_code2}
+       	</otherwise>  
+       </choose>
+       
+          <choose>
+       	<when test="position_code2 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{position_code2}
+       	</otherwise>  
+       </choose>
+         <if test="field_detail2 != null and field_detail2 != ''">
+        ,#{field_detail2}
+        </if>
+         <if test="content2 != null and content2 != ''">
+        ,#{content2}
+        </if>
+        
+       <choose>
+       	<when test="dept_code3 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{dept_code3}
+       	</otherwise>  
+       </choose>
+          <choose>
+       	<when test="position_code3 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{position_code3}
+       	</otherwise>  
+       </choose>
+         <if test="field_detail3 != null and field_detail3 != ''">
+        ,#{field_detail3}
+        </if>
+         <if test="content3 != null and content3 != ''">
+        ,#{content3}
+        </if>
+        
+    ) 
+    
+    
+     
+</insert>
+
+
+
+	<!-- 공고분야 -->
+	<insert id="insertGonggo_field"
+		parameterType="com.wa.erp.GonggoDTO">
+		insert into gonggo_process(
+		g_no
+		,order_no1
+		,process_code1
+		,order_no2
+		,process_code2
+		 ,order_no3
+		,process_code3
+		,order_no4
+		,process_code4
+		,order_no5
+		,process_code5
+		,order_no6
+		,process_code6
+		,order_no7
+		,process_code7
+		
+         
+  ) values (
+		#{gonggo_no}
+		,#{order_no1}
+		,#{process_code1}
+		
+       <choose>
+       	<when test="order_no2 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{order_no2}
+       	</otherwise>  
+       </choose>
+   
+        <choose>
+       	<when test="process_code2 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{process_code2}
+       	</otherwise>  
+       </choose>
+       
+        <choose>
+       	<when test="order_no3 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{order_no3}
+       	</otherwise>  
+       </choose> 
+        <choose>
+       	<when test="process_code3 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{process_code3}
+       	</otherwise>  
+       </choose>
+       
+        <choose>
+       	<when test="order_no4 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{order_no4}
+       	</otherwise>  
+       </choose>
+   
+        <choose>
+       	<when test="process_code4 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{process_code4}
+       	</otherwise>  
+       </choose>
+       
+        <choose>
+       	<when test="order_no5 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{order_no5}
+       	</otherwise>  
+       </choose>
+   
+        <choose>
+       	<when test="process_code5 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{process_code5}
+       	</otherwise>  
+       </choose>
+       
+        <choose>
+       	<when test="order_no6 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{order_no6}
+       	</otherwise>  
+       </choose>
+   
+        <choose>
+       	<when test="process_code6 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{process_code6}
+       	</otherwise>  
+       </choose>
+       
+        <choose>
+       	<when test="order_no7 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{order_no7}
+       	</otherwise>  
+       </choose>
+          <choose>
+       	<when test="process_code7 == 0">
+       		,null
+       	</when>
+       	<otherwise>
+       		,#{process_code7}
+       	</otherwise>  
+       </choose>
+
+		)
+	</insert>
+	
+		<!-- 공고 수정페이지-->
+	<select id="getGonggo" parameterType="int"
+		resultType="com.wa.erp.GonggoDTO">
+		select
+		g.g_no
+		,g.c_no
+		,g.manager_name
+		,g.work_place
+		,g.career
+		,g.seeker_sex
+		,substr(g.seeker_age,'1','2') as "seeker_age1"
+		,substr(g.seeker_age,'4','2') as "seeker_age2"
+		,g.salary
+		,g.attendencetime
+		,g.leaveworktime
+		,g.graduation
+        ,g.content
+        ,g.opendate
+        ,g.closedate
+        ,g.content
+        ,g.ph_d_candidate
+        ,b.choice1
+        ,b.choice2
+        ,b.choice3
+        ,b.choice4
+        ,b.choice5
+        ,b.benefit_code1
+        ,b.benefit_code2
+        ,b.benefit_code3
+        ,b.benefit_code4
+        ,b.benefit_code5
+        ,r.dept_code1
+        ,r.dept_code2
+        ,r.dept_code3
+        ,r.position_code1
+        ,r.position_code2
+        ,r.position_code3
+        ,r.content1
+        ,r.content2
+        ,r.content3
+        
+        ,(select c.name from gonggo g, company_mem c where
+        g.c_no=c.c_no and g.g_no=#{g_no}) as "name"
+        ,(select i.volume from
+        gonggo g, company_mem m, company_info i where g.c_no=m.c_no and
+        m.c_no=i.c_no and g.g_no=#{g_no}) as "volume"
+        ,replace(r.field_detail1, ',','') as "field_detail1"
+        ,replace(r.field_detail2, ',','') as "field_detail2"
+        ,replace(r.field_detail3, ',','') as "field_detail3"
+        ,(select LISTAGG(
+        c.welfare_name,', ') WITHIN GROUP (ORDER BY c.welfare_name) from
+        gonggo g, company_mem m, company_welfare w, code_welfare c where
+        g.c_no=m.c_no and m.c_no=w.c_no and w.welfare_code= c.welfare_code and
+        g.g_no=#{g_no}
+        ) as "welfare_name"
+        ,(select c.process_name from gonggo g, gonggo_process p, code_process c where
+        g.g_no=p.g_no and p.process_code1=c.process_code and g.g_no=#{g_no}
+        and p.order_no1 = 1) as "process_name1"
+        ,(select c.process_name from
+        gonggo g, gonggo_process p, code_process c where g.g_no=p.g_no and
+        p.process_code2=c.process_code and g.g_no=#{g_no} and p.order_no2 = 2)
+        as "process_name2"
+        ,(select c.process_name from gonggo g,
+        gonggo_process p, code_process c where g.g_no=p.g_no and
+        p.process_code3=c.process_code and g.g_no=#{g_no} and p.order_no3 = 3)
+        as "process_name3"
+        ,(select c.process_name from gonggo g,
+        gonggo_process p, code_process c where g.g_no=p.g_no and
+        p.process_code4=c.process_code and g.g_no=#{g_no} and p.order_no4 = 4)
+        as "process_name4"
+        ,(select c.process_name from gonggo g,
+        gonggo_process p, code_process c where g.g_no=p.g_no and
+        p.process_code5=c.process_code and g.g_no=#{g_no} and p.order_no5 = 5)
+        as "process_name5"
+        ,(select c.process_name from gonggo g,
+        gonggo_process p, code_process c where g.g_no=p.g_no and
+        p.process_code6=c.process_code and g.g_no=#{g_no} and p.order_no6 = 6)
+        as "process_name6"
+        ,(select c.process_name from gonggo g,
+        gonggo_process p, code_process c where g.g_no=p.g_no and
+        p.process_code7=c.process_code and g.g_no=#{g_no} and p.order_no7 = 7)
+        as "process_name7"
+        from
+
+        gonggo g, benefit_code b, role_detail r
+        where        
+        g.g_no = b.g_no
+        and
+        g.g_no =  r.g_no
+        and
+        g.g_no = #{g_no}
+        
+
+	</select>
+	
+	<!--  공고삭제  -->
+	<delete id="deleteFromGonggo"
+		parameterType="com.wa.erp.GonggoDTO">
+		delete from gonggo WHERE g_no=#{g_no}
+	</delete>
+	
+     <!--  공고 업데이트  -->
+	<update id="updateGonggo" parameterType="com.wa.erp.GonggoDTO">
+		update
+		gonggo
+		set
+		manager_name=#{manager_name}
+		,career=#{career}
+		,seeker_sex=#{seeker_sex}
+		,seeker_age=#{seeker_age}
+		<!-- ,seeker_age=#{seeker_age} -->
+		,salary=#{salary}
+		,opendate=#{opendate}
+		,closedate=#{closedate}
+		,graduation=#{graduation}
+		,content=#{content}
+		<choose>
+			<when test="ph_d_candidate != null and ph_d_candidate != ''">
+				,ph_d_candidate=#{ph_d_candidate}
+			</when>
+			<otherwise>
+				,ph_d_candidate=null
+			</otherwise>
+		</choose>
+
+	
+		where
+		g_no=#{g_no}
+
+	</update>
+	<!--  공고별 담당역활 수정   -->
+	<update id="updateRole_detail"
+		parameterType="com.wa.erp.GonggoDTO">
+		update
+		role_detail
+		set
+		<choose>
+			<when test="dept_code1 == 0">
+				dept_code1=null
+			</when>
+			<otherwise>
+				dept_code1=#{dept_code1}
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="dept_code2 == 0">
+				,dept_code2=null
+			</when>
+			<otherwise>
+				,dept_code2=#{dept_code2}
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="dept_code3 == 0">
+				,dept_code3=null
+			</when>
+			<otherwise>
+				,dept_code3=#{dept_code3}
+			</otherwise>
+		</choose>
+
+		<choose>
+			<when test="position_code1 == 0">
+				,position_code1=null
+			</when>
+			<otherwise>
+				,position_code1=#{position_code1}
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="position_code2 == 0">
+				,position_code2=null
+			</when>
+			<otherwise>
+				,position_code2=#{position_code2}
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="position_code3 == 0">
+				,position_code3=null
+			</when>
+			<otherwise>
+				,position_code3=#{position_code3}
+			</otherwise>
+		</choose>
+		,content1=#{content1}
+		,content2=#{content2}
+		,content3=#{content3}
+<!-- <choose> -->
+<!-- 			<when test="content1 == null or content1 ''"> -->
+<!-- 				,content1=null -->
+<!-- 			</when> -->
+<!-- 			<otherwise> -->
+<!-- 				,content1=#{content1} -->
+<!-- 			</otherwise> -->
+<!-- 		</choose> -->
+<!-- 		<choose> -->
+<!-- 		<when test="content2 == null or content2 ==''"> -->
+<!-- 				,content2=null -->
+<!-- 			</when> -->
+<!-- 			<otherwise> -->
+<!-- 				,content2=#{content2} -->
+<!-- 			</otherwise> -->
+<!-- 		</choose> -->
+<!-- 		<choose> -->
+<!-- 		<when test="content3 == null or content3 ''"> -->
+<!-- 				,content3=null -->
+<!-- 			</when> -->
+<!-- 			<otherwise> -->
+<!-- 				,content3=#{content3} -->
+<!-- 			</otherwise> -->
+<!-- 		</choose> -->
+
+<choose>
+			<when test="field_detail1 == null or field_detail1== ''">
+				,field_detail1=null
+			</when>
+			<otherwise>
+				,field_detail1=#{field_detail1}
+			</otherwise>
+		</choose>
+		<choose>
+		<when test="field_detail2 == null or field_detail2 ==''">
+				,field_detail2=null
+			</when>
+			<otherwise>
+				,field_detail2=#{field_detail2}
+			</otherwise>
+		</choose>
+		<choose>
+		<when test="field_detail3 == null or field_detail3== ''">
+				,field_detail3=null
+			</when>
+			<otherwise>
+				,field_detail3=#{field_detail3}
+			</otherwise>
+		</choose>
+<!-- 		,field_detail1=#{field_detail1} -->
+<!-- 		,field_detail2=#{field_detail2} -->
+<!-- 		,field_detail3=#{field_detail3} -->
+		where
+		g_no=#{g_no}
+
+
+
+	</update>
+
+<!--  공고 필수,우대  수정-->
+	<update id="updateBenefit_code"
+		parameterType="com.wa.erp.GonggoDTO">
+		update benefit_code
+		set
+		<choose>
+			<when test="benefit_code1 == 0">
+				benefit_code1=null,
+			</when>
+			<otherwise>
+				benefit_code1=#{benefit_code1},
+			</otherwise>
+		</choose>
+
+		<choose>
+			<when test="benefit_code2 == 0">
+				benefit_code2=null,
+			</when>
+			<otherwise>
+				benefit_code2=#{benefit_code2},
+			</otherwise>
+		</choose>
+
+		<choose>
+			<when test="benefit_code3 == 0">
+				benefit_code3=null,
+			</when>
+			<otherwise>
+				benefit_code3=#{benefit_code3},
+			</otherwise>
+		</choose>
+
+		benefit_code4=
+		<choose>
+			<when test="benefit_code4 == 0">
+				null,
+			</when>
+			<otherwise>
+				#{benefit_code4},
+			</otherwise>
+		</choose>
+
+		<choose>
+			<when test="benefit_code5 == 0">
+				benefit_code5=null,
+			</when>
+			<otherwise>
+				benefit_code5=#{benefit_code5},
+			</otherwise>
+		</choose>
+
+		<choose>
+			<when test="choice1 != null and choice1 != ''">
+				choice1=#{choice1},
+			</when>
+			<otherwise>
+				choice1=null,
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="choice2 != null and choice2 != ''">
+				choice2=#{choice2},
+			</when>
+			<otherwise>
+				choice2=null,
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="choice3 != null and choice3 != ''">
+				choice3=#{choice3},
+			</when>
+			<otherwise>
+				choice3=null,
+			</otherwise>
+		</choose>
+
+		<choose>
+			<when test="choice4 != null and choice4 != ''">
+				choice4=#{choice4},
+			</when>
+			<otherwise>
+				choice4=null,
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="choice5 != null and choice5 != ''">
+				choice5=#{choice5}
+			</when>
+			<otherwise>
+				choice5=null
+			</otherwise>
+		</choose>
+
+		where g_no=#{g_no}
+	</update>
+	
+		<!--  공고 이력서지원 중복제거 -->
+	<insert id="gonggoSupport" parameterType="com.wa.erp.GonggoDTO">
+		insert into pertocom(
+		g_no
+		,c_no
+		,p_no
+		)values(
+		#{g_no}
+		,#{c_no}
+		,#{p_no}
+
+		)
+	</insert>
+<!--  공고 이력서 지원  -->
+	<select id="getPertocom" parameterType="com.wa.erp.GonggoDTO"
+		resultType="int">
+		select count(*) from pertocom where p_no=#{p_no}
+		and
+		g_no=#{g_no} and c_no=#{c_no}
+	</select>
+</mapper>
+ 

@@ -1,0 +1,942 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--***************************************************-->
+<!-- mapper 태그 선언하기 -->
+<!-- mapper 태그 안의 namespace 값은 -->
+<!-- [원하는 인터페이스 저장 패키지 경로]하고 일치해야한다. -->
+<!--***************************************************-->
+<mapper namespace="com.wa.erp.BoardDAO">
+
+	<!--=========================================================-->
+	<!-- 로그인 아이디와 암호의 존재를 개수를 검색하는  -->
+	<!-- select 구문을 내포한 <select> 태그 선언하기    -->
+	<!--=========================================================-->
+	<select id="getboardList"  parameterType="com.wa.erp.BoardSearchDTO" resultType="com.wa.erp.BoardDTO">
+	      select
+         *
+      from ( select rownum "RNUM" , zxcvb.* from (
+       select 
+             b.b_no,
+             b.subject,
+             p.nickname,
+             to_char(b.reg_date,'YYYY-MM-DD') "reg_date",
+             b.read_count,
+             <if test="boardname!='tradeboard'">
+             b.rec_count,
+             </if>
+             b.content 
+             <if test="boardname=='tradeboard'">
+             ,b.trade_type
+             ,b.price
+             </if>
+      from 
+         ${boardname} b , person_mem p 
+      where 
+         1=1
+         and
+         p.p_no=b.p_no
+          <if test="keyword!=null and keyword.length()>0">
+             and ( 
+               upper(b.subject) like upper('%${keyword}%')
+               or
+               upper(b.content) like upper('%${keyword}%')
+               )
+          </if>
+                <if test="tradetype != null and tradetype != ''">
+                    and trade_type = #{tradetype}
+                </if>
+                <if test="sort==null">
+                order  by b.reg_date desc
+                </if>
+             <if test="sort!=null and sort.length()>0">
+                    order by ${sort}   
+                </if>    
+          <![CDATA[
+         )zxcvb) where RNUM >= #{begin_rowNo} and RNUM <= #{end_rowNo}
+      ]]>
+   
+	</select>
+
+	<select id="getcompanyList"  parameterType="com.wa.erp.BoardSearchDTO" resultType="com.wa.erp.BoardDTO">
+		select
+			*
+		from ( select rownum "RNUM" , zxcvb.* from (
+		 select 
+		 ci.c_no 
+		 ,name
+		 ,LISTAGG(wc.welfare_name,',') WITHIN GROUP (ORDER BY wc.welfare_code) AS welfare 
+		 ,business_industry as "indus" 
+		 ,sales 
+		 ,sal_avg 
+	     ,round(nvl(AVG(r.star),0),0) as "star_avg"	
+		 ,addr
+		 ,ci.rec_count
+	 from
+		    company_mem c
+		    
+    join 
+    	company_info ci on c.c_no = ci.c_no
+   left join 
+    	company_welfare cw on ci.c_no=cw.c_no
+    left join 
+		code_welfare wc on cw.welfare_code=wc.welfare_code   
+    left join 
+    	review r on c.c_no = r.c_no
+   
+    where 
+     	1=1
+         <if test="sido!=null and sido.length()>0 and sido!='시/도 선택'">
+        and ( 
+               upper(addr) like upper('%${sido}%')
+                  )
+         </if>
+       
+         <if test="gugun!=null and gugun.length()>0 and gugun!='구/군 선택'">
+                and ( 
+               upper(addr) like upper('%${gugun}%')
+                  )
+     	 </if>
+		
+		 <if test="selectfield_code!=0">
+		 and field_code= #{selectfield_code}
+		 </if>
+		
+		 <if test="keyword!=null and keyword.length()>0">
+             and ( 
+               upper(name) like upper('%${keyword}%')
+                  )
+          </if> 
+       
+	        GROUP BY
+          ci.c_no,name,business_industry,sales,sal_avg,addr,ci.rec_count
+		<if test="welfare != null">
+    having 
+    <foreach collection="welfare"  item="tmp"  open=" ( " close=" ) "  separator=" and ">
+        LISTAGG(wc.welfare_name, ',') WITHIN GROUP (ORDER BY wc.welfare_name) like '%${tmp}%'         
+    </foreach>
+</if>
+			
+		    
+		          <if test="sort!=null and sort.length()>0">
+	                order by  ${sort}	
+	                </if>    
+	       		   <if test="multisort1!=null and multisort1!=''">
+	       		   order by ${multisort1}
+	       	       </if> 
+	       	          <if test="multisort2!=null and multisort2!=''">
+	       		   ${multisort2}
+	       	       </if>    
+	       	          <if test="multisort3!=null and multisort3!=''">
+	       		   ${multisort3}
+	       	       </if>       
+
+	       	<![CDATA[
+			)zxcvb) where RNUM >= #{begin_rowNo} and RNUM <= #{end_rowNo}
+		]]>
+	       
+	       </select>
+	       
+	       
+	       
+	       
+	       
+<select id="getcompanyListCnt" parameterType="com.wa.erp.BoardSearchDTO" resultType="int">
+		select count(*) from (select count(*) from
+		
+		
+		  company_mem c
+		    
+    join 
+    	company_info ci on c.c_no = ci.c_no
+   left join 
+    	company_welfare cw on ci.c_no=cw.c_no
+    left join 
+		code_welfare wc on cw.welfare_code=wc.welfare_code   
+    left join 
+    	review r on c.c_no = r.c_no
+   
+    where 
+     	1=1
+         <if test="sido!=null and sido.length()>0 and sido!='시/도 선택'">
+        and ( 
+               upper(addr) like upper('%${sido}%')
+                  )
+         </if>
+       
+         <if test="gugun!=null and gugun.length()>0 and gugun!='구/군 선택'">
+                and ( 
+               upper(addr) like upper('%${gugun}%')
+                  )
+     	 </if>
+		
+		 <if test="selectfield_code!=0">
+		 and field_code = #{selectfield_code}
+		 </if>
+		
+		 <if test="keyword!=null and keyword.length()>0">
+             and ( 
+               upper(name) like upper('%${keyword}%')
+                  )
+          </if> 
+       
+	        GROUP BY
+          ci.c_no,name,business_industry,sales,sal_avg,addr     
+		<if test="welfare != null">
+    having 
+    <foreach collection="welfare"  item="tmp"  open=" ( " close=" ) "  separator=" and ">
+        LISTAGG(wc.welfare_name, ',') WITHIN GROUP (ORDER BY wc.welfare_name) like '%${tmp}%'         
+    </foreach>
+</if>	
+		)
+		
+	</select>
+
+	<select id="getcompanyListAllCnt"  parameterType="com.wa.erp.BoardSearchDTO" resultType="int">
+		select count(*) from company_info
+	</select>
+
+	
+	<select id="gettimeShareList"  resultType="com.wa.erp.BoardDTO">
+		 select  
+		 		f.b_no
+		 		, p.name 
+		 		, p.phone
+		 		, f.preferred_work
+		 		, f.start_time
+		 		, f.end_time
+		 		, to_char(f.reg_date,'YYYY-MM-DD') as "reg_date" 
+		 from 
+		 		freelancer f, person_mem p 
+		 where 
+		 		f.p_no = p.p_no 
+	</select>
+
+	<select id="getbuupList"  resultType="com.wa.erp.BoardDTO">
+		 select  
+		 		f.b_no
+		 		, p.name 
+		 		, p.phone
+		 		, f.hope_work
+		 		, f.start_time
+		 		, f.end_time
+		 		, to_char(f.reg_date,'YYYY-MM-DD') as "reg_date" 
+		 from 
+		 		part_time f, person_mem p 
+		 where 
+		 		f.p_no = p.p_no
+	</select>
+
+
+	<select id="getprjList"  resultType="com.wa.erp.BoardDTO">
+		 select  subject, c.field_name, reg_date from project b, competition_project_field_code c, person_mem p where  p.p_no = b.p_no and b.field_code = c.code_field
+	</select>
+
+	<select id="getgongMoList"  resultType="com.wa.erp.BoardDTO">
+		 select  subject,read_count, reg_date from competition b, company_mem c where b.c_no = c.c_no  
+	</select>
+	
+	<select id="getgongGoList" resultType="com.wa.erp.BoardDTO">
+		select c_no from gonggo
+	</select>
+	
+	<select id="getBoard" parameterType="java.util.HashMap" resultType="com.wa.erp.BoardDTO">
+		select
+			p.p_no,
+			b.b_no,
+			p.nickname,
+			b.subject,
+			b.content,
+			b.read_count,
+			to_char(b.reg_date,'YYYY-MM-DD') as "reg_date",
+			<if test="tablename!='tradeboard'">
+			b.rec_count
+			</if>
+			<if test="tablename=='tradeboard'">
+			b.price,
+			b.trade_type
+			</if>
+		from 
+			${tablename} b, person_mem p
+		where
+            b.p_no = p.p_no
+            and
+			b.b_no=#{b_no}
+	</select>
+	
+	<select id="getComment" parameterType="java.util.HashMap" resultType="com.wa.erp.BoardDTO">
+		select 
+				c.comment_no
+				,p.p_no
+				,p.nickname
+                , to_char(c.reg_date,'YYYY-MM-DD') as "reg_date"
+                , c.content
+                ,c.rec_count
+        from person_mem p, ${comment} c
+        where
+            c.p_no = p.p_no
+            and
+            c.b_no = #{b_no}
+        <choose>
+        	<when test="sort!=null and sort.length()>0">
+        	order by
+       			${sort}
+        	</when>
+        	<otherwise>
+        	order by
+        		c.reg_date asc
+        	</otherwise>
+        </choose>
+       	
+	</select>
+	
+	<select id="getcompanyDetail" parameterType="int" resultType="com.wa.erp.BoardDTO">
+		select
+		    m.c_no,
+			m.name,
+			i.url,
+			m.email,
+			i.volume,
+			i.sales,
+			i.emp_no,
+			i.birth,
+			m.ceo_name,
+			m.call,
+			i.sal_avg
+		from 
+			company_mem m ,company_info i 
+		where 
+			#{c_no}=m.c_no and m.c_no=i.c_no 
+</select>
+
+<select id="getcompanyWelfare" parameterType="int" resultType="com.wa.erp.BoardDTO">
+	select m.c_no,    LISTAGG(cw.welfare_name,',') WITHIN GROUP (ORDER BY cw.welfare_code) AS welfare
+from company_mem m , code_welfare cw, company_welfare c
+where
+#{c_no}=m.c_no
+and
+m.c_no=c.c_no
+and
+cw.welfare_code=c.welfare_code
+
+group by m.c_no
+		</select>	   
+
+
+
+
+<select id="reviewContent"  parameterType="int" resultType="com.wa.erp.BoardDTO">
+			select
+				p_no,
+				c_no,
+				content,
+				   star,
+				   rec_count 
+			from 
+			     review 
+			where 
+			    c_no=#{c_no}
+
+</select>
+	
+	<select id="getreviewContent"  parameterType="int" resultType="com.wa.erp.BoardReviewDTO">
+	select
+	r_no,
+	p_no,
+		content,
+		star
+	from
+		review
+	where
+		c_no = ${c_no}
+		<if test="reviewSort!=null"> 
+		 order by ${reviewSort}	 
+		</if>
+	</select>
+	
+	<select  id="getReviewListCnt" parameterType="int"  resultType="int">
+		select count(*) from review where c_no= ${c_no}
+	</select>
+	
+	<select id="getReviewListAllCnt" resultType="int">
+		select count(*) from review
+	</select>
+	
+	<select id="getcompanyListDetail" parameterType="int" resultType="com.wa.erp.BoardDTO">
+	select
+	    m.c_no,
+		m.name,
+		i.url,
+		m.email,
+		i.volume,
+		i.sales,
+		i.emp_no,
+		i.birth,
+		m.ceo_name,
+		m.call,
+		i.sal_avg
+	from 
+		company_mem m ,company_info i 
+	where 
+		#{c_no}=m.c_no and m.c_no=i.c_no 
+</select>
+	
+	<update id="updateReadCount" parameterType="java.util.Map">
+		update
+			${tablename}
+		set 
+			read_count = read_count + 1
+		where 
+			b_no=#{b_no}
+	</update>
+	
+	<select id="getboardListCnt" parameterType="com.wa.erp.BoardSearchDTO" resultType="int">
+		select count(*) from ${boardname}
+			where
+				1=1
+		<if test="keyword!=null and keyword.length()>0">
+		 	and ( 
+					upper(subject) like upper('%${keyword}%')
+					or
+					upper(content) like upper('%${keyword}%')
+					)
+		 	</if>
+		 	<if test="tradetype != null and tradetype.length()>0">
+		 	and
+		 		trade_type=#{tradetype}
+		 	</if>
+	</select>
+
+	<select id="getboardListAllCnt"  parameterType="com.wa.erp.BoardSearchDTO" resultType="int">
+		select count(*) from ${boardname}
+	</select>
+	
+	
+	<select id="getCommentLike" parameterType="java.util.Map" resultType="com.wa.erp.BoardDTO">
+	select
+    	comment_no as "like_no"
+	from 
+    	like_comment
+	where
+    	comment_table=#{comment}
+    	<if test="p_no != 0">
+    	and
+    	p_no = #{p_no}
+    	</if>
+    	<if test="c_no != 0">
+    	and
+    	c_no = #{c_no}
+    	</if>
+    	and
+    	b_no=#{b_no}     
+    order by
+    	1 asc
+	</select>
+	
+	<select id="getLikeCompany" parameterType="int" resultType="com.wa.erp.BoardDTO">
+		select
+			c_no
+		from 
+			like_company
+		where
+			p_no = #{p_no}
+	</select>
+	
+		<select id="getNoticeList"  parameterType="com.wa.erp.BoardSearchDTO" resultType="com.wa.erp.BoardDTO">
+
+		 select 
+		 		category,
+		 		n_no,
+		 		subject,
+		 		content,
+		 		    to_char(reg_date, 'YYYY-MM-DD') as reg_date,
+
+		 		read_count
+		from 
+			notice 
+		where 
+			1=1
+
+		 	
+		 	order  by reg_date desc
+
+	</select>
+	
+	
+		<select id="getnoticeListCnt" parameterType="com.wa.erp.BoardSearchDTO" resultType="int">
+		select count(*) from notice
+			where
+				1=1
+		<if test="keyword!=null and keyword.length()>0">
+		 	and ( 
+					upper(subject) like upper('%${keyword}%')
+					or
+					upper(content) like upper('%${keyword}%')
+					)
+		 	</if>
+	
+	</select>
+
+	<select id="getnoticeListAllCnt"  parameterType="com.wa.erp.BoardSearchDTO" resultType="int">
+		select count(*) from notice	
+	</select>
+	
+	<select id="getNoticeDetail" parameterType="int" resultType="com.wa.erp.BoardDTO">
+	select 
+	n_no,
+	subject,
+	content,
+	read_count,
+	    to_char(reg_date, 'YYYY-MM-DD') as reg_date,
+	    category
+	from notice
+	where
+	n_no=#{n_no}
+	
+	
+	</select>				
+		<update id="updateNoticeReadcount" parameterType="com.wa.erp.BoardDTO">
+		update
+				notice
+		set 
+			read_count = read_count + 1
+		where 
+			n_no=#{n_no}
+	</update>
+	
+	<select id="getMainNoticeList"  parameterType="com.wa.erp.BoardSearchDTO" resultType="com.wa.erp.BoardDTO">
+		select
+			*
+		from ( select rownum "RNUM" , zxcvb.* from (
+		 select 
+		 		category,
+		 		n_no,
+		 		subject,
+		 		content,
+		 		reg_date,
+		 		read_count
+		from 
+			notice 
+		where 
+			1=1
+			and
+			category='main'
+
+		 	
+		 	order  by reg_date desc
+		 	<![CDATA[
+ 			)zxcvb) where RNUM >= #{begin_rowNo} and RNUM <= #{end_rowNo} 
+		]]> 
+	</select>
+	
+<select id="getSalaryData" resultType="com.wa.erp.BoardDTO">
+        WITH RANGES AS (
+	        SELECT '2500-2999' AS SAL_AVG_RANGE FROM DUAL UNION ALL
+	        SELECT '3000-3499' FROM DUAL UNION ALL
+	        SELECT '3500-3999' FROM DUAL UNION ALL
+	        SELECT '4000-4499' FROM DUAL UNION ALL
+	        SELECT '4500-4999' FROM DUAL UNION ALL
+	        SELECT '5000-5499' FROM DUAL UNION ALL
+	        SELECT '5500-5999' FROM DUAL UNION ALL
+	        SELECT '6000 이상' FROM DUAL
+	    ),
+	    DATA AS (
+	        SELECT 
+	            COUNT(C_NO) AS COUNT_C_NO,
+	            CASE 
+	                <![CDATA[
+	                WHEN SAL_AVG >= 2500 AND SAL_AVG < 3000 THEN '2500-2999'
+	                WHEN SAL_AVG >= 3000 AND SAL_AVG < 3500 THEN '3000-3499'
+	                WHEN SAL_AVG >= 3500 AND SAL_AVG < 4000 THEN '3500-3999'
+	                WHEN SAL_AVG >= 4000 AND SAL_AVG < 4500 THEN '4000-4499'
+	                WHEN SAL_AVG >= 4500 AND SAL_AVG < 5000 THEN '4500-4999'
+	                WHEN SAL_AVG >= 5000 AND SAL_AVG < 5500 THEN '5000-5499'
+	                WHEN SAL_AVG >= 5500 AND SAL_AVG < 6000 THEN '5500-5999'
+	                ELSE '6000 이상'
+	                ]]>
+	            END AS SAL_AVG_RANGE
+	        FROM 
+	            COMPANY_INFO
+	        GROUP BY 
+	            CASE 
+	                <![CDATA[
+	                WHEN SAL_AVG >= 2500 AND SAL_AVG < 3000 THEN '2500-2999'
+	                WHEN SAL_AVG >= 3000 AND SAL_AVG < 3500 THEN '3000-3499'
+	                WHEN SAL_AVG >= 3500 AND SAL_AVG < 4000 THEN '3500-3999'
+	                WHEN SAL_AVG >= 4000 AND SAL_AVG < 4500 THEN '4000-4499'
+	                WHEN SAL_AVG >= 4500 AND SAL_AVG < 5000 THEN '4500-4999'
+	                WHEN SAL_AVG >= 5000 AND SAL_AVG < 5500 THEN '5000-5499'
+	                WHEN SAL_AVG >= 5500 AND SAL_AVG < 6000 THEN '5500-5999'
+	                ELSE '6000 이상'
+	                ]]>
+	            END
+	    )
+	    SELECT 
+	        R.SAL_AVG_RANGE,
+	        COALESCE(D.COUNT_C_NO, 0) AS COUNT_C_NO
+	    FROM 
+	        RANGES R
+	    LEFT JOIN 
+	        DATA D ON R.SAL_AVG_RANGE = D.SAL_AVG_RANGE
+	    ORDER BY 
+	        R.SAL_AVG_RANGE
+</select>
+
+<select id="getFieldGonggoData" resultType="com.wa.erp.BoardDTO">
+	SELECT
+	    c.field_name,
+	    COUNT(DISTINCT i.c_no) AS company_count,
+	    COUNT(DISTINCT g.c_no) AS gonggo_count
+	FROM
+	    code_field c
+	LEFT JOIN
+	    company_info i ON c.field_code = i.field_code
+	LEFT JOIN
+	    company_mem m ON i.c_no = m.c_no
+	LEFT JOIN
+	    gonggo g ON m.c_no = g.c_no
+	GROUP BY
+	    c.field_code, c.field_name
+	ORDER BY
+	    c.field_code
+</select>
+	<!--	
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		<select ~> 태그 안의 속성
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			id="namespace값마지막의인터페이스내부의메소드명중하나"
+			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			parameterType="SQL구문에참여하는외부데이터의타입"
+			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			resultType="SQL구문의결과값을저장할수있는자바자료형"
+			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		#{mid}의미
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		 	  mid   는 현재 참여하고 있는 HashMap 객체의 키값을 의미한다.
+		      {mid} 는  "mid" 라는 키값에 대응하는 데이터를 표현하라는 의미
+		       #    은 표현하는 데이터가 
+								문자면 
+									표현 데이터 앞뒤에  '  를 붙이고
+		                        숫자면 
+									표현 데이터 앞뒤에  '  를 붙이지 말란 의미이다.
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		 #{pwd}의미
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		 	  pwd   는 현재 참여하고 있는 HashMap 객체의 키값을 의미한다.
+		      {pwd} 는  "pwd" 라는 키값에 대응하는 데이터를 표현하라는 의미
+		       #    은 표현하는 데이터가 
+								문자면 
+									표현 데이터 앞뒤에  '  를 붙이고
+		                        숫자면 
+									표현 데이터 앞뒤에  '  를 붙이지 말란 의미이다.
+		-->
+		<select id="getpersonMemList"  parameterType="com.wa.erp.BoardSearchDTO" resultType="com.wa.erp.BoardDTO">
+			select
+			*
+		from ( select rownum "RNUM" , zxcvb.* from (select 
+name,
+    TO_CHAR(reg_date, 'YYYY-MM-DD') AS reg_date,
+
+pid,
+pwd,
+addr,
+email,
+phone
+from person_mem
+	 	<![CDATA[
+ 			)zxcvb) where RNUM >= #{begin_rowNo} and RNUM <= #{end_rowNo} 
+		]]> 
+	</select>
+	
+<select id="getMemberList"  parameterType="com.wa.erp.BoardSearchDTO" resultType="com.wa.erp.BoardDTO">
+   select
+			*
+		from ( select rownum "RNUM" , zxcvb.* from (
+        SELECT
+            member_type,
+            name,
+            c_no,
+            p_no,
+            is_block,
+            reg_date,
+            id,
+            pwd,
+            addr,
+            email,
+            phone,
+            ROW_NUMBER() OVER (ORDER BY reg_date) AS row_num
+        FROM (
+            SELECT
+                '개인' AS member_type,
+                name,
+                0 as c_no,
+                p_no,
+                is_block,
+                TO_CHAR(reg_date, 'YYYY-MM-DD') AS reg_date,
+                pid AS id,
+                pwd,
+                addr,
+                email,
+                phone
+            FROM person_mem 
+          where
+1=1
+            		<if test="member_type!= null and member_type.length()>0">
+		 	and		'개인'=#{member_type}
+		 	</if>
+            UNION ALL
+            SELECT
+                '기업' AS member_type,
+                c.name,
+                c.c_no as c_no,
+                0 as p_no,
+                'no' as is_block,
+                TO_CHAR(c.reg_date, 'YYYY-MM-DD') AS reg_date,
+                c.cid AS id,
+                c.pwd,
+                ci.addr,
+                c.email,
+                c.ceo_phone AS phone
+            FROM company_mem c
+            INNER JOIN company_info ci ON c.c_no = ci.c_no
+            		<if test="member_type!= null and member_type.length()>0">
+		  where
+		 		'기업'=#{member_type}
+		 	</if>
+        )
+   	<![CDATA[
+ 			)zxcvb) where (RNUM between #{begin_rowNo} and  #{end_rowNo})
+		]]> 
+ 
+	</select>
+	
+			<select id="getMemberListCnt" parameterType="com.wa.erp.BoardSearchDTO" resultType="int">
+	SELECT SUM(total_count) AS total_count
+FROM (
+    SELECT COUNT(*) AS total_count FROM person_mem 
+     where 
+      	1=1
+    <if test="member_type=='기업'">
+        and p_no = 0
+    </if>
+       <if test="member_type=='개인'">
+        and p_no > 0
+    </if>
+    UNION ALL
+    SELECT COUNT(*) FROM company_mem 
+
+       <if test="member_type=='기업'">
+      where c_no > 0
+    </if>
+       <if test="member_type=='개인'">
+      where  c_no = 0
+    </if>  
+)      
+      
+
+	</select>
+
+	<select id="getMemberListAllCnt"  parameterType="com.wa.erp.BoardSearchDTO" resultType="int">
+
+		SELECT SUM(total_count) AS total_count
+FROM (
+    SELECT COUNT(*) AS total_count FROM person_mem      
+    UNION ALL
+    SELECT COUNT(*) FROM company_mem 
+)        
+	</select>
+	
+
+
+	
+
+<select id="getBlockMemberListAllCnt"  parameterType="com.wa.erp.BoardSearchDTO" resultType="int">
+    SELECT COUNT(*) FROM person_mem      where 
+      	is_block='block'
+	</select>
+	<select id="getBlockMemberListCnt"  parameterType="com.wa.erp.BoardSearchDTO" resultType="int">
+    SELECT COUNT(*) FROM person_mem      where 
+      	is_block='block'
+	</select>
+	<select id="getBlockMemberList"  parameterType="com.wa.erp.BoardSearchDTO" resultType="com.wa.erp.BoardDTO">
+
+	select
+		p_no,
+		name,
+		 TO_CHAR(reg_date, 'YYYY-MM-DD') AS reg_date,
+		 pid AS id ,
+		pwd ,
+		addr,
+		email ,
+		is_block,
+		phone
+	from 
+		person_mem 
+	where
+		 is_block='block'
+</select>
+
+<select id="getpopularCom" resultType="com.wa.erp.BoardDTO">
+	select 
+    * 
+    from
+    (
+        select 
+            rownum "RNUM",zxcv.*  
+        from
+            (select
+            	c.c_no,
+                c.name
+             from
+                company_mem c, company_info i
+             where
+                c.c_no = i.c_no
+              order by
+                i.rec_count desc) zxcv
+             ) 
+    where 
+    <![CDATA[
+        RNUM >= 1 and RNUM <=5
+	]]>
+</select>
+
+<select id="getRegionCounts" resultType="com.wa.erp.BoardDTO">
+	SELECT
+	    SUM(CASE WHEN SUBSTR(addr, 1, 2) = '서울' THEN 1 ELSE 0 END) AS count_seoul,
+	    SUM(CASE WHEN SUBSTR(addr, 1, 2) = '부산' THEN 1 ELSE 0 END) AS count_busan,
+	    SUM(CASE WHEN SUBSTR(addr, 1, 2) = '인천' THEN 1 ELSE 0 END) AS count_incheon,
+	    SUM(CASE WHEN SUBSTR(addr, 1, 2) = '경기' THEN 1 ELSE 0 END) AS count_gyeonggi,
+	    SUM(CASE WHEN SUBSTR(addr, 1, 2) = '강원' THEN 1 ELSE 0 END) AS count_gangwon
+	FROM
+	    company_info
+</select>
+
+<select id="getHope_Salary"  resultType="com.wa.erp.BoardDTO">
+WITH SALARY_RANGES AS (
+    SELECT '2000-2499' AS SALARY_RANGE FROM DUAL UNION ALL
+    SELECT '2500-2999' FROM DUAL UNION ALL
+    SELECT '3000-3499' FROM DUAL UNION ALL
+    SELECT '3500-3999' FROM DUAL UNION ALL
+    SELECT '4000-4499' FROM DUAL UNION ALL
+    SELECT '4500-4999' FROM DUAL UNION ALL
+    SELECT '5000-5499' FROM DUAL UNION ALL
+    SELECT '5500-5999' FROM DUAL UNION ALL
+    SELECT '6000 이상' FROM DUAL
+),
+SALARY_DATA AS (
+    SELECT 
+        CASE
+            WHEN hope_salary BETWEEN 2000 AND 2499 THEN '2000-2499'
+            WHEN hope_salary BETWEEN 2500 AND 2999 THEN '2500-2999'
+            WHEN hope_salary BETWEEN 3000 AND 3499 THEN '3000-3499'
+            WHEN hope_salary BETWEEN 3500 AND 3999 THEN '3500-3999'
+            WHEN hope_salary BETWEEN 4000 AND 4499 THEN '4000-4499'
+            WHEN hope_salary BETWEEN 4500 AND 4999 THEN '4500-4999'
+            WHEN hope_salary BETWEEN 5000 AND 5499 THEN '5000-5499'
+            WHEN hope_salary BETWEEN 5500 AND 5999 THEN '5500-5999'
+            ELSE '6000 이상'
+        END AS SALARY_RANGE,
+        COUNT(*) AS COUNT_HOPE_SALARY
+    FROM 
+        resume
+    GROUP BY 
+        CASE
+            WHEN hope_salary BETWEEN 2000 AND 2499 THEN '2000-2499'
+            WHEN hope_salary BETWEEN 2500 AND 2999 THEN '2500-2999'
+            WHEN hope_salary BETWEEN 3000 AND 3499 THEN '3000-3499'
+            WHEN hope_salary BETWEEN 3500 AND 3999 THEN '3500-3999'
+            WHEN hope_salary BETWEEN 4000 AND 4499 THEN '4000-4499'
+            WHEN hope_salary BETWEEN 4500 AND 4999 THEN '4500-4999'
+            WHEN hope_salary BETWEEN 5000 AND 5499 THEN '5000-5499'
+            WHEN hope_salary BETWEEN 5500 AND 5999 THEN '5500-5999'
+            ELSE '6000 이상'
+        END
+)
+SELECT 
+    SR.SALARY_RANGE,
+    COALESCE(SD.COUNT_HOPE_SALARY, 0) AS HOPE_CNT
+FROM 
+    SALARY_RANGES SR
+LEFT JOIN 
+    SALARY_DATA SD ON SR.SALARY_RANGE = SD.SALARY_RANGE
+ORDER BY 
+    SR.SALARY_RANGE
+</select>
+
+<select id="getHope_Field" resultType="com.wa.erp.BoardDTO">
+   select
+	    count(distinct a.c_no) as apply_cnt,  
+	    count(distinct p.p_no) as hope_cnt,
+	    c.field_name as field_name,
+	    c.field_code as field_code
+	from
+	    code_field c
+	left join
+	    company_info i
+	    on c.field_code = i.field_code
+	left join
+	    pertocom a
+	    on i.c_no = a.c_no
+	left join
+	    person_mem p
+	    on c.field_code = p.field_code  
+	group by 
+	    c.field_name,
+	    c.field_code
+	order by
+	    c.field_code
+</select>
+
+<select id="getPer_Region" resultType="com.wa.erp.BoardDTO">
+	    SELECT
+	    SUM(CASE WHEN SUBSTR(addr, 1, 2) = '서울' THEN 1 ELSE 0 END) AS count_seoul,
+	    SUM(CASE WHEN SUBSTR(addr, 1, 2) = '부산' THEN 1 ELSE 0 END) AS count_busan,
+	    SUM(CASE WHEN SUBSTR(addr, 1, 2) = '인천' THEN 1 ELSE 0 END) AS count_incheon,
+	    SUM(CASE WHEN SUBSTR(addr, 1, 2) = '경기' THEN 1 ELSE 0 END) AS count_gyeonggi,
+	    SUM(CASE WHEN SUBSTR(addr, 1, 2) = '강원' THEN 1 ELSE 0 END) AS count_gangwon
+	FROM
+	    person_mem
+</select>
+
+<select id="getSexRatio"   resultType="com.wa.erp.BoardDTO">
+	 select                          
+            (select count(*) from person_mem where sex='남')   as male 
+            ,(select count(*) from person_mem where sex='여')  as female
+        from
+            dual
+</select>
+
+<select id="getMemberRatio" resultType="com.wa.erp.BoardDTO">
+	select
+		(select count(*) from person_mem) as person
+		,(select count(*) from company_mem) as company
+	from
+		dual
+</select>
+
+<select id="getMemberPerMonthCnt" resultType="com.wa.erp.BoardDTO">
+	SELECT 
+	    COALESCE(cm.month, pm.month) AS month,
+	    cm.count AS company_count,
+	    pm.count AS person_count
+	FROM
+	    (SELECT to_char(reg_date, 'YYYY-MM') AS month,
+	            COUNT(*) AS count
+	     FROM company_mem
+	     GROUP BY to_char(reg_date, 'YYYY-MM')) cm
+	FULL OUTER JOIN
+	    (SELECT to_char(reg_date, 'YYYY-MM') AS month,
+	            COUNT(*) AS count
+	     FROM person_mem
+	     GROUP BY to_char(reg_date, 'YYYY-MM')) pm
+	ON cm.month = pm.month
+	ORDER BY COALESCE(cm.month, pm.month)
+	
+</select>
+
+</mapper>
+ 

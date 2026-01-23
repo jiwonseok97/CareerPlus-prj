@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--***************************************************-->
+<!-- mapper 태그 선언하기 -->
+<!-- mapper 태그 안의 namespace 값은 -->
+<!-- [원하는 인터페이스 저장 패키지 경로]하고 일치해야한다. -->
+<!--***************************************************-->
+<mapper namespace="com.wa.erp.MemberDAO">
+	
+	<!--////////////// 기업 회원가입을 위한 코드 ///////////////-->
+	<insert id="insertCompany" parameterType="com.wa.erp.MemberDTO"  useGeneratedKeys="true" keyProperty="mem_c_no">
+		<selectKey keyProperty="mem_c_no"   resultType="int" order="BEFORE">
+			(select nvl(max(c_no),0)+1 from company_mem)
+		</selectKey>
+		insert into company_mem(
+		c_no
+		 ,cid
+		 ,pwd
+		 ,business_no
+		 ,call
+		 ,ceo_name
+		 ,ceo_phone
+		 ,name
+		 ,email
+		 ,reg_date
+		) values (
+			#{mem_c_no}
+			,#{cid}
+			,#{pwd}
+			,#{business_no}
+			,#{call}
+			,#{ceo_name}
+			,#{ceo_phone}
+			,#{name}
+			,#{email}||#{email2}
+			,sysdate
+			)
+	</insert>
+
+	<select id="getCidCnt" parameterType="com.wa.erp.MemberDTO" resultType="int">
+		select 
+			count(*)
+		from 
+			company_mem
+		where
+			cid = #{cid}
+	</select>
+	<!--mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm-->
+
+	<!--////////////// 기업 정보 등록을 위한 코드 ///////////////-->
+	<select id="getMem_c_no"  resultType="int">
+		select 
+			max(c_no)
+		from 
+			company_mem
+	</select>
+	
+	<insert id="insertCompanyInfo" parameterType="com.wa.erp.MemberDTO" >
+		insert into company_info (
+			c_no
+			,url
+			,volume
+			,field_code
+			,birth
+			,sales
+			,addr
+			,emp_no
+			,sal_avg
+			,rec_count
+		) values (
+			#{mem_c_no}
+			,#{url}
+			,#{volume}
+			,#{field_code}
+			,TO_CHAR(#{birth}, 'YYYY-MM-DD')
+			,#{sales}
+			,#{addr1}||' '||#{addr2}||' '||#{addr3}
+			,#{emp_no}
+			,#{sal_avg}
+			,0
+			)
+	</insert>
+
+	<insert id="insertCompanyWelfare" parameterType="com.wa.erp.MemberDTO">
+		insert into company_welfare
+		<foreach collection="welfare_code" item="tmp" open=" ( " close= " ) " separator="union all">
+			select
+				#{mem_c_no}
+				,#{tmp}
+			from dual
+		</foreach>
+		
+	</insert>
+	
+	<select id="getPidCnt" parameterType="com.wa.erp.MemberDTO" resultType="int">
+		select
+			count(*)
+		from
+			person_mem p, company_mem c
+		where
+			p.pid = #{pid}
+			or
+			c.cid = #{pid}
+	</select>
+	
+	<insert id="insertMember" parameterType="com.wa.erp.MemberDTO" >
+      insert  into person_mem
+      (
+	      p_no
+	    ,name
+	    ,pid
+	    ,pwd
+	    ,phone
+	    ,email
+	    ,field_code
+	    ,is_job
+	    ,nickname
+	    ,addr
+	    ,sex
+	    ,jumin_num
+	    ,reg_date
+      )
+       values (
+         (select nvl(max(p_no),0)+1 from person_mem)
+         ,#{name}
+         ,#{pid}
+         ,#{pwd}
+         ,#{phone}
+         ,#{email1}||''|| #{email2}
+         ,${field_code}
+         ,#{is_job}
+         ,#{nickname}
+         ,#{addr1} ||' '|| #{addr2} ||' '||#{addr3}
+         ,#{sex}
+         ,#{jumin_num1} ||''|| #{jumin_num2}
+         ,sysdate
+         )
+
+   </insert>
+   
+   <select id="get_c_no" resultType="int">
+   	select
+   		max(c_no)
+   	from
+   		company_mem
+   </select>
+	
+	<select id="getC_mem" parameterType="int" resultType="com.wa.erp.BoardDTO">
+ 	select
+ 		*
+ 	from
+ 		company_mem
+ 	where
+ 		c_no = #{c_no}
+ 	</select>
+</mapper>
+ 

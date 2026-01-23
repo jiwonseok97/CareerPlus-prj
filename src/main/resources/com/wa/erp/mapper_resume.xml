@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--***************************************************-->
+<!-- mapper 태그 선언하기 -->
+<!-- mapper 태그 안의 namespace 값은 -->
+<!-- [원하는 인터페이스 저장 패키지 경로]하고 일치해야한다. -->
+<!--***************************************************-->
+<mapper namespace="com.wa.erp.ResumeDAO">
+<select id="getresumeList"  parameterType="com.wa.erp.BoardSearchDTO" resultType="com.wa.erp.BoardDTO">
+                     
+select
+            *
+        from ( select rownum "RNUM" , zxcvb.* from (
+    SELECT      
+        p.p_no,
+        LISTAGG(cs.skill_name, ',') WITHIN GROUP (ORDER BY cs.skill_name) AS skills,
+        r.resume_no,
+        p.name,
+        p.addr,
+        p.phone,
+        ca.career1,
+        p.email,
+        c.field_name,
+        p.sex,
+        TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(p.jumin_num, 1, 2)
+        ) AS age,
+        r.hope_salary,
+        e.education
+    FROM
+        resume r
+    JOIN
+        person_mem p ON p.p_no = r.p_no
+    JOIN
+        code_field c ON p.field_code = c.field_code
+    LEFT JOIN
+        person_skill ps ON ps.resume_no = r.resume_no
+    LEFT JOIN
+
+        code_skill cs ON ps.skill_code = cs.skill_code
+    LEFT JOIN
+        career ca ON r.resume_no = ca.resume_no
+    LEFT JOIN
+        education e ON r.resume_no = e.resume_no
+    WHERE
+        r.is_offer = 'Y' 
+
+        <if test="sido != null and sido.length() > 0 and sido != '시/도 선택'">
+            AND upper(p.addr) LIKE upper('%${sido}%')
+        </if>
+        <if test="gugun != null and gugun.length() > 0 and gugun != '구/군 선택'">
+            AND upper(p.addr) LIKE upper('%${gugun}%')
+        </if>
+        <if test="sex != null and sex.length() > 0 and sex != ''">
+            AND p.sex = #{sex}
+        </if>
+        <if test="education == '4년제 졸업'">
+            AND e.education = #{education}
+        </if>
+        <if test="education == '전문대 졸업'">
+            AND e.education = #{education}
+        </if>
+        <if test="education == '4년제 졸업,전문대 졸업'">
+            AND (e.education = '4년제 졸업' OR e.education = '전문대 졸업')
+        </if>
+        <if test="hope_salary == '2000'">
+            AND r.hope_salary BETWEEN #{hope_salary} AND 2499
+        </if>
+        <if test="hope_salary == '2500'">
+            AND r.hope_salary BETWEEN #{hope_salary} AND 2999
+        </if>
+        <if test="hope_salary == '3000'">
+            AND r.hope_salary BETWEEN #{hope_salary} AND 3499
+        </if>
+        <if test="hope_salary == '3500'">
+            AND r.hope_salary >= #{hope_salary}
+        </if>
+        <if test="field_code != null and field_code.length() > 0 and field_code != ''">
+            AND c.field_name = #{field_code}
+        </if>
+        <if test="career != null and career.length() > 0 and career != '' and career != 'newbie'">
+            AND ca.career1 IS NOT NULL
+        </if>
+        <if test="career == 'newbie'">
+            AND ca.career1 IS NULL
+        </if>
+        <if test="start_age != null and end_age == null">
+            AND TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+                CASE
+                    WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                    WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                    ELSE '20'
+                END || SUBSTR(p.jumin_num, 1, 2)
+            ) BETWEEN ${start_age} AND ${start_age} + 9
+        </if>
+        <if test="start_age != null and age2 == null and end_age != null">
+            AND (
+                TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+                    CASE
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                        ELSE '20'
+                    END || SUBSTR(p.jumin_num, 1, 2)
+                ) BETWEEN ${start_age} AND ${start_age} + 9
+                OR
+                TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+                    CASE
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                        ELSE '20'
+                    END || SUBSTR(p.jumin_num, 1, 2)
+                ) BETWEEN ${end_age} AND ${end_age} + 9
+            )
+        </if>
+        <if test="start_age != null and age2 != null and age3 == null and end_age != null">
+            AND (
+                TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+                    CASE
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                        ELSE '20'
+                    END || SUBSTR(p.jumin_num, 1, 2)
+                ) BETWEEN ${start_age} AND ${start_age} + 9
+                OR
+                TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+                    CASE
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                        ELSE '20'
+                    END || SUBSTR(p.jumin_num, 1, 2)
+                ) BETWEEN ${age2} AND ${age2} + 9
+                OR
+                TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+                    CASE
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                        ELSE '20'
+                    END || SUBSTR(p.jumin_num, 1, 2)
+                ) BETWEEN ${end_age} AND ${end_age} + 9
+            )
+        </if>
+        <if test="start_age != null and age2 != null and age3 != null and age4 == null and end_age != null">
+            AND (
+                TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+                    CASE
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                        ELSE '20'
+                    END || SUBSTR(p.jumin_num, 1, 2)
+                ) BETWEEN ${start_age} AND ${start_age} + 9
+                OR
+                TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+                    CASE
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                        ELSE '20'
+                    END || SUBSTR(p.jumin_num, 1, 2)
+                ) BETWEEN ${age2} AND ${age2} + 9
+                OR
+                TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+                    CASE
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                        ELSE '20'
+                    END || SUBSTR(p.jumin_num, 1, 2)
+                ) BETWEEN ${age3} AND ${age3} + 9
+                OR
+                TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+                    CASE
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                        ELSE '20'
+                    END || SUBSTR(p.jumin_num, 1, 2)
+                ) BETWEEN ${end_age} AND ${end_age} + 9
+            )
+        </if>
+        <if test="start_age != null and age2 != null and age3 != null and age4 != null and end_age != null">
+            AND (
+                TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+                    CASE
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                        ELSE '20'
+                    END || SUBSTR(p.jumin_num, 1, 2)
+                ) BETWEEN ${start_age} AND ${start_age} + 9
+                OR
+                TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+                    CASE
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                        ELSE '20'
+                    END || SUBSTR(p.jumin_num, 1, 2)
+                ) BETWEEN ${age2} AND ${age2} + 9
+                OR
+                TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+                    CASE
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                        ELSE '20'
+                    END || SUBSTR(p.jumin_num, 1, 2)
+                ) BETWEEN ${age3} AND ${age3} + 9
+                OR
+                TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+                    CASE
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                        ELSE '20'
+                    END || SUBSTR(p.jumin_num, 1, 2)
+                ) BETWEEN ${age4} AND ${age4} + 9
+                OR
+                TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+                    CASE
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                        WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                        ELSE '20'
+                    END || SUBSTR(p.jumin_num, 1, 2)
+                ) BETWEEN ${end_age} AND ${end_age} + 9
+            )
+        </if>
+    GROUP BY
+        p.p_no, r.resume_no, p.name, p.addr, p.phone, ca.career1, p.email, c.field_name, p.sex, p.jumin_num, r.hope_salary, e.education
+    <if test="skill_name != null">    
+    HAVING 
+        <foreach collection="skill_name" item="tmp" open=" (" close=")" separator=" and ">
+            LISTAGG(cs.skill_name, ',') WITHIN GROUP (ORDER BY cs.skill_name) LIKE '%${tmp}%'
+        </foreach>
+    </if>
+         <![CDATA[
+         )zxcvb) where RNUM >= #{begin_rowNo} and RNUM <=  #{end_rowNo}
+      ]]>
+      
+      
+</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   <select id="getresumeListCnt" parameterType="com.wa.erp.BoardSearchDTO" resultType="int">
+   select count(*) from(select count(*)  FROM
+        
+        resume r
+        
+    JOIN
+        person_mem p ON p.p_no = r.p_no
+    JOIN
+        code_field c ON p.field_code = c.field_code 
+    LEFT join
+        person_skill ps on ps.resume_no=r.resume_no
+    LEFT join
+        code_skill cs on ps.skill_code = cs.skill_code   
+
+  
+    LEFT JOIN
+        career ca ON r.resume_no = ca.resume_no
+        
+     LEFT JOIN
+        education e on r.resume_no=e.resume_no
+        
+    where
+ 
+       r.is_offer='Y'              
+      
+          
+
+        
+        <if test="sido!=null and sido.length()>0 and sido!='시/도 선택'">
+        and ( 
+               upper(addr) like upper('%${sido}%')
+                  )
+         </if>
+       
+         <if test="gugun!=null and gugun.length()>0 and gugun!='구/군 선택'">
+                and ( 
+               upper(addr) like upper('%${gugun}%')
+                  )
+
+         </if>
+         <if test="sex!=null and sex.length()>0 and sex!=''">
+         and p.sex=#{sex}
+      </if>
+       <if test="education=='4년제 졸업'">
+         and education=#{education}
+      </if>
+      <if test="education=='전문대 졸업'">
+         and education=#{education}
+      </if>
+      <if test="education=='4년제 졸업,전문대 졸업' " >
+            AND (e.education = '4년제 졸업' OR e.education = '전문대 졸업')
+      </if>
+      <if test="hope_salary=='2000'">
+         and hope_salary between #{hope_salary} and 2499
+      </if>
+      <if test="hope_salary=='2500'">
+         and hope_salary between #{hope_salary} and 2999
+      </if>
+      <if test="hope_salary=='3000'">
+         and hope_salary between #{hope_salary} and 3499
+      </if>
+      <if test="hope_salary=='3500'">
+         and hope_salary >= #{hope_salary}
+      </if>
+      <if test="field_code!=null and field_code.length()>0 and field_code!=''">
+         and field_name=#{field_code}
+      </if>
+      <if test="career!=null and career.length()>0 and career!='' and career!= 'newbie'">
+         and career1 is not null
+      </if>
+      <if test= "career=='newbie'">
+       and career1 is null
+      </if>
+      
+      
+      
+         <if test=" start_age !=null and  end_age ==null">
+       and  TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(jumin_num, 1, 2)
+        ) BETWEEN ${start_age} AND ${start_age}+9  
+   </if>
+   
+      <if test=" start_age !=null and  age2==null  and end_age !=null">
+      and  (TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(jumin_num, 1, 2)
+        ) BETWEEN ${start_age} AND ${start_age}+9
+        
+        or 
+        
+          TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(jumin_num, 1, 2)
+        ) BETWEEN ${end_age} and ${end_age}+9 
+      )
+   </if>
+   
+   
+   <if test=" start_age !=null and age2!=null and age3 ==null  and  end_age !=null">
+       and  (TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(jumin_num, 1, 2)
+        ) BETWEEN ${start_age} AND ${start_age}+9
+        
+        or
+           TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(jumin_num, 1, 2)
+        ) BETWEEN ${age2} and ${age2}+9 
+        or
+        
+          TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(jumin_num, 1, 2)
+        ) BETWEEN ${end_age} and ${end_age}+9 
+      )
+   </if>
+   
+      <if test=" start_age !=null  and age2!=null and age3 !=null  and age4 ==null and end_age!=null">
+   
+       and  (TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(jumin_num, 1, 2)
+        ) BETWEEN ${start_age} AND ${start_age}+9
+        
+        or
+           TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(jumin_num, 1, 2)
+        ) BETWEEN ${age2} and ${age2}+9 
+               or
+           TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(jumin_num, 1, 2)
+        ) BETWEEN ${age3} and ${age3}+9 
+        or     
+          TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(jumin_num, 1, 2)
+        ) BETWEEN ${end_age} and ${end_age}+9 )
+   </if>
+   
+   <if test=" start_age!=null and age2!=null and age3 !=null  and age4 !=null and end_age!=null">
+   
+       and  (TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(jumin_num, 1, 2)
+        ) BETWEEN ${start_age} AND ${start_age}+9
+        
+        or
+           TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(jumin_num, 1, 2)
+        ) BETWEEN ${age2} and ${age2}+9 
+               or
+           TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(jumin_num, 1, 2)
+        ) BETWEEN ${age3} and ${age3}+9 
+          or
+           TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(jumin_num, 1, 2)
+        ) BETWEEN ${age4} and ${age4}+9 
+        or     
+          TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(jumin_num, 1, 2)
+        ) BETWEEN ${end_age} and ${end_age}+9 )
+   </if>
+
+   
+          GROUP BY p.p_no, r.resume_no, p.name, p.addr, p.phone, ca.career1, p.email, c.field_name, p.sex, p.jumin_num, r.hope_salary, e.education
+   <if test="skill_name != null ">   
+having 
+<foreach collection="skill_name"  item="tmp"  open=" ( " close=" ) "  separator=" and ">
+LISTAGG(cs.skill_name, ',') WITHIN GROUP (ORDER BY cs.skill_name) like '%${tmp}%'         
+        </foreach>
+   </if>
+      )
+      
+      
+   </select>
+
+   <select id="getresumeListAllCnt"  parameterType="com.wa.erp.BoardSearchDTO" resultType="int">
+      select count(*) from resume where is_offer='Y'
+   </select>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  이력서에 단일 정보로만 들어가는 데이터 검색 -->
+<select id="getResume" parameterType="int" resultType="com.wa.erp.BoardDTO">
+     
+                   SELECT
+        r.resume_no,
+        p.p_no,
+        p.name ,
+        p.addr ,
+        p.phone,
+        a.name1,
+        a.type1,
+        a.name2,
+        a.type2,
+        a.name3,
+        a.type3,
+        a.name4,
+        a.type4,
+        ca.career1,
+        ca.career2,
+        ca.career3,
+        ca.career4,
+        ca.career5,
+        l.license_name1,
+        l.license_name2,
+        l.license_name3,
+        l.license_name4,
+        l.license_name5,
+        p.email,
+        c.field_name,
+        p.sex,
+        CASE
+            WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+            WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+            ELSE '20'
+        END || SUBSTR(p.jumin_num, 1, 2) || '-' || SUBSTR(p.jumin_num, 3, 2) || '-' || SUBSTR(p.jumin_num, 5, 2) AS birth,
+        TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(
+            CASE
+                WHEN SUBSTR(p.jumin_num, 7, 1) = '1' THEN '19'
+                WHEN SUBSTR(p.jumin_num, 7, 1) = '2' THEN '19'
+                ELSE '20'
+            END || SUBSTR(p.jumin_num, 1, 2)
+        ) AS age,
+        p.is_job,
+        r.married,
+        r.military,
+        r.hope_salary,
+        r.introduce,
+        e.school_name,
+        e.education,
+        to_char(e.enter_date,'YYYY') as enter_date,
+        to_char(e.graduation_date,'YYYY"년" MM"월"') as graduation_date
+    FROM
+        resume r
+
+    JOIN
+        person_mem p ON p.p_no = r.p_no
+    JOIN
+        code_field c ON p.field_code = c.field_code
+    LEFT JOIN
+        awards a ON r.resume_no = a.resume_no
+    LEFT JOIN
+        career ca ON r.resume_no = ca.resume_no
+    LEFT JOIN
+        person_license l on r.resume_no=l.resume_no
+     LEFT JOIN
+        education e on r.resume_no=e.resume_no
+    
+    WHERE
+        p.p_no =  #{p_no}
+</select>
+
+
+<select id="getSkillList" parameterType="int" resultType="com.wa.erp.BoardDTO">
+       SELECT 
+    r.resume_no,
+    c.skill_name 
+FROM 
+    person_skill ps 
+INNER JOIN 
+    code_skill c ON ps.skill_code = c.skill_code
+INNER JOIN 
+    resume r ON r.resume_no = ps.resume_no
+    
+WHERE
+    r.resume_no = #{resume_no}
+    
+</select>
+
+<insert id="insertcomtoper" parameterType="com.wa.erp.BoardDTO" >
+      insert  into comtoper 
+      (resume_no,c_no,p_no)
+       values (
+         #{resume_no}
+         ,#{c_no}
+         ,#{p_no}
+      )
+   
+   </insert>
+
+
+<select id="checkComtoper" resultType="int">
+ SELECT COUNT(*) 
+    FROM comtoper 
+    WHERE resume_no = #{resume_no} 
+      AND c_no = #{c_no}
+</select>
+
+
+</mapper>
+ 

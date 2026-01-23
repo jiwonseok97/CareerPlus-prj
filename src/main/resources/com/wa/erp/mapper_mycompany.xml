@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--***************************************************-->
+<!-- mapper 태그 선언하기 -->
+<!-- mapper 태그 안의 namespace 값은 -->
+<!-- [원하는 인터페이스 저장 패키지 경로]하고 일치해야한다. -->
+<!--***************************************************-->
+<mapper namespace="com.wa.erp.BoardDAO">
+
+
+      <select id="getMyGongMoList"  parameterType="int"  resultType="com.wa.erp.BoardDTO">
+           select
+               comp_pk 
+               ,subject
+               ,to_char(reg_date, 'YYYY-MM-DD') as "reg_date"
+               ,to_char(start_time, 'YYYY-MM-DD') as "start_time"
+               ,to_char(end_time, 'YYYY-MM-DD') as "end_time"
+           from 
+               competition 
+             where
+                 c_no = #{c_no}
+             order by
+            comp_pk desc
+       </select>
+       
+       <select id="getMyGongGoList"  parameterType="int"  resultType="com.wa.erp.BoardDTO">
+           select
+               g_no 
+               ,content
+               ,to_char(gonggoreg_date, 'YYYY-MM-DD') as "gonggoreg_date"
+               ,to_char(opendate, 'YYYY-MM-DD') as "opendate"
+               ,to_char(closedate, 'YYYY-MM-DD') as "closedate"
+           from 
+               gonggo 
+             where
+                 c_no = #{c_no}
+             order by
+            g_no desc
+       </select>
+       
+       <select id="getMyCompanyInfo"  parameterType="int"  resultType="com.wa.erp.BoardDTO">
+           select
+               m.c_no,
+               m.name,
+               m.ceo_name,
+               i.business_industry,
+               i.rec_count 
+           from 
+               company_mem m,  company_info i
+             where
+                m.c_no = #{c_no}
+                and
+                m.c_no = i.c_no
+       </select>
+       
+       <select id="getGonggoPertocom"  parameterType="int"  resultType="com.wa.erp.BoardDTO">
+           select
+            m.name
+            ,to_number(to_char(sysdate, 'yyyy')) - to_number(
+                  case
+                      when substr(m.jumin_num, 7, 1) = '1' then '19'
+                      when substr(m.jumin_num, 7, 1) = '2' then '19'
+                      else '20'
+                  end || substr(m.jumin_num, 1, 2)
+              ) as age
+            ,m.sex
+            ,g.content
+            ,r.resume_no
+            ,p.p_no
+         from
+            pertocom p, gonggo g, person_mem m,resume r
+         where
+            p.g_no = #{g_no}
+            and
+            g.g_no = p.g_no
+            and
+            m.p_no = p.p_no
+            and 
+            p.p_no=r.p_no
+          </select>
+          
+          
+           <select id="getComInfoSujung"  parameterType="int"  resultType="com.wa.erp.BoardDTO">
+                select
+                   m.c_no,
+                   m.name,
+                   i.url,
+                   LISTAGG(w.welfare_code, ',') WITHIN GROUP (ORDER BY w.welfare_code) as "welfare_code2",
+                   i.volume,
+                   i.field_code,
+                   i.birth,
+                   m.ceo_name,
+                   m.call,
+                   m.business_no,
+                   i.sales,
+                   i.addr,
+                   i.emp_no,
+                   i.sal_avg,
+                   m.email
+               from 
+                   company_mem m
+                   JOIN company_info i ON m.c_no = i.c_no
+                   JOIN company_welfare w ON m.c_no = w.c_no
+               where
+                   m.c_no = #{c_no}
+               group by
+                   m.c_no,
+                   m.name,
+                   i.url,
+                   i.volume,
+                   i.field_code,
+                   i.birth,
+                   m.ceo_name,
+                   m.call,
+                   m.business_no,
+                   i.sales,
+                   i.addr,
+                   i.emp_no,
+                   i.sal_avg,
+                   m.email
+                      
+          </select>
+          
+           <update id="updateComInfo" parameterType="com.wa.erp.BoardDTO">
+                
+                <!-- 회사 상세 정보 업데이트 -->
+                update company_info
+                set
+                    url = #{url},
+                    volume = #{volume},
+                    field_code = #{field_code},
+                    birth = #{birth},
+                    sales = #{sales},
+                    addr = #{addr1}||' '||#{addr2}||' '||#{addr3},
+                    emp_no = #{emp_no},
+                    sal_avg = #{sal_avg}
+                where
+                    c_no = #{c_no}
+                    
+                
+            </update>
+            
+            <update id="updateComMem" parameterType="com.wa.erp.BoardDTO">
+            
+               <!-- 기업 회원가입 업데이트  -->
+               update company_mem
+                set
+                    name = #{name},
+                    ceo_name = #{ceo_name},
+                    call = #{call},
+                    business_no = #{business_no},
+                    email = #{email}||#{email2}
+                where
+                    c_no = #{c_no}
+                    and
+                    pwd = #{pwd}
+                    
+            </update>
+            
+            <select id="getComInfoCnt" parameterType="int" resultType="int">
+                select count(*) from company_mem where c_no = #{c_no}
+            </select>
+            
+            <select id="getComInfoPwdCnt" parameterType="int" resultType="int">
+                select count(*) from company_mem where c_no = #{c_no}
+            </select>
+             
+             <select id="getComMemCnt" parameterType="int" resultType="int">
+                select count(*) from company_mem where c_no = #{c_no}
+             </select>
+             
+             <select id="getComUpWelCnt" parameterType="int" resultType="int">
+                select count(*) from company_welfare where c_no = #{c_no}
+             </select>
+             
+              <delete id="deldateComWel" parameterType="com.wa.erp.BoardDTO">
+                delete from company_welfare
+                where
+                    c_no = #{c_no}
+                </delete>
+                    
+            <!-- 회사의 새로운 복지 혜택 정보 삽입 -->
+             <insert id="updateComWel"  parameterType="com.wa.erp.BoardDTO">
+                  insert into company_welfare
+                   <foreach collection="welfare_code" item="tmp" open=" ( " close= " ) " separator="union all">
+                     select
+                        #{c_no}
+                        ,#{tmp}
+                     from dual
+                  </foreach>
+             </insert>
+          
+</mapper>
+ 

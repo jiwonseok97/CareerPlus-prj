@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--***************************************************-->
+<!-- mapper 태그 선언하기 -->
+<!-- mapper 태그 안의 namespace 값은 -->
+<!-- [원하는 인터페이스 저장 패키지 경로]하고 일치해야한다. -->
+<!--***************************************************-->
+<mapper namespace="com.wa.erp.RegUpDelDAO">
+
+<!-- 프리랜서 상세 -->
+	<select id="gettimeShare" resultType="com.wa.erp.TimeShareDTO">
+      	select
+            b_no
+            ,r.resume_no
+            ,p.p_no
+            ,p.name
+            ,p.phone
+            ,p.addr
+            ,c.career1
+            ,c.career2
+            ,c.career3
+            ,c.career4
+            ,c.career5
+            ,l.license_name1
+            ,l.license_name2
+            ,l.license_name3
+            ,l.license_name4
+            ,l.license_name5
+            ,to_char(f.start_date, 'YYYY-MM-DD')  as "start_date"
+            ,to_char(f.end_date,   'YYYY-MM-DD')  as "end_date"
+            ,f.subject
+            ,f.pwd
+            ,f.preferred_work
+            ,f.start_time
+            ,f.end_time
+            ,f.content
+            ,to_char(f.reg_date, 'YYYY-MM-DD HH24:MI')  as "reg_date"
+            ,img_name     "img_name"
+        from
+          person_mem  p, freelancer f, career c, person_license l , resume r
+        where
+           f.b_no= #{f.b_no}
+         and
+            f.p_no=p.p_no
+         and
+            f.p_no=r.p_no
+         and
+           r.resume_no=c.resume_no
+         and
+           r.resume_no=l.resume_no
+	</select>	
+
+	
+	<select  id="gettimeShareCnt" parameterType="int"  resultType="int">
+		select count(*) from freelancer where b_no=#{b_no} 
+          
+	</select>	
+	
+	<!-- 프리랜서 비밀번호 개수 -->
+	<select id="gettimeSharePwdCnt" parameterType="com.wa.erp.TimeShareDTO"  resultType="int">	
+		select count(*) from freelancer where b_no=#{b_no} and pwd=#{pwd}			
+	</select>
+
+	
+<!--  프리랜서 등록 (p_no 1임의로 들어가있음 수정)-->
+	<insert id="inserttimeShare" parameterType="com.wa.erp.RegUpDelDAO">
+	    insert into freelancer(
+	        b_no
+	        ,p_no
+	        ,subject
+	        ,preferred_work
+	        ,start_time
+	        ,end_time
+	        ,start_date
+	        ,end_date
+	        ,content
+	        ,reg_date
+	        ,pwd  
+	        <if test= "img_name!=null and img_name.length()>0">
+			 ,img_name
+			</if>
+	    )values(
+	       (select nvl(max(b_no),0)+1 from freelancer)
+	        ,#{p_no}
+	        ,#{subject}
+	        ,#{preferred_work}
+	        ,#{start_time}
+	        ,#{end_time}
+	        ,#{start_date}
+	        ,#{end_date}
+	        ,#{content}
+	        ,sysdate
+	        ,#{pwd}	        
+	        <if test= "img_name!=null and img_name.length()>0">
+			 ,#{img_name}
+			</if>
+	    )	    
+	</insert>
+	
+	<!-- 프리랜서 수정 -->
+	<update id="updatetimeShare"  parameterType="com.wa.erp.RegUpDelDAO">
+	update 
+		freelancer
+	set	
+	    subject           =  #{subject}
+		,preferred_work   =  #{preferred_work}
+		,start_time      =  #{start_time}
+		,end_time        =  #{end_time}
+		,start_date      =  #{start_date}
+		,end_date        =  #{end_date}
+		,content		 =  #{content}
+               
+	        <if test="img_name!=null and img_name.length()>0">
+				,img_name   = #{img_name}
+			</if>
+			
+			<if test="img_name==null and isdel!=null and isdel.length()>0">
+				,img_name   = null
+			</if>
+		
+	  where 
+			b_no=#{b_no}
+		and
+			pwd=#{pwd}	
+		and
+		    p_no=#{p_no}
+	</update>
+	
+
+	<update id="updatetimeShareEmpty" parameterType="com.wa.erp.RegUpDelDAO">
+	update 
+		freelancer
+	set	
+		content = '삭제됨'
+	where 
+		b_no = #{b_no}
+	</update>
+	
+	<!--  프리랜서 삭제 -->
+	<delete id="deletetimeShare"  parameterType="com.wa.erp.RegUpDelDAO">
+		delete from 
+			freelancer
+		where 
+			b_no=#{b_no}
+		and
+			pwd=#{pwd}	
+		and
+		    p_no=#{p_no}		
+	</delete>
+	
+
+	
+</mapper>
+ 

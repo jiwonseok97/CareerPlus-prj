@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wa.erp.MypageDAO">
+
+  
+
+    <select id="getMytimshareList"   parameterType="int"   resultType="com.wa.erp.MypageDTO">
+		  select
+		    b_no
+		    ,subject
+		    ,content
+		    ,to_char(reg_date, 'YYYY-MM-DD') as "reg_date"
+		from
+		    freelancer
+		where
+		   p_no= #{p_no}
+    </select>
+
+    <select id="getMyPrivacy" parameterType="int"   resultType="com.wa.erp.MypageDTO">
+         SELECT
+           p.p_no,
+           p.name,
+           p.pid,
+           p.pwd,
+           p.sex,
+           p.jumin_num,
+           p.phone,
+           p.is_job,
+           p.nickname,
+           p.addr,
+           p.email,
+           c.field_name
+        FROM
+           person_mem p, code_field c
+        WHERE
+           p.p_no = #{p_no}
+        and
+           p.field_code= c.field_code
+    </select>
+    
+<select id="getWriteList"  parameterType="int" resultType="com.wa.erp.MypageDTO"> 
+  
+ select
+      b_no
+      ,p_no  
+      ,subject
+      ,content
+      ,to_char(reg_date, 'YYYY-MM-DD') as "reg_date"
+    from
+           freeboard
+    where
+              p_no = #{p_no}
+    </select>
+    
+    
+    
+   <select id="getResumeList"  parameterType="int" resultType="com.wa.erp.MypageDTO">        
+  select 
+		       resume_no
+		       ,introduce
+		       ,to_char(reg_date, 'YYYY-MM-DD') as "reg_date" 
+		    from 
+	           resume  
+	     where 
+	          p_no = #{p_no}
+    </select>
+
+
+
+
+ <select id="getApplycompanyList"   parameterType="int" resultType="com.wa.erp.MypageDTO">   
+
+<!-- <<<<<<< HEAD -->
+ 	select       
+      	 pc.p_no
+      	 ,pc.c_no
+      	 ,pc.g_no
+      	 ,cm.name
+      	 ,ci.addr
+      	 ,ci.BUSINESS_INDUSTRY
+	from
+   		 pertocom pc, company_info ci, company_mem cm , gonggo g
+<!-- ======= -->
+<!--   select                                                                                                                                                         -->
+ 
+    
+<!-- 	 unique -->
+<!-- 	    pc.p_no -->
+<!-- 	    ,pc.c_no -->
+<!-- 	    ,pc.g_no -->
+	
+<!-- 	    ,cm.name -->
+<!-- 	    ,ci.addr -->
+<!-- 	    ,ci.BUSINESS_INDUSTRY -->
+<!-- from -->
+<!--     pertocom pc, company_info ci, company_mem cm , gonggo g -->
+<!-- >>>>>>> refs/heads/develop -->
+   where
+<!-- <<<<<<< HEAD -->
+   		pc.p_no=#{p_no}
+   		and 
+     	 pc.g_no=g.g_no
+   		and
+    	pc.c_no=ci.c_no
+    	and
+    	pc.c_no=cm.c_no
+<!-- ======= -->
+ 
+<!--      pc.p_no=#{p_no} -->
+<!--    and  -->
+<!--       pc.g_no=g.g_no -->
+<!--    and -->
+<!--     pc.c_no=ci.c_no -->
+<!--     and -->
+<!--     pc.c_no=cm.c_no -->
+    
+    
+<!-- >>>>>>> refs/heads/develop -->
+		
+	</select>    
+
+
+
+ <select id="getScoutcompanyList"  parameterType="int"  resultType="com.wa.erp.MypageDTO">   
+ 
+  
+   select
+   ci.c_no,
+   cm.name,
+   ci.addr,
+   ci.business_industry
+   
+     from
+    company_info ci , company_mem cm, comtoper ctp
+
+    where
+        ci.c_no=cm.c_no
+     and
+        ci.c_no=ctp.c_no
+     and
+        ctp.p_no=#{p_no}
+	</select>    
+
+
+
+</mapper>
