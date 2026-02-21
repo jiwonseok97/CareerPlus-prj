@@ -86,6 +86,10 @@
 - 문제: 동일/유사 데이터 반복 조회로 요청당 DB 접근 증가
 - 과정: 조회 빈도 vs 변경 빈도 분석 → 캐시 후보 분류 → TTL 차등(3~30분) → 무효화 지점 매핑
 - 해결: `@Cacheable`, `@CacheEvict`, `@Caching` + L1 Caffeine/L2 Redis 2-Level 캐시
+- 실제 적용 코드:
+  - [BoardServiceImpl.java (`@Cacheable`)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/BoardServiceImpl.java)
+  - [RegUpDelServiceImpl.java (`@CacheEvict`, `@Caching`)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/RegUpDelServiceImpl.java)
+  - [application.properties (cache 설정)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/resources/application.properties)
 
 ### 2) 알림 시스템 고도화 (공고/지원/프리랜서 연동)
 - 문제: 문자열 분기 구조의 확장성 한계, 단건 처리 중심 구조의 대량 발송 병목
@@ -93,10 +97,22 @@
 - 해결: `NotificationChannel enum + Handler + Dispatcher Map`
 - 구조: `SSE + Redis Pub/Sub + Redis Stream`
 - 처리: 청크 enqueue + batch consume + ACK
+- 실제 적용 코드:
+  - [NotificationDispatchService.java (Dispatcher Map)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationDispatchService.java)
+  - [NotificationChannel.java (enum)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationChannel.java)
+  - [NotificationChannelHandler.java (전략 인터페이스)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationChannelHandler.java)
+  - [RedisNotificationConfig.java (Pub/Sub)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/RedisNotificationConfig.java)
+  - [NotificationQueueService.java (Stream enqueue/deserialize)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationQueueService.java)
+  - [NotificationStreamConsumer.java (batch consume + ACK)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationStreamConsumer.java)
 
 ### 3) DB 이중화 고도화
 - 문제: 조회 트래픽 집중 시 Master 부하 증가 가능성
 - 해결: `@Transactional(readOnly=true) -> Slave`, `Write -> Master`, `LazyConnectionDataSourceProxy` 적용
+- 실제 적용 코드:
+  - [ReplicationRoutingDataSource.java (readOnly 라우팅)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/datasource/ReplicationRoutingDataSource.java)
+  - [DatabaseReplicationConfig.java (Master/Slave + LazyConnectionDataSourceProxy)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/datasource/DatabaseReplicationConfig.java)
+  - [DatabaseType.java](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/datasource/DatabaseType.java)
+  - [application.properties (DB replication 설정)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/resources/application.properties)
 
 ### 4) 인덱스/쿼리 튜닝 (공고 검색 중심)
 - 문제: 검색/정렬/중복체크 구간 Full Scan 위험
