@@ -164,6 +164,9 @@
 
 근거 로그:
 - [compile_failure.log](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/compile_failure.log)
+- [validation_report.md](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/validation_report.md)
+- [redis_benchmark_results.json](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/redis_benchmark_results.json)
+- [measured_results.json](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/measured_results.json)
 
 ## 💡 회고
 
