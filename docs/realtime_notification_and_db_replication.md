@@ -1,225 +1,136 @@
-# 🚀 CareerPlus — 채용포털 성능 개선 프로젝트
+﻿# CareerPlus - 채용포털 성능 개선 포트폴리오
 
 레포지토리: [CareerPlus-prj](https://github.com/jiwonseok97/CareerPlus-prj)
 
-## 👋 소개
+## 소개
 
-- 트래픽이 늘어날 때 먼저 병목을 찾고, 원인 기반으로 해결안을 설계하는 백엔드 개발자
-- 기능 구현을 넘어 운영 관점(확장성, 장애 대응, 데이터 일관성)까지 고려
-- 요구사항에 맞춰 기술을 선택하고, 대안을 비교해 최종 구조를 결정
-- 성과 수치뿐 아니라 문제 정의, 검증 과정, 트레이드오프까지 설명 가능
+- 트래픽이 늘어날 때 병목을 먼저 찾고, 근거 기반으로 개선안을 만드는 백엔드 개발자
+- 기능 구현뿐 아니라 운영 관점(확장성, 장애 대응, 데이터 일관성)까지 함께 고려
+- 성과 수치만 제시하지 않고, 문제 정의와 검증 과정까지 설명 가능한 개발 방식 지향
 
-## 📌 프로젝트 개요
+## 프로젝트 개요
 
 - 프로젝트: CareerPlus (구인구직 플랫폼)
-- 기간: 2024.03 ~ 2024.06 (약 4개월)
-- 인원: 4명 (Backend 3 / Frontend 2)
-- 형태: 풀스택 과정 팀 프로젝트
-- 역할: Backend 도메인 담당 (검색/알림/캐시/DB 라우팅/쿼리 최적화)
+- 기간: 2024.03 ~ 2024.06
+- 인원: 5명 (Backend 3 / Frontend 2)
+- 역할: Backend 담당 (검색/알림/캐시/DB 라우팅/쿼리 최적화)
 
-### 한 줄 요약
+한 줄 요약:
 
-`조회 트래픽이 많은 채용 서비스에서 캐시 + 비동기 알림 + DB Read/Write 분리 + 인덱스 튜닝을 결합해 응답속도와 확장성을 함께 개선`
+`조회 트래픽이 많은 서비스에서 캐시 + 비동기 알림 + DB Read/Write 분리를 결합해 응답속도와 안정성을 함께 개선`
 
-## 🎯 담당 도메인
-
-1. 채용 공고 도메인
-- 공고 등록/수정/삭제 CRUD
-- 공고 검색(키워드/조건/정렬)
-- 조회수/관심공고 처리
-- 메인 공고 리스트 성능 개선
-
-2. 프리랜서 도메인
-- 프로필 등록/수정
-- 기술 스택 기반 검색
-- 매칭 조건 조회 최적화
-
-3. 개인 마이페이지
-- 지원 현황 조회
-- 이력서 열람 기록
-- 관심 공고 관리
-- 사용자 알림 수신 연동
-
-4. 부업 도메인
-- 부업 게시글 CRUD
-- 조건 기반 필터링
-- 중복 체크 로직 및 인덱스 설계
-
-## 🛠 기술 스택
-
-- Backend: Java, Spring Boot, Spring MVC, Spring Cache, Spring Data Redis
-- Data: Oracle, MyBatis, Redis, Caffeine
-- Infra/Build: Gradle
-- Frontend/View: JSP, JavaScript, SSE
-- Collaboration: GitHub
-
-## 🎯 요구사항 기반 기술 선정
-
-1. 실시간 사용자 알림 필요
-- 선택: SSE
-- 이유: 서버→클라이언트 단방향 푸시에 적합, WebSocket 대비 구조 단순, 운영 부담 낮음
-- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationSseService.java)
-
-2. 멀티 인스턴스 알림 동기화 필요
-- 선택: Redis Pub/Sub
-- 이유: 인스턴스 간 fan-out 단순, 실시간 전달에 적합
-- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/RedisNotificationConfig.java)
-
-3. 대량 알림(100만+) 처리 필요
-- 선택: Redis Stream + Consumer Group
-- 이유: 적재/소비 분리, ACK 기반 재처리, 수평 확장 구조 유리
-- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationQueueService.java)
-
-4. 반복 조회 부하 완화 필요
-- 선택: Caffeine(L1) + Redis(L2)
-- 이유: 로컬 초저지연 응답 + 분산 공유 캐시 동시 확보
-- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/BoardServiceImpl.java)
-
-5. DB 읽기 부하 분산 필요
-- 선택: Master/Slave 라우팅
-- 이유: Read/Write 분리로 병목 완화
-- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/datasource/DatabaseReplicationConfig.java)
-
-## ⚙️ 문제 → 과정 → 해결
-
-### 1) 캐시 고도화 (공고/마이페이지 중심)
-- 문제: 동일/유사 데이터 반복 조회로 요청당 DB 접근 증가
-- 과정: 조회 빈도 vs 변경 빈도 분석 → 캐시 후보 분류 → TTL 차등(3~30분) → 무효화 지점 매핑
-- 해결: `@Cacheable`, `@CacheEvict`, `@Caching` + L1 Caffeine/L2 Redis 2-Level 캐시
-- 실제 적용 코드:
-  - [BoardServiceImpl.java (`@Cacheable`)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/BoardServiceImpl.java)
-  - [RegUpDelServiceImpl.java (`@CacheEvict`, `@Caching`)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/RegUpDelServiceImpl.java)
-  - [application.properties (cache 설정)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/resources/application.properties)
-
-### 2) 알림 시스템 고도화 (공고/지원/프리랜서 연동)
-- 문제: 문자열 분기 구조의 확장성 한계, 단건 처리 중심 구조의 대량 발송 병목
-- 과정: 채널 추상화 설계 → 전략 패턴 적용 → 큐 기반 비동기 전환
-- 해결: `NotificationChannel enum + Handler + Dispatcher Map`
-- 구조: `SSE + Redis Pub/Sub + Redis Stream`
-- 처리: 청크 enqueue + batch consume + ACK
-- 실제 적용 코드:
-  - [NotificationDispatchService.java (Dispatcher Map)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationDispatchService.java)
-  - [NotificationChannel.java (enum)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationChannel.java)
-  - [NotificationChannelHandler.java (전략 인터페이스)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationChannelHandler.java)
-  - [RedisNotificationConfig.java (Pub/Sub)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/RedisNotificationConfig.java)
-  - [NotificationQueueService.java (Stream enqueue/deserialize)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationQueueService.java)
-  - [NotificationStreamConsumer.java (batch consume + ACK)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationStreamConsumer.java)
-
-### 3) DB 이중화 고도화
-- 문제: 조회 트래픽 집중 시 Master 부하 증가 가능성
-- 해결: `@Transactional(readOnly=true) -> Slave`, `Write -> Master`, `LazyConnectionDataSourceProxy` 적용
-- 실제 적용 코드:
-  - [ReplicationRoutingDataSource.java (readOnly 라우팅)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/datasource/ReplicationRoutingDataSource.java)
-  - [DatabaseReplicationConfig.java (Master/Slave + LazyConnectionDataSourceProxy)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/datasource/DatabaseReplicationConfig.java)
-  - [DatabaseType.java](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/datasource/DatabaseType.java)
-  - [application.properties (DB replication 설정)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/resources/application.properties)
-
-### 4) 인덱스/쿼리 튜닝 (공고 검색 중심)
-- 문제: 검색/정렬/중복체크 구간 Full Scan 위험
-- 과정: 실제 WHERE/ORDER BY 패턴 분석 + 실행계획 비교
-- 해결: 복합 인덱스 + 핵심 단일 인덱스 적용, 쿼리 경로 최적화
-
-## 🧪 검증/테스트
-
-- Redis Stream 100만 건 이상 시나리오 테스트
-- 검증 포인트: enqueue 처리량, consumer lag, ACK 성공률, 재시도 동작
-- 운영 관점: 단일 경로 병목 여부, 인스턴스 확장 시 처리량 증가 추세 확인
-- 측정 조건: 로컬 Redis(`localhost:6379`), 단일 노드, 배치 소비 기준
-
-### 시각화 자료
-
-#### 처리량 비교
-![Throughput](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/throughput_ops_sec.png?raw=1)
-
-#### 지연시간 (Avg vs p95)
-![Latency](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/latency_ms.png?raw=1)
-
-#### 종합 대시보드
-![Dashboard](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/benchmark_dashboard.png?raw=1)
-
-#### 캐시 vs 스트림 처리량 비교
-![Cache vs Stream](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/stream_vs_cache_comparison.png?raw=1)
-
-자료 원본:
-- [검증 리포트](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/validation_report.md)
-- [실측 원본(JSON)](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/redis_benchmark_results.json)
-
-## 📈 성과
-
-- 메인 조회 응답시간: **245ms -> 6ms** (Cache HIT 기준)
-- 요청당 DB 접근: 다중 조회 -> **0회** (Cache HIT 기준)
-- 단건 알림 구조 -> 대량 비동기 파이프라인 전환
-- 구조 성과: 신규 채널 추가 시 Handler 추가 중심으로 변경 범위 최소화
-
-## 🧯 트러블슈팅
-
-1. 채널 분기 복잡도 증가
-- 해결: enum + 전략 패턴 도입
-
-2. Redis 초기화 실패 리스크
-- 해결: Lazy init + BUSYGROUP/연결 예외 처리
-
-3. 대량 알림 병목
-- 해결: 청크 분할 + 병렬 enqueue + batch consume
-
-근거 로그:
-- [compile_failure.log](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/compile_failure.log)
-- [validation_report.md](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/validation_report.md)
-- [redis_benchmark_results.json](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/redis_benchmark_results.json)
-- [measured_results.json](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/measured_results.json)
-
-## 💡 회고
-
-- 성능 개선은 단일 기술이 아니라 아키텍처 설계 문제임을 체감
-- “요구사항 -> 병목 식별 -> 검증 가능한 해결” 흐름이 가장 큰 설득 포인트
-- 다음 단계: 200만+ 기준 Stream 샤딩, DLQ 운영 기준, lag 모니터링 자동화
-
-## 📊 도표형 요약
-
-### 1) 담당 역할 매트릭스
+## 담당 역할
 
 | 도메인 | 핵심 기능 | 성능/안정화 포인트 |
 |---|---|---|
-| 채용 공고 | CRUD, 검색/정렬, 조회수/관심공고 | 메인 리스트 조회 최적화 |
-| 프리랜서 | 프로필 등록/수정, 기술스택 검색 | 매칭 조건 조회 최적화 |
-| 개인 마이페이지 | 지원현황, 열람기록, 관심공고, 알림 연동 | 사용자별 조회/알림 흐름 안정화 |
-| 부업 | 게시글 CRUD, 조건 필터링 | 중복 체크 로직 + 인덱스 설계 |
+| 채용 공고 | CRUD, 검색/정렬, 조회수/관심공고 | 메인 리스트 조회 캐시 적용, 갱신 시 연관 캐시 무효화 |
+| 프리랜서 | 프로필/타임쉐어 등록·수정, 조건 조회 | 사용자/조건 기준 조회 경로 분리 |
+| 개인 마이페이지 | 내 정보, 작성글, 이력서, 지원/스카우트 목록 조회 | 세션(`p_no`) 기준 사용자 스코프 고정, 기능별 쿼리 분리 |
+| 부업 | 게시글 CRUD, 필터링, 지원 흐름 | 조회/등록 경로 분리, 중복 체크 로직 정리 |
 
-### 2) 기술 스택 표
+## 기술 스택
 
-| 구분 | 사용 기술 | 적용 목적 |
-|---|---|---|
-| Backend | Java, Spring Boot, Spring MVC | API/비즈니스 로직 |
-| Cache | Spring Cache, Redis, Caffeine | 반복 조회 부하 완화 |
-| Data | Oracle, MyBatis | 트랜잭션/쿼리 처리 |
-| Messaging | Redis Pub/Sub, Redis Stream | 실시간 알림, 대량 비동기 처리 |
-| View | JSP, JavaScript, SSE | 실시간 알림 UI 연동 |
-| Build/Collab | Gradle, GitHub | 빌드/협업/배포 기반 |
+- Backend: Java, Spring Boot, Spring MVC, Spring Cache, Spring Data Redis
+- Data: Oracle, MyBatis, Redis, Caffeine
+- Build: Gradle
+- Frontend/View: JSP, JavaScript, SSE
+- Collaboration: GitHub
 
-### 3) 아키텍처 구성표 (Notion 호환)
+## 요구사항 기반 기술 선택
 
-| 레이어 | 구성 요소 | 역할 |
-|---|---|---|
-| Client | Browser + SSE(EventSource) | API 호출 및 실시간 알림 수신 |
-| App | Spring Boot | API/비즈니스 로직 처리 |
-| Cache L1 | Caffeine | 인스턴스 로컬 초저지연 캐시 |
-| Cache L2 | Redis Cache | 분산 캐시 공유 |
-| Messaging 1 | Redis Pub/Sub | 멀티 인스턴스 알림 동기화 |
-| Messaging 2 | Redis Stream + Consumer Group | 대량 알림 적재/소비/ACK |
-| DB | Oracle Master/Slave | Write/Read 분리 |
+1. 실시간 사용자 알림
+- 선택: SSE
+- 이유: 단방향 푸시 요구에 적합하고 운영 복잡도가 낮음
+- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationSseService.java)
 
-아키텍처 흐름(요약):
-1. 사용자가 API 요청 또는 SSE 구독
-2. 조회 요청은 Caffeine -> Redis -> DB 순으로 fallback
-3. 읽기 트랜잭션은 Slave, 쓰기 트랜잭션은 Master로 라우팅
-4. 단건 알림은 Pub/Sub으로 발행 후 각 인스턴스에서 디스패치
-5. 대량 알림은 Stream에 적재 후 Consumer가 batch 처리 + ACK
-6. 디스패처가 채널별 Handler(IN_APP/WEB_PUSH/EMAIL)로 전달
+2. 멀티 인스턴스 알림 동기화
+- 선택: Redis Pub/Sub
+- 이유: 인스턴스 간 fan-out 전달 구조가 단순함
+- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/RedisNotificationConfig.java)
 
-### 4) 성과 지표 표
+3. 대량 알림 처리(100만+)
+- 선택: Redis Stream + Consumer Group
+- 이유: 적재/소비 분리와 ACK 기반 재처리가 가능함
+- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationQueueService.java)
 
-| 지표 | 개선 전 | 개선 후 | 비고 |
-|---|---:|---:|---|
-| 메인 조회 응답시간 | 245ms | 6ms | Cache HIT 기준 |
-| 요청당 DB 접근 | 다중 조회 | 0회 | Cache HIT 기준 |
-| 알림 처리 구조 | 단건 중심 | 비동기 파이프라인 | Stream + Consumer Group |
+4. 반복 조회 부하 완화
+- 선택: Caffeine(L1) + Redis(L2)
+- 이유: 로컬 저지연 + 분산 캐시 공유를 동시에 확보
+- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/BoardServiceImpl.java)
+
+5. DB 읽기 부하 분산
+- 선택: Master/Slave 라우팅
+- 이유: Read/Write 경로 분리로 Master 집중 부하 완화
+- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/datasource/DatabaseReplicationConfig.java)
+
+## 문제 -> 과정 -> 해결
+
+### 1) 캐시 고도화
+- 문제: 동일 데이터 반복 조회로 요청당 DB 접근 증가
+- 과정: 조회 빈도/변경 빈도 분석 -> 캐시 후보 선정 -> TTL(3~30분) 차등 적용
+- 해결: `@Cacheable`, `@CacheEvict`, `@Caching` + 2-Level 캐시
+- 코드:
+  - [BoardServiceImpl.java](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/BoardServiceImpl.java)
+  - [RegUpDelServiceImpl.java](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/RegUpDelServiceImpl.java)
+
+### 2) 알림 시스템 고도화
+- 문제: 문자열 분기 구조 확장 한계, 단건 발송 병목
+- 과정: 채널 추상화 -> 전략 패턴 -> 큐 기반 비동기 전환
+- 해결: `NotificationChannel + Handler + Dispatcher Map`, `SSE + Pub/Sub + Stream`
+- 코드:
+  - [NotificationDispatchService.java](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationDispatchService.java)
+  - [NotificationStreamConsumer.java](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationStreamConsumer.java)
+
+### 3) DB 이중화
+- 문제: 조회 트래픽 집중 시 Master 부하 증가
+- 해결: `@Transactional(readOnly=true)`는 Slave, Write는 Master 라우팅
+- 코드:
+  - [ReplicationRoutingDataSource.java](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/datasource/ReplicationRoutingDataSource.java)
+  - [DatabaseReplicationConfig.java](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/datasource/DatabaseReplicationConfig.java)
+
+### 4) 인덱스/쿼리 튜닝
+- 문제: 검색/정렬/중복체크 구간 Full Scan 위험
+- 과정: WHERE/ORDER BY 패턴 분석 + 실행계획 비교
+- 해결: 복합/단일 인덱스 재설계 및 쿼리 경로 정리
+
+## 성능 검증 자료
+
+### Redis 처리량/지연 검증
+- 검증 내용: SET/GET/XADD/READ+ACK 처리량, 평균 지연, p95 측정
+- 리포트: [validation_report.md](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/validation_report.md)
+- 원본 JSON: [redis_benchmark_results.json](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/redis_benchmark_results.json)
+- 실측 스크립트: [run_redis_benchmarks.py](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/run_redis_benchmarks.py)
+
+### 시각화
+- Throughput: ![Throughput](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/throughput_ops_sec.png?raw=1)
+- Latency: ![Latency](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/latency_ms.png?raw=1)
+- Dashboard: ![Dashboard](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/benchmark_dashboard.png?raw=1)
+- Cache vs Stream: ![Cache vs Stream](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/stream_vs_cache_comparison.png?raw=1)
+
+## 성과
+
+- 메인 조회 응답시간: **245ms -> 6ms** (Cache HIT 기준)
+- 요청당 DB 접근: **다중 조회 -> 0회** (Cache HIT 기준)
+- 단건 알림 구조를 대량 비동기 파이프라인으로 전환
+- 신규 채널 추가 시 Handler 중심 확장 가능
+
+## 트러블슈팅
+
+1. 채널 분기 복잡도 증가
+- 조치: enum + 전략 패턴 도입
+
+2. Redis 초기화 실패 리스크
+- 조치: Lazy init + BUSYGROUP/연결 예외 처리
+
+3. 대량 알림 병목
+- 조치: 청크 분할 + 병렬 enqueue + batch consume
+
+근거:
+- [compile_failure.log](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/compile_failure.log)
+- [measured_results.json](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/measured_results.json)
+
+## 회고
+
+- 성능 개선은 한 가지 기술이 아니라 구조 설계 문제라는 점을 체감함
+- "요구사항 -> 병목 식별 -> 검증 가능한 해결" 흐름이 프로젝트 설득력의 핵심
+- 다음 단계: Stream 샤딩, DLQ 운영 기준, lag 모니터링 자동화
