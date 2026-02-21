@@ -1,4 +1,4 @@
-# 요구사항 기반 기술 선정 상세
+# 요구사항 기반 기술 선정 
 
 레포지토리: [CareerPlus-prj](https://github.com/jiwonseok97/CareerPlus-prj)
 
