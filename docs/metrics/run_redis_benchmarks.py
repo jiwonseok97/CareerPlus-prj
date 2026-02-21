@@ -1,5 +1,5 @@
 """
-Run Redis benchmarks for portfolio metrics.
+Run Redis benchmarks for recruiter-facing performance evidence.
 
 Outputs:
   - docs/metrics/redis_benchmark_results.json
@@ -206,4 +206,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
 

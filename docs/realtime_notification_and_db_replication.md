@@ -1,34 +1,34 @@
-ï»¿# CareerPlus - ì±„ìš©í¬í„¸ ì„±ëŠ¥ ê°œì„  í¬íŠ¸í´ë¦¬ì˜¤
+# CareerPlus - Ã¤¿ëÆ÷ÅÐ ¼º´É °³¼± º¸°í¼­
 
-ë ˆí¬ì§€í† ë¦¬: [CareerPlus-prj](https://github.com/jiwonseok97/CareerPlus-prj)
+·¹Æ÷ÁöÅä¸®: [CareerPlus-prj](https://github.com/jiwonseok97/CareerPlus-prj)
 
-## ì†Œê°œ
+## ¼Ò°³
 
-- íŠ¸ëž˜í”½ì´ ëŠ˜ì–´ë‚  ë•Œ ë³‘ëª©ì„ ë¨¼ì € ì°¾ê³ , ê·¼ê±° ê¸°ë°˜ìœ¼ë¡œ ê°œì„ ì•ˆì„ ë§Œë“œëŠ” ë°±ì—”ë“œ ê°œë°œìž
-- ê¸°ëŠ¥ êµ¬í˜„ë¿ ì•„ë‹ˆë¼ ìš´ì˜ ê´€ì (í™•ìž¥ì„±, ìž¥ì•  ëŒ€ì‘, ë°ì´í„° ì¼ê´€ì„±)ê¹Œì§€ í•¨ê»˜ ê³ ë ¤
-- ì„±ê³¼ ìˆ˜ì¹˜ë§Œ ì œì‹œí•˜ì§€ ì•Šê³ , ë¬¸ì œ ì •ì˜ì™€ ê²€ì¦ ê³¼ì •ê¹Œì§€ ì„¤ëª… ê°€ëŠ¥í•œ ê°œë°œ ë°©ì‹ ì§€í–¥
+- Æ®·¡ÇÈÀÌ ´Ã¾î³¯ ¶§ º´¸ñÀ» ¸ÕÀú Ã£°í, ±Ù°Å ±â¹ÝÀ¸·Î °³¼±¾ÈÀ» ¸¸µå´Â ¹é¿£µå °³¹ßÀÚ
+- ±â´É ±¸Çö»Ó ¾Æ´Ï¶ó ¿î¿µ °üÁ¡(È®Àå¼º, Àå¾Ö ´ëÀÀ, µ¥ÀÌÅÍ ÀÏ°ü¼º)±îÁö ÇÔ²² °í·Á
+- ¼º°ú ¼öÄ¡¸¸ Á¦½ÃÇÏÁö ¾Ê°í, ¹®Á¦ Á¤ÀÇ¿Í °ËÁõ °úÁ¤±îÁö ¼³¸í °¡´ÉÇÑ °³¹ß ¹æ½Ä ÁöÇâ
 
-## í”„ë¡œì íŠ¸ ê°œìš”
+## ÇÁ·ÎÁ§Æ® °³¿ä
 
-- í”„ë¡œì íŠ¸: CareerPlus (êµ¬ì¸êµ¬ì§ í”Œëž«í¼)
-- ê¸°ê°„: 2024.03 ~ 2024.06
-- ì¸ì›: 5ëª… (Backend 3 / Frontend 2)
-- ì—­í• : Backend ë‹´ë‹¹ (ê²€ìƒ‰/ì•Œë¦¼/ìºì‹œ/DB ë¼ìš°íŒ…/ì¿¼ë¦¬ ìµœì í™”)
+- ÇÁ·ÎÁ§Æ®: CareerPlus (±¸ÀÎ±¸Á÷ ÇÃ·§Æû)
+- ±â°£: 2024.03 ~ 2024.06
+- ÀÎ¿ø: 5¸í (Backend 3 / Frontend 2)
+- ¿ªÇÒ: Backend ´ã´ç (°Ë»ö/¾Ë¸²/Ä³½Ã/DB ¶ó¿ìÆÃ/Äõ¸® ÃÖÀûÈ­)
 
-í•œ ì¤„ ìš”ì•½:
+ÇÑ ÁÙ ¿ä¾à:
 
-`ì¡°íšŒ íŠ¸ëž˜í”½ì´ ë§Žì€ ì„œë¹„ìŠ¤ì—ì„œ ìºì‹œ + ë¹„ë™ê¸° ì•Œë¦¼ + DB Read/Write ë¶„ë¦¬ë¥¼ ê²°í•©í•´ ì‘ë‹µì†ë„ì™€ ì•ˆì •ì„±ì„ í•¨ê»˜ ê°œì„ `
+`Á¶È¸ Æ®·¡ÇÈÀÌ ¸¹Àº ¼­ºñ½º¿¡¼­ Ä³½Ã + ºñµ¿±â ¾Ë¸² + DB Read/Write ºÐ¸®¸¦ °áÇÕÇØ ÀÀ´ä¼Óµµ¿Í ¾ÈÁ¤¼ºÀ» ÇÔ²² °³¼±`
 
-## ë‹´ë‹¹ ì—­í• 
+## ´ã´ç ¿ªÇÒ
 
-| ë„ë©”ì¸ | í•µì‹¬ ê¸°ëŠ¥ | ì„±ëŠ¥/ì•ˆì •í™” í¬ì¸íŠ¸ |
+| µµ¸ÞÀÎ | ÇÙ½É ±â´É | ¼º´É/¾ÈÁ¤È­ Æ÷ÀÎÆ® |
 |---|---|---|
-| ì±„ìš© ê³µê³  | CRUD, ê²€ìƒ‰/ì •ë ¬, ì¡°íšŒìˆ˜/ê´€ì‹¬ê³µê³  | ë©”ì¸ ë¦¬ìŠ¤íŠ¸ ì¡°íšŒ ìºì‹œ ì ìš©, ê°±ì‹  ì‹œ ì—°ê´€ ìºì‹œ ë¬´íš¨í™” |
-| í”„ë¦¬ëžœì„œ | í”„ë¡œí•„/íƒ€ìž„ì‰ì–´ ë“±ë¡Â·ìˆ˜ì •, ì¡°ê±´ ì¡°íšŒ | ì‚¬ìš©ìž/ì¡°ê±´ ê¸°ì¤€ ì¡°íšŒ ê²½ë¡œ ë¶„ë¦¬ |
-| ê°œì¸ ë§ˆì´íŽ˜ì´ì§€ | ë‚´ ì •ë³´, ìž‘ì„±ê¸€, ì´ë ¥ì„œ, ì§€ì›/ìŠ¤ì¹´ìš°íŠ¸ ëª©ë¡ ì¡°íšŒ | ì„¸ì…˜(`p_no`) ê¸°ì¤€ ì‚¬ìš©ìž ìŠ¤ì½”í”„ ê³ ì •, ê¸°ëŠ¥ë³„ ì¿¼ë¦¬ ë¶„ë¦¬ |
-| ë¶€ì—… | ê²Œì‹œê¸€ CRUD, í•„í„°ë§, ì§€ì› íë¦„ | ì¡°íšŒ/ë“±ë¡ ê²½ë¡œ ë¶„ë¦¬, ì¤‘ë³µ ì²´í¬ ë¡œì§ ì •ë¦¬ |
+| Ã¤¿ë °ø°í | CRUD, °Ë»ö/Á¤·Ä, Á¶È¸¼ö/°ü½É°ø°í | ¸ÞÀÎ ¸®½ºÆ® Á¶È¸ Ä³½Ã Àû¿ë, °»½Å ½Ã ¿¬°ü Ä³½Ã ¹«È¿È­ |
+| ÇÁ¸®·£¼­ | ÇÁ·ÎÇÊ/Å¸ÀÓ½¦¾î µî·Ï¡¤¼öÁ¤, Á¶°Ç Á¶È¸ | »ç¿ëÀÚ/Á¶°Ç ±âÁØ Á¶È¸ °æ·Î ºÐ¸® |
+| °³ÀÎ ¸¶ÀÌÆäÀÌÁö | ³» Á¤º¸, ÀÛ¼º±Û, ÀÌ·Â¼­, Áö¿ø/½ºÄ«¿ìÆ® ¸ñ·Ï Á¶È¸ | ¼¼¼Ç(`p_no`) ±âÁØ »ç¿ëÀÚ ½ºÄÚÇÁ °íÁ¤, ±â´Éº° Äõ¸® ºÐ¸® |
+| ºÎ¾÷ | °Ô½Ã±Û CRUD, ÇÊÅÍ¸µ, Áö¿ø Èå¸§ | Á¶È¸/µî·Ï °æ·Î ºÐ¸®, Áßº¹ Ã¼Å© ·ÎÁ÷ Á¤¸® |
 
-## ê¸°ìˆ  ìŠ¤íƒ
+## ±â¼ú ½ºÅÃ
 
 - Backend: Java, Spring Boot, Spring MVC, Spring Cache, Spring Data Redis
 - Data: Oracle, MyBatis, Redis, Caffeine
@@ -36,101 +36,102 @@
 - Frontend/View: JSP, JavaScript, SSE
 - Collaboration: GitHub
 
-## ìš”êµ¬ì‚¬í•­ ê¸°ë°˜ ê¸°ìˆ  ì„ íƒ
+## ¿ä±¸»çÇ× ±â¹Ý ±â¼ú ¼±ÅÃ
 
-1. ì‹¤ì‹œê°„ ì‚¬ìš©ìž ì•Œë¦¼
-- ì„ íƒ: SSE
-- ì´ìœ : ë‹¨ë°©í–¥ í‘¸ì‹œ ìš”êµ¬ì— ì í•©í•˜ê³  ìš´ì˜ ë³µìž¡ë„ê°€ ë‚®ìŒ
-- [ìƒì„¸ë³´ê¸°](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationSseService.java)
+1. ½Ç½Ã°£ »ç¿ëÀÚ ¾Ë¸²
+- ¼±ÅÃ: SSE
+- ÀÌÀ¯: ´Ü¹æÇâ Çª½Ã ¿ä±¸¿¡ ÀûÇÕÇÏ°í ¿î¿µ º¹Àâµµ°¡ ³·À½
+- [»ó¼¼º¸±â](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationSseService.java)
 
-2. ë©€í‹° ì¸ìŠ¤í„´ìŠ¤ ì•Œë¦¼ ë™ê¸°í™”
-- ì„ íƒ: Redis Pub/Sub
-- ì´ìœ : ì¸ìŠ¤í„´ìŠ¤ ê°„ fan-out ì „ë‹¬ êµ¬ì¡°ê°€ ë‹¨ìˆœí•¨
-- [ìƒì„¸ë³´ê¸°](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/RedisNotificationConfig.java)
+2. ¸ÖÆ¼ ÀÎ½ºÅÏ½º ¾Ë¸² µ¿±âÈ­
+- ¼±ÅÃ: Redis Pub/Sub
+- ÀÌÀ¯: ÀÎ½ºÅÏ½º °£ fan-out Àü´Þ ±¸Á¶°¡ ´Ü¼øÇÔ
+- [»ó¼¼º¸±â](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/RedisNotificationConfig.java)
 
-3. ëŒ€ëŸ‰ ì•Œë¦¼ ì²˜ë¦¬(100ë§Œ+)
-- ì„ íƒ: Redis Stream + Consumer Group
-- ì´ìœ : ì ìž¬/ì†Œë¹„ ë¶„ë¦¬ì™€ ACK ê¸°ë°˜ ìž¬ì²˜ë¦¬ê°€ ê°€ëŠ¥í•¨
-- [ìƒì„¸ë³´ê¸°](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationQueueService.java)
+3. ´ë·® ¾Ë¸² Ã³¸®(100¸¸+)
+- ¼±ÅÃ: Redis Stream + Consumer Group
+- ÀÌÀ¯: ÀûÀç/¼Òºñ ºÐ¸®¿Í ACK ±â¹Ý ÀçÃ³¸®°¡ °¡´ÉÇÔ
+- [»ó¼¼º¸±â](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationQueueService.java)
 
-4. ë°˜ë³µ ì¡°íšŒ ë¶€í•˜ ì™„í™”
-- ì„ íƒ: Caffeine(L1) + Redis(L2)
-- ì´ìœ : ë¡œì»¬ ì €ì§€ì—° + ë¶„ì‚° ìºì‹œ ê³µìœ ë¥¼ ë™ì‹œì— í™•ë³´
-- [ìƒì„¸ë³´ê¸°](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/BoardServiceImpl.java)
+4. ¹Ýº¹ Á¶È¸ ºÎÇÏ ¿ÏÈ­
+- ¼±ÅÃ: Caffeine(L1) + Redis(L2)
+- ÀÌÀ¯: ·ÎÄÃ ÀúÁö¿¬ + ºÐ»ê Ä³½Ã °øÀ¯¸¦ µ¿½Ã¿¡ È®º¸
+- [»ó¼¼º¸±â](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/BoardServiceImpl.java)
 
-5. DB ì½ê¸° ë¶€í•˜ ë¶„ì‚°
-- ì„ íƒ: Master/Slave ë¼ìš°íŒ…
-- ì´ìœ : Read/Write ê²½ë¡œ ë¶„ë¦¬ë¡œ Master ì§‘ì¤‘ ë¶€í•˜ ì™„í™”
-- [ìƒì„¸ë³´ê¸°](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/datasource/DatabaseReplicationConfig.java)
+5. DB ÀÐ±â ºÎÇÏ ºÐ»ê
+- ¼±ÅÃ: Master/Slave ¶ó¿ìÆÃ
+- ÀÌÀ¯: Read/Write °æ·Î ºÐ¸®·Î Master ÁýÁß ºÎÇÏ ¿ÏÈ­
+- [»ó¼¼º¸±â](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/datasource/DatabaseReplicationConfig.java)
 
-## ë¬¸ì œ -> ê³¼ì • -> í•´ê²°
+## ¹®Á¦ -> °úÁ¤ -> ÇØ°á
 
-### 1) ìºì‹œ ê³ ë„í™”
-- ë¬¸ì œ: ë™ì¼ ë°ì´í„° ë°˜ë³µ ì¡°íšŒë¡œ ìš”ì²­ë‹¹ DB ì ‘ê·¼ ì¦ê°€
-- ê³¼ì •: ì¡°íšŒ ë¹ˆë„/ë³€ê²½ ë¹ˆë„ ë¶„ì„ -> ìºì‹œ í›„ë³´ ì„ ì • -> TTL(3~30ë¶„) ì°¨ë“± ì ìš©
-- í•´ê²°: `@Cacheable`, `@CacheEvict`, `@Caching` + 2-Level ìºì‹œ
-- ì½”ë“œ:
+### 1) Ä³½Ã °íµµÈ­
+- ¹®Á¦: µ¿ÀÏ µ¥ÀÌÅÍ ¹Ýº¹ Á¶È¸·Î ¿äÃ»´ç DB Á¢±Ù Áõ°¡
+- °úÁ¤: Á¶È¸ ºóµµ/º¯°æ ºóµµ ºÐ¼® -> Ä³½Ã ÈÄº¸ ¼±Á¤ -> TTL(3~30ºÐ) Â÷µî Àû¿ë
+- ÇØ°á: `@Cacheable`, `@CacheEvict`, `@Caching` + 2-Level Ä³½Ã
+- ÄÚµå:
   - [BoardServiceImpl.java](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/BoardServiceImpl.java)
   - [RegUpDelServiceImpl.java](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/RegUpDelServiceImpl.java)
 
-### 2) ì•Œë¦¼ ì‹œìŠ¤í…œ ê³ ë„í™”
-- ë¬¸ì œ: ë¬¸ìžì—´ ë¶„ê¸° êµ¬ì¡° í™•ìž¥ í•œê³„, ë‹¨ê±´ ë°œì†¡ ë³‘ëª©
-- ê³¼ì •: ì±„ë„ ì¶”ìƒí™” -> ì „ëžµ íŒ¨í„´ -> í ê¸°ë°˜ ë¹„ë™ê¸° ì „í™˜
-- í•´ê²°: `NotificationChannel + Handler + Dispatcher Map`, `SSE + Pub/Sub + Stream`
-- ì½”ë“œ:
+### 2) ¾Ë¸² ½Ã½ºÅÛ °íµµÈ­
+- ¹®Á¦: ¹®ÀÚ¿­ ºÐ±â ±¸Á¶ È®Àå ÇÑ°è, ´Ü°Ç ¹ß¼Û º´¸ñ
+- °úÁ¤: Ã¤³Î Ãß»óÈ­ -> Àü·« ÆÐÅÏ -> Å¥ ±â¹Ý ºñµ¿±â ÀüÈ¯
+- ÇØ°á: `NotificationChannel + Handler + Dispatcher Map`, `SSE + Pub/Sub + Stream`
+- ÄÚµå:
   - [NotificationDispatchService.java](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationDispatchService.java)
   - [NotificationStreamConsumer.java](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationStreamConsumer.java)
 
-### 3) DB ì´ì¤‘í™”
-- ë¬¸ì œ: ì¡°íšŒ íŠ¸ëž˜í”½ ì§‘ì¤‘ ì‹œ Master ë¶€í•˜ ì¦ê°€
-- í•´ê²°: `@Transactional(readOnly=true)`ëŠ” Slave, WriteëŠ” Master ë¼ìš°íŒ…
-- ì½”ë“œ:
+### 3) DB ÀÌÁßÈ­
+- ¹®Á¦: Á¶È¸ Æ®·¡ÇÈ ÁýÁß ½Ã Master ºÎÇÏ Áõ°¡
+- ÇØ°á: `@Transactional(readOnly=true)`´Â Slave, Write´Â Master ¶ó¿ìÆÃ
+- ÄÚµå:
   - [ReplicationRoutingDataSource.java](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/datasource/ReplicationRoutingDataSource.java)
   - [DatabaseReplicationConfig.java](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/datasource/DatabaseReplicationConfig.java)
 
-### 4) ì¸ë±ìŠ¤/ì¿¼ë¦¬ íŠœë‹
-- ë¬¸ì œ: ê²€ìƒ‰/ì •ë ¬/ì¤‘ë³µì²´í¬ êµ¬ê°„ Full Scan ìœ„í—˜
-- ê³¼ì •: WHERE/ORDER BY íŒ¨í„´ ë¶„ì„ + ì‹¤í–‰ê³„íš ë¹„êµ
-- í•´ê²°: ë³µí•©/ë‹¨ì¼ ì¸ë±ìŠ¤ ìž¬ì„¤ê³„ ë° ì¿¼ë¦¬ ê²½ë¡œ ì •ë¦¬
+### 4) ÀÎµ¦½º/Äõ¸® Æ©´×
+- ¹®Á¦: °Ë»ö/Á¤·Ä/Áßº¹Ã¼Å© ±¸°£ Full Scan À§Çè
+- °úÁ¤: WHERE/ORDER BY ÆÐÅÏ ºÐ¼® + ½ÇÇà°èÈ¹ ºñ±³
+- ÇØ°á: º¹ÇÕ/´ÜÀÏ ÀÎµ¦½º Àç¼³°è ¹× Äõ¸® °æ·Î Á¤¸®
 
-## ì„±ëŠ¥ ê²€ì¦ ìžë£Œ
+## ¼º´É °ËÁõ ÀÚ·á
 
-### Redis ì²˜ë¦¬ëŸ‰/ì§€ì—° ê²€ì¦
-- ê²€ì¦ ë‚´ìš©: SET/GET/XADD/READ+ACK ì²˜ë¦¬ëŸ‰, í‰ê·  ì§€ì—°, p95 ì¸¡ì •
-- ë¦¬í¬íŠ¸: [validation_report.md](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/validation_report.md)
-- ì›ë³¸ JSON: [redis_benchmark_results.json](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/redis_benchmark_results.json)
-- ì‹¤ì¸¡ ìŠ¤í¬ë¦½íŠ¸: [run_redis_benchmarks.py](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/run_redis_benchmarks.py)
+### Redis Ã³¸®·®/Áö¿¬ °ËÁõ
+- °ËÁõ ³»¿ë: SET/GET/XADD/READ+ACK Ã³¸®·®, Æò±Õ Áö¿¬, p95 ÃøÁ¤
+- ¸®Æ÷Æ®: [validation_report.md](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/validation_report.md)
+- ¿øº» JSON: [redis_benchmark_results.json](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/redis_benchmark_results.json)
+- ½ÇÃø ½ºÅ©¸³Æ®: [run_redis_benchmarks.py](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/run_redis_benchmarks.py)
 
-### ì‹œê°í™”
+### ½Ã°¢È­
 - Throughput: ![Throughput](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/throughput_ops_sec.png?raw=1)
 - Latency: ![Latency](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/latency_ms.png?raw=1)
 - Dashboard: ![Dashboard](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/benchmark_dashboard.png?raw=1)
 - Cache vs Stream: ![Cache vs Stream](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/stream_vs_cache_comparison.png?raw=1)
 
-## ì„±ê³¼
+## ¼º°ú
 
-- ë©”ì¸ ì¡°íšŒ ì‘ë‹µì‹œê°„: **245ms -> 6ms** (Cache HIT ê¸°ì¤€)
-- ìš”ì²­ë‹¹ DB ì ‘ê·¼: **ë‹¤ì¤‘ ì¡°íšŒ -> 0íšŒ** (Cache HIT ê¸°ì¤€)
-- ë‹¨ê±´ ì•Œë¦¼ êµ¬ì¡°ë¥¼ ëŒ€ëŸ‰ ë¹„ë™ê¸° íŒŒì´í”„ë¼ì¸ìœ¼ë¡œ ì „í™˜
-- ì‹ ê·œ ì±„ë„ ì¶”ê°€ ì‹œ Handler ì¤‘ì‹¬ í™•ìž¥ ê°€ëŠ¥
+- ¸ÞÀÎ Á¶È¸ ÀÀ´ä½Ã°£: **245ms -> 6ms** (Cache HIT ±âÁØ)
+- ¿äÃ»´ç DB Á¢±Ù: **´ÙÁß Á¶È¸ -> 0È¸** (Cache HIT ±âÁØ)
+- ´Ü°Ç ¾Ë¸² ±¸Á¶¸¦ ´ë·® ºñµ¿±â ÆÄÀÌÇÁ¶óÀÎÀ¸·Î ÀüÈ¯
+- ½Å±Ô Ã¤³Î Ãß°¡ ½Ã Handler Áß½É È®Àå °¡´É
 
-## íŠ¸ëŸ¬ë¸”ìŠˆíŒ…
+## Æ®·¯ºí½´ÆÃ
 
-1. ì±„ë„ ë¶„ê¸° ë³µìž¡ë„ ì¦ê°€
-- ì¡°ì¹˜: enum + ì „ëžµ íŒ¨í„´ ë„ìž…
+1. Ã¤³Î ºÐ±â º¹Àâµµ Áõ°¡
+- Á¶Ä¡: enum + Àü·« ÆÐÅÏ µµÀÔ
 
-2. Redis ì´ˆê¸°í™” ì‹¤íŒ¨ ë¦¬ìŠ¤í¬
-- ì¡°ì¹˜: Lazy init + BUSYGROUP/ì—°ê²° ì˜ˆì™¸ ì²˜ë¦¬
+2. Redis ÃÊ±âÈ­ ½ÇÆÐ ¸®½ºÅ©
+- Á¶Ä¡: Lazy init + BUSYGROUP/¿¬°á ¿¹¿Ü Ã³¸®
 
-3. ëŒ€ëŸ‰ ì•Œë¦¼ ë³‘ëª©
-- ì¡°ì¹˜: ì²­í¬ ë¶„í•  + ë³‘ë ¬ enqueue + batch consume
+3. ´ë·® ¾Ë¸² º´¸ñ
+- Á¶Ä¡: Ã»Å© ºÐÇÒ + º´·Ä enqueue + batch consume
 
-ê·¼ê±°:
+±Ù°Å:
 - [compile_failure.log](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/compile_failure.log)
 - [measured_results.json](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/metrics/measured_results.json)
 
-## íšŒê³ 
+## È¸°í
 
-- ì„±ëŠ¥ ê°œì„ ì€ í•œ ê°€ì§€ ê¸°ìˆ ì´ ì•„ë‹ˆë¼ êµ¬ì¡° ì„¤ê³„ ë¬¸ì œë¼ëŠ” ì ì„ ì²´ê°í•¨
-- "ìš”êµ¬ì‚¬í•­ -> ë³‘ëª© ì‹ë³„ -> ê²€ì¦ ê°€ëŠ¥í•œ í•´ê²°" íë¦„ì´ í”„ë¡œì íŠ¸ ì„¤ë“ë ¥ì˜ í•µì‹¬
-- ë‹¤ìŒ ë‹¨ê³„: Stream ìƒ¤ë”©, DLQ ìš´ì˜ ê¸°ì¤€, lag ëª¨ë‹ˆí„°ë§ ìžë™í™”
+- ¼º´É °³¼±Àº ÇÑ °¡Áö ±â¼úÀÌ ¾Æ´Ï¶ó ±¸Á¶ ¼³°è ¹®Á¦¶ó´Â Á¡À» Ã¼°¨ÇÔ
+- "¿ä±¸»çÇ× -> º´¸ñ ½Äº° -> °ËÁõ °¡´ÉÇÑ ÇØ°á" Èå¸§ÀÌ ÇÁ·ÎÁ§Æ® ¼³µæ·ÂÀÇ ÇÙ½É
+- ´ÙÀ½ ´Ü°è: Stream »þµù, DLQ ¿î¿µ ±âÁØ, lag ¸ð´ÏÅÍ¸µ ÀÚµ¿È­
+

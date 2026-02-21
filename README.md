@@ -1,40 +1,40 @@
-ï»¿# CareerPlus-prj
+# CareerPlus-prj
 
-CareerPlusëŠ” êµ¬ì¸êµ¬ì§ ì„œë¹„ìŠ¤ í”„ë¡œì íŠ¸ì…ë‹ˆë‹¤. ì´ ì €ì¥ì†ŒëŠ” ê¸°ëŠ¥ êµ¬í˜„ ì½”ë“œë¿ ì•„ë‹ˆë¼, ì„±ëŠ¥ ê°œì„  ê³¼ì •ê³¼ ê²€ì¦ ìë£Œê¹Œì§€ í•¨ê»˜ ê´€ë¦¬í•©ë‹ˆë‹¤.
+CareerPlus´Â ±¸ÀÎ±¸Á÷ ¼­ºñ½º ÇÁ·ÎÁ§Æ®ÀÔ´Ï´Ù. ÀÌ ÀúÀå¼Ò´Â ±â´É ±¸Çö ÄÚµå»Ó ¾Æ´Ï¶ó, ¼º´É °³¼± °úÁ¤°ú °ËÁõ ÀÚ·á±îÁö ÇÔ²² °ü¸®ÇÕ´Ï´Ù.
 
-## í”„ë¡œì íŠ¸ ê°œìš”
+## ÇÁ·ÎÁ§Æ® °³¿ä
 
-- ê¸°ê°„: 2024.03 ~ 2024.06
-- ì¸ì›: 5ëª… (Backend 3 / Frontend 2)
-- í˜•íƒœ: KOSMO í’€ìŠ¤íƒ êµìœ¡ê³¼ì • ìµœì¢… í”„ë¡œì íŠ¸
-- ë‹´ë‹¹: Backend (ê²€ìƒ‰, ì•Œë¦¼, ìºì‹œ, DB ë¼ìš°íŒ…, ì¿¼ë¦¬ ìµœì í™”)
+- ±â°£: 2024.03 ~ 2024.06
+- ÀÎ¿ø: 5¸í (Backend 3 / Frontend 2)
+- ÇüÅÂ: KOSMO Ç®½ºÅÃ ±³À°°úÁ¤ ÃÖÁ¾ ÇÁ·ÎÁ§Æ®
+- ´ã´ç: Backend (°Ë»ö, ¾Ë¸², Ä³½Ã, DB ¶ó¿ìÆÃ, Äõ¸® ÃÖÀûÈ­)
 
-## ë‚´ê°€ ì§‘ì¤‘í•œ ê°œì„  í¬ì¸íŠ¸
+## ³»°¡ ÁıÁßÇÑ °³¼± Æ÷ÀÎÆ®
 
-1. ì¡°íšŒ ì„±ëŠ¥
-- Spring Cache + Redis + Caffeine(2-Level) ì ìš©
-- `@Cacheable`, `@CacheEvict`, `@Caching`ìœ¼ë¡œ ì¡°íšŒ/ê°±ì‹  ê²½ë¡œ ë¶„ë¦¬
+1. Á¶È¸ ¼º´É
+- Spring Cache + Redis + Caffeine(2-Level) Àû¿ë
+- `@Cacheable`, `@CacheEvict`, `@Caching`À¸·Î Á¶È¸/°»½Å °æ·Î ºĞ¸®
 
-2. ì•Œë¦¼ ì•„í‚¤í…ì²˜
-- SSEë¡œ ì‹¤ì‹œê°„ ì‚¬ìš©ì ì•Œë¦¼ ì œê³µ
-- Redis Pub/Subë¡œ ë©€í‹° ì¸ìŠ¤í„´ìŠ¤ ë™ê¸°í™”
-- Redis Stream + Consumer Groupìœ¼ë¡œ ëŒ€ëŸ‰ ë°œì†¡ íŒŒì´í”„ë¼ì¸ êµ¬ì„±
+2. ¾Ë¸² ¾ÆÅ°ÅØÃ³
+- SSE·Î ½Ç½Ã°£ »ç¿ëÀÚ ¾Ë¸² Á¦°ø
+- Redis Pub/Sub·Î ¸ÖÆ¼ ÀÎ½ºÅÏ½º µ¿±âÈ­
+- Redis Stream + Consumer GroupÀ¸·Î ´ë·® ¹ß¼Û ÆÄÀÌÇÁ¶óÀÎ ±¸¼º
 
-3. DB ë¶€í•˜ ë¶„ì‚°
-- Master/Slave ë¼ìš°íŒ… ì ìš©
-- ì½ê¸° íŠ¸ëœì­ì…˜ê³¼ ì“°ê¸° íŠ¸ëœì­ì…˜ ê²½ë¡œ ë¶„ë¦¬
+3. DB ºÎÇÏ ºĞ»ê
+- Master/Slave ¶ó¿ìÆÃ Àû¿ë
+- ÀĞ±â Æ®·£Àè¼Ç°ú ¾²±â Æ®·£Àè¼Ç °æ·Î ºĞ¸®
 
-4. SQL/ì¸ë±ìŠ¤ íŠœë‹
-- ê²€ìƒ‰/ì •ë ¬/ì¤‘ë³µì²´í¬ ì¿¼ë¦¬ ì¤‘ì‹¬ìœ¼ë¡œ ì‹¤í–‰ê³„íš í™•ì¸
-- ì¸ë±ìŠ¤ ì¬ë°°ì¹˜ë¡œ Full Scan êµ¬ê°„ ì¶•ì†Œ
+4. SQL/ÀÎµ¦½º Æ©´×
+- °Ë»ö/Á¤·Ä/Áßº¹Ã¼Å© Äõ¸® Áß½ÉÀ¸·Î ½ÇÇà°èÈ¹ È®ÀÎ
+- ÀÎµ¦½º Àç¹èÄ¡·Î Full Scan ±¸°£ Ãà¼Ò
 
-## ì„±ê³¼ ìš”ì•½
+## ¼º°ú ¿ä¾à
 
-- ë©”ì¸ ì¡°íšŒ ì‘ë‹µì‹œê°„: **245ms -> 6ms** (Cache HIT ê¸°ì¤€)
-- ìš”ì²­ë‹¹ DB ì ‘ê·¼: **ë‹¤ì¤‘ ì¡°íšŒ -> 0íšŒ** (Cache HIT ê¸°ì¤€)
-- ë‹¨ê±´ ì•Œë¦¼ êµ¬ì¡°ì—ì„œ ëŒ€ëŸ‰ ë¹„ë™ê¸° íŒŒì´í”„ë¼ì¸ìœ¼ë¡œ ì „í™˜
+- ¸ŞÀÎ Á¶È¸ ÀÀ´ä½Ã°£: **245ms -> 6ms** (Cache HIT ±âÁØ)
+- ¿äÃ»´ç DB Á¢±Ù: **´ÙÁß Á¶È¸ -> 0È¸** (Cache HIT ±âÁØ)
+- ´Ü°Ç ¾Ë¸² ±¸Á¶¿¡¼­ ´ë·® ºñµ¿±â ÆÄÀÌÇÁ¶óÀÎÀ¸·Î ÀüÈ¯
 
-## ê¸°ìˆ  ìŠ¤íƒ
+## ±â¼ú ½ºÅÃ
 
 - Backend: Java, Spring Boot, Spring MVC, Spring Cache, Spring Data Redis
 - Data: Oracle, MyBatis, Redis, Caffeine
@@ -42,34 +42,34 @@ CareerPlusëŠ” êµ¬ì¸êµ¬ì§ ì„œë¹„ìŠ¤ í”„ë¡œì íŠ¸ì…ë‹ˆë‹¤. ì´ ì €ì¥ì†ŒëŠ” ê¸°
 - Frontend/View: JSP, JavaScript, SSE
 - Collaboration: GitHub
 
-## ì£¼ìš” ì½”ë“œ ìœ„ì¹˜
+## ÁÖ¿ä ÄÚµå À§Ä¡
 
-- ì•Œë¦¼
+- ¾Ë¸²
   - `src/main/java/com/wa/erp/notification/NotificationSseService.java`
   - `src/main/java/com/wa/erp/notification/NotificationQueueService.java`
   - `src/main/java/com/wa/erp/notification/NotificationStreamConsumer.java`
   - `src/main/java/com/wa/erp/config/RedisNotificationConfig.java`
-- ìºì‹œ
+- Ä³½Ã
   - `src/main/java/com/wa/erp/BoardServiceImpl.java`
   - `src/main/java/com/wa/erp/RegUpDelServiceImpl.java`
-- DB ë¼ìš°íŒ…
+- DB ¶ó¿ìÆÃ
   - `src/main/java/com/wa/erp/config/datasource/ReplicationRoutingDataSource.java`
   - `src/main/java/com/wa/erp/config/datasource/DatabaseReplicationConfig.java`
 
-## ê²€ì¦ ìë£Œ
+## °ËÁõ ÀÚ·á
 
-- ê²€ì¦ ë¦¬í¬íŠ¸: `docs/metrics/validation_report.md`
-- ì‹¤ì¸¡ ë°ì´í„°(JSON): `docs/metrics/redis_benchmark_results.json`
-- ì‹œê°í™”
+- °ËÁõ ¸®Æ÷Æ®: `docs/metrics/validation_report.md`
+- ½ÇÃø µ¥ÀÌÅÍ(JSON): `docs/metrics/redis_benchmark_results.json`
+- ½Ã°¢È­
   - `docs/metrics/throughput_ops_sec.png`
   - `docs/metrics/latency_ms.png`
   - `docs/metrics/benchmark_dashboard.png`
   - `docs/metrics/stream_vs_cache_comparison.png`
-- ì¬í˜„ ê°€ì´ë“œ: `docs/metrics/benchmark_playbook.md`
+- ÀçÇö °¡ÀÌµå: `docs/metrics/benchmark_playbook.md`
 
-## ì‹¤í–‰ ë°©ë²•
+## ½ÇÇà ¹æ¹ı
 
-### ì• í”Œë¦¬ì¼€ì´ì…˜
+### ¾ÖÇÃ¸®ÄÉÀÌ¼Ç
 
 ```bash
 ./gradlew bootRun
@@ -81,22 +81,24 @@ Windows:
 .\gradlew.bat bootRun
 ```
 
-### Redis ì‹¤ì¸¡ + ì°¨íŠ¸ ìƒì„±
+### Redis ½ÇÃø + Â÷Æ® »ı¼º
 
 ```powershell
 python docs/metrics/run_redis_benchmarks.py
 python docs/metrics/generate_charts.py
 ```
 
-### API ë¶€í•˜ í…ŒìŠ¤íŠ¸ (k6)
+### API ºÎÇÏ Å×½ºÆ® (k6)
 
 ```powershell
 choco install k6 -y
 k6 run docs/metrics/k6_careerplus.js
 ```
 
-## ê´€ë ¨ ë¬¸ì„œ
+## °ü·Ã ¹®¼­
 
-- í¬íŠ¸í´ë¦¬ì˜¤ ë³¸ë¬¸: `docs/realtime_notification_and_db_replication.md`
-- ìš”êµ¬ì‚¬í•­ ê¸°ë°˜ ê¸°ìˆ ì„ ì •: `docs/portfolio_requirement_details.md`
-- DB ìµœì í™” ë…¸íŠ¸: `docs/portfolio_db_optimization.md`
+- ÇÁ·ÎÁ§Æ® »ó¼¼ ¹®¼­: `docs/realtime_notification_and_db_replication.md`
+- ¿ä±¸»çÇ× ±â¹İ ±â¼ú¼±Á¤ »ó¼¼: `docs/requirement_decisions.md`
+- DB ÃÖÀûÈ­ »ó¼¼ ³ëÆ®: `docs/db_optimization_notes.md`
+
+

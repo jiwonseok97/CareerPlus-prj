@@ -1,82 +1,82 @@
-ï»¿# ì„±ëŠ¥ ì¸¡ì • í”Œë ˆì´ë¶
+# ¼º´É ÃøÁ¤ ÇÃ·¹ÀÌºÏ
 
-ìˆ˜ì¹˜ì™€ ì°¨íŠ¸ë¥¼ ì¬í˜„ ê°€ëŠ¥í•˜ê²Œ ë§Œë“¤ê¸° ìœ„í•œ ì‹¤í–‰ ì ˆì°¨ ìƒì„¸í”Œë ˆì´ë¶
+Ã¤¿ë ´ã´çÀÚ°¡ °ËÁõ °¡´ÉÇÑ ¼öÄ¡¿Í Â÷Æ®¸¦ ÀçÇöÇÏ±â À§ÇÑ ½ÇÇà ÀıÂ÷ÀÔ´Ï´Ù.
 
-## 1) Redis ì²˜ë¦¬ëŸ‰/ì§€ì—° ì¸¡ì •
+## 1) Redis Ã³¸®·®/Áö¿¬ ÃøÁ¤
 
-ì‹¤í–‰:
+½ÇÇà:
 
 ```powershell
 python docs/metrics/run_redis_benchmarks.py
 ```
 
-ì‚°ì¶œë¬¼:
+»êÃâ¹°:
 
 - `docs/metrics/redis_benchmark_results.json`
 
-## 2) ì°¨íŠ¸ ìƒì„±
+## 2) Â÷Æ® »ı¼º
 
-ì‹¤í–‰:
+½ÇÇà:
 
 ```powershell
 python docs/metrics/generate_charts.py
 ```
 
-ì‚°ì¶œë¬¼:
+»êÃâ¹°:
 
 - `docs/metrics/throughput_ops_sec.png`
 - `docs/metrics/latency_ms.png`
 - `docs/metrics/stream_vs_cache_comparison.png`
 - `docs/metrics/benchmark_dashboard.png`
 
-## 3) API ë¶€í•˜ í…ŒìŠ¤íŠ¸ (k6)
+## 3) API ºÎÇÏ Å×½ºÆ® (k6)
 
-ì„¤ì¹˜:
+¼³Ä¡:
 
 ```powershell
 choco install k6 -y
 ```
 
-ì‹¤í–‰:
+½ÇÇà:
 
 ```powershell
 k6 run docs/metrics/k6_careerplus.js
 ```
 
-BASE URL ë³€ê²½:
+BASE URL º¯°æ:
 
 ```powershell
 $env:BASE_URL="http://localhost:8081"; k6 run docs/metrics/k6_careerplus.js
 ```
 
-## 4) SQL ìš”ì²­ ìˆ˜ ê²€ì¦
+## 4) SQL ¿äÃ» ¼ö °ËÁõ
 
-í˜„ì¬ í”„ë¡œì íŠ¸ëŠ” MyBatis stdout ë¡œê·¸ë¥¼ í†µí•´ SQL ë°œìƒ ì—¬ë¶€ë¥¼ í™•ì¸í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
+ÇöÀç ÇÁ·ÎÁ§Æ®´Â MyBatis stdout ·Î±×¸¦ ÅëÇØ SQL ¹ß»ı ¿©ºÎ¸¦ È®ÀÎÇÒ ¼ö ÀÖ½À´Ï´Ù.
 
-- ì„¤ì • ìœ„ì¹˜: `src/main/resources/application.properties`
-- ì„¤ì • ê°’: `mybatis.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl`
+- ¼³Á¤ À§Ä¡: `src/main/resources/application.properties`
+- ¼³Á¤ °ª: `mybatis.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl`
 
-ì •ëŸ‰ ê²€ì¦ ê¶Œì¥ ë°©ì‹:
+Á¤·® °ËÁõ ±ÇÀå ¹æ½Ä:
 
-1. `p6spy` ë˜ëŠ” `datasource-proxy` ì ìš©
-2. ìš”ì²­ ë‹¨ìœ„ SQL count ê¸°ë¡
-3. ìºì‹œ HIT/MISS ë¹„êµí‘œ ì‘ì„±
+1. `p6spy` ¶Ç´Â `datasource-proxy` Àû¿ë
+2. ¿äÃ» ´ÜÀ§ SQL count ±â·Ï
+3. Ä³½Ã HIT/MISS ºñ±³Ç¥ ÀÛ¼º
 
-ì˜ˆì‹œ:
+¿¹½Ã:
 
 - Cache HIT: `0 queries/request`
 - Cache MISS: `N queries/request`
 
-## 5) í¬íŠ¸í´ë¦¬ì˜¤ ë°˜ì˜ í…œí”Œë¦¿
+## 5) ÀÌ·Â¼­/¸éÁ¢ ¹®¼­ ¹İ¿µ ÅÛÇÃ¸´
 
-| ì§€í‘œ | ê°œì„  ì „ | ê°œì„  í›„ | ê¸°ì¤€ |
+| ÁöÇ¥ | °³¼± Àü | °³¼± ÈÄ | ±âÁØ |
 |---|---:|---:|---|
-| ë©”ì¸ ì¡°íšŒ ì‘ë‹µì‹œê°„ | 245ms | 6ms | Cache HIT |
-| ìš”ì²­ë‹¹ DB ì ‘ê·¼ | ë‹¤ì¤‘ ì¡°íšŒ | 0íšŒ | Cache HIT |
-| ì•Œë¦¼ ì²˜ë¦¬ êµ¬ì¡° | ë‹¨ê±´ ì¤‘ì‹¬ | ë¹„ë™ê¸° íŒŒì´í”„ë¼ì¸ | Stream + Consumer Group |
+| ¸ŞÀÎ Á¶È¸ ÀÀ´ä½Ã°£ | 245ms | 6ms | Cache HIT |
+| ¿äÃ»´ç DB Á¢±Ù | ´ÙÁß Á¶È¸ | 0È¸ | Cache HIT |
+| ¾Ë¸² Ã³¸® ±¸Á¶ | ´Ü°Ç Áß½É | ºñµ¿±â ÆÄÀÌÇÁ¶óÀÎ | Stream + Consumer Group |
 
-## 6) í•œ ì¤„ ì¬í˜„ ì»¤ë§¨ë“œ
+## 6) ÇÑ ÁÙ ÀçÇö Ä¿¸Çµå
 
 ```powershell
-python docs/metrics/run_redis_benchmarks.py && python docs/metrics/generate_charts.py
+python docs/metrics/run_redis_benchmarks.py; python docs/metrics/generate_charts.py
 ```
