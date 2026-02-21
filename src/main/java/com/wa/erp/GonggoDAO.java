@@ -1,6 +1,7 @@
 package com.wa.erp;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -37,4 +38,7 @@ public interface GonggoDAO {
 		int insertBenefit_code(GonggoDTO gonggoDTO);
 
 		int insertRole_Detail(GonggoDTO gonggoDTO);
+
+	// 직무별 공고 수 TOP 5
+	List<Map<String, Object>> getJobFieldTop5();
 }

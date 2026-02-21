@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <script src="/js/jquery-1.11.0.min.js"></script>
 <script src="/js/common.js"></script>
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"> -->
@@ -74,45 +75,50 @@ function addRow() {
 
 
 
-//직군
-const subFields = {
-    management: ["전략기획", "경영지원", "인사", "마케팅·MD"],
-    sales: ["영업", "고객상담"],
-    it: ["HTML·웹퍼블리셔", "시스템·네트워크", "데이터베이스", "게임·웹툰", "모바일·APP", "QA·테스터", "시스템분석·설계"],
-    design: ["그래픽디자인", "광고·시각디자인", "제품디자인", "인테리어디자인", "패션디자인"],
-    media: ["영상·사진·편집", "동영상제작"],
-    construction: ["건축", "감리·공무", "시공", "안전·품질", "기타"],
-    education: ["유치원·보육·교사", "초등학교", "중·고등학교", "특수교육"],
-    medical: ["간호조무사", "원무·코디네이터", "의사·의료진", "보건·의료관리"],
-    production: ["생산·제조", "조립·가공·포장", "설비·검사·품질", "공정·생산관리", "창고·물류·유통"]
-};
+//직군 - 중복 선언 방지
+if (typeof window.subFields === 'undefined') {
+    window.subFields = {
+        management: ["전략기획", "경영지원", "인사", "마케팅·MD"],
+        sales: ["영업", "고객상담"],
+        it: ["HTML·웹퍼블리셔", "시스템·네트워크", "데이터베이스", "게임·웹툰", "모바일·APP", "QA·테스터", "시스템분석·설계"],
+        design: ["그래픽디자인", "광고·시각디자인", "제품디자인", "인테리어디자인", "패션디자인"],
+        media: ["영상·사진·편집", "동영상제작"],
+        construction: ["건축", "감리·공무", "시공", "안전·품질", "기타"],
+        education: ["유치원·보육·교사", "초등학교", "중·고등학교", "특수교육"],
+        medical: ["간호조무사", "원무·코디네이터", "의사·의료진", "보건·의료관리"],
+        production: ["생산·제조", "조립·가공·포장", "설비·검사·품질", "공정·생산관리", "창고·물류·유통"]
+    };
+}
 
-const fieldSelect = document.getElementById('field');
-const subFieldSelect = document.getElementById('subField');
+// 직군 선택 요소가 있는 페이지에서만 실행
+var fieldSelect = document.getElementById('field');
+var subFieldSelect = document.getElementById('subField');
 
-// 직군 선택이 변경될 때 중분류 선택 항목을 업데이트합니다.
-fieldSelect.addEventListener('change', function() {
-    const selectedField = this.value;
-    const subFieldsOptions = subFields[selectedField];
+if (fieldSelect && subFieldSelect) {
+    // 직군 선택이 변경될 때 중분류 선택 항목을 업데이트합니다.
+    fieldSelect.addEventListener('change', function() {
+        var selectedField = this.value;
+        var subFieldsOptions = window.subFields[selectedField];
 
-    // 중분류 선택 항목을 비웁니다.
-    subFieldSelect.innerHTML = '<option value="">희망직무 선택</option>';
+        // 중분류 선택 항목을 비웁니다.
+        subFieldSelect.innerHTML = '<option value="">희망직무 선택</option>';
 
-    if (selectedField) {
-        // 선택한 직군이 있으면 중분류 선택 항목을 활성화합니다.
-        subFieldSelect.disabled = false;
+        if (selectedField) {
+            // 선택한 직군이 있으면 중분류 선택 항목을 활성화합니다.
+            subFieldSelect.disabled = false;
 
-        // 선택한 직군에 해당하는 중분류 옵션들을 추가합니다.
-        subFieldsOptions.forEach(option => {
-            const optionElement = document.createElement('option');
-            optionElement.textContent = option;
-            subFieldSelect.appendChild(optionElement);
-        });
-    } else {
-        // 선택한 직군이 없으면 중분류 선택 항목을 비활성화하고 초기화합니다.
-        subFieldSelect.disabled = true;
-    }
-});
+            // 선택한 직군에 해당하는 중분류 옵션들을 추가합니다.
+            subFieldsOptions.forEach(function(option) {
+                var optionElement = document.createElement('option');
+                optionElement.textContent = option;
+                subFieldSelect.appendChild(optionElement);
+            });
+        } else {
+            // 선택한 직군이 없으면 중분류 선택 항목을 비활성화하고 초기화합니다.
+            subFieldSelect.disabled = true;
+        }
+    });
+}
 
 //리뷰작성 (기업정보 상세페이지)
 let ratingValue = 0;

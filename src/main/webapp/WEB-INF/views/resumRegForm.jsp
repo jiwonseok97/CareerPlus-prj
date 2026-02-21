@@ -94,7 +94,7 @@
 		            
 		            if(result==1){
 		               alert("이력서 입력 성공입니다.");
-		               location.replace("12Wa.do")
+		               location.replace("/careerplus.do")
 		            }
 		            else {
 		               alert("회원가입 실패")

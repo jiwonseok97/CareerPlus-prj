@@ -32,7 +32,11 @@ public class BoardController {
 			@RequestParam(value="boardname", required=false) String boardname,
 				BoardSearchDTO boardSearchDTO
 			) {
-		
+
+		// boardname이 null이면 기본값 설정
+		if(boardname == null || boardname.isEmpty()) {
+			boardname = "freedome";
+		}
 		boardSearchDTO.setBoardname(boardname);
 		
 //		게시판 검색 결과 개수 저장할 변수 boardListCnt 선언하여 저장하기
@@ -125,7 +129,10 @@ public class BoardController {
 			@RequestParam(value="boardname", required=false) String boardname,
 			BoardSearchDTO boardSearchDTO
 			) {
-		
+
+		if(boardname == null || boardname.isEmpty()) {
+			boardname = "qna";
+		}
 		boardSearchDTO.setBoardname(boardname);
 		
 		int qnaListCnt = this.boardService.getboardListCnt( boardSearchDTO );
@@ -174,7 +181,10 @@ public class BoardController {
 			@RequestParam(value="boardname", required=false) String boardname,
 			BoardSearchDTO boardSearchDTO
 			) {
-		
+
+		if(boardname == null || boardname.isEmpty()) {
+			boardname = "interview";
+		}
 		boardSearchDTO.setBoardname(boardname);
 		
 		int interviewListCnt = this.boardService.getboardListCnt( boardSearchDTO );
@@ -224,7 +234,10 @@ public class BoardController {
 			@RequestParam(value="boardname", required=false) String boardname,
 			BoardSearchDTO boardSearchDTO
 			) {
-		
+
+		if(boardname == null || boardname.isEmpty()) {
+			boardname = "newComer";
+		}
 		boardSearchDTO.setBoardname(boardname);
 		
 		int newComerListCnt = this.boardService.getboardListCnt( boardSearchDTO );
@@ -274,7 +287,10 @@ public class BoardController {
 			@RequestParam(value="boardname", required=false) String boardname,
 			BoardSearchDTO boardSearchDTO
 			) {
-		
+
+		if(boardname == null || boardname.isEmpty()) {
+			boardname = "jobReady";
+		}
 		boardSearchDTO.setBoardname(boardname);
 		
 		int jobReadyListCnt = this.boardService.getboardListCnt( boardSearchDTO );
@@ -324,7 +340,10 @@ public class BoardController {
 			@RequestParam(value="boardname", required=false) String boardname,
 			BoardSearchDTO boardSearchDTO
 			) {
-		
+
+		if(boardname == null || boardname.isEmpty()) {
+			boardname = "joongGo";
+		}
 		boardSearchDTO.setBoardname(boardname);
 		
 		int joongGoListCnt = this.boardService.getboardListCnt( boardSearchDTO );
@@ -897,7 +916,7 @@ public class BoardController {
 			
 			
 			
-			@RequestMapping( value ="/12Wa.do")
+			@RequestMapping( value ="/careerplus.do")
 			public ModelAndView Wa12(
 					BoardSearchDTO boardSearchDTO
 					, HttpSession session

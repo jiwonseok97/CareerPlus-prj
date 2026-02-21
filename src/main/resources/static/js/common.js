@@ -1,32 +1,39 @@
 //-------------------------------------------------------------------------------
+// 슬라이드쇼 초기화 - 요소가 존재하는 페이지에서만 실행
 var slides = document.querySelectorAll("#slides > img");
 var prev = document.getElementById("prev");
 var next = document.getElementById("next");
 var current = 0;
 
-showSlides(current);
-prev.onclick = prevSlide;
-next.onclick = nextSlide;
+// slides가 존재하고 길이가 있을 때만 실행
+if (slides && slides.length > 0) {
+  showSlides(current);
+  if (prev) prev.onclick = prevSlide;
+  if (next) next.onclick = nextSlide;
+}
 
 function showSlides(n) {
+  if (!slides || slides.length === 0) return;
   for (let i = 0; i < slides.length; i++) {
     slides[i].style.display = "none";
   }
-  slides[n].style.display = "block";
+  if (slides[n]) {
+    slides[n].style.display = "block";
+  }
 }
 
 function prevSlide() {
+  if (!slides || slides.length === 0) return;
   if (current > 0) current -= 1;
-  else
-    current = slides.length - 1;
-    showSlides(current);
+  else current = slides.length - 1;
+  showSlides(current);
 }
 
 function nextSlide() {
+  if (!slides || slides.length === 0) return;
   if (current < slides.length - 1) current += 1;
-  else
-    current = 0;
-    showSlides(current);  
+  else current = 0;
+  showSlides(current);
 }
 
 //---------------------------------------------------------------------------

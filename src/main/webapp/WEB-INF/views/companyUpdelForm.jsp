@@ -26,7 +26,7 @@
                   
                   if(result==1){
                      alert("정보등록 성공입니다!");
-                     location.replace("/12Wa.do")
+                     location.replace("/careerplus.do")
                   }
                   else {
                      alert("잘못됨ㅅㄱ")

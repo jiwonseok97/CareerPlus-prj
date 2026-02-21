@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-02-21 17:04:46",
+  "benchmarks": {
+    "ping_ms": {
+      "count": 200,
+      "avg": 0.684,
+      "p95": 0.894,
+      "max": 1.45
+    },
+    "cache_set_20k": {
+      "ops": 20000,
+      "total_sec": 13.359,
+      "ops_per_sec": 1497.2,
+      "avg_ms": 0.668,
+      "p95_ms": 0.941
+    },
+    "cache_get_20k": {
+      "ops": 20000,
+      "total_sec": 13.626,
+      "ops_per_sec": 1467.8,
+      "avg_ms": 0.681,
+      "p95_ms": 1.01
+    },
+    "stream_xadd_100k": {
+      "ops": 100000,
+      "total_sec": 70.709,
+      "ops_per_sec": 1414.2,
+      "avg_ms": 0.707,
+      "p95_ms": 1.101
+    },
+    "stream_read_ack_100k": {
+      "ops": 100000,
+      "batch_size": 500,
+      "batches": 200,
+      "total_sec": 11.207,
+      "ops_per_sec": 8923.0,
+      "avg_batch_ms": 56.035,
+      "p95_batch_ms": 64.317
+    }
+  }
+}

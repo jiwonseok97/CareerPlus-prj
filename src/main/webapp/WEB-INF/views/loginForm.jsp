@@ -144,13 +144,13 @@
             .then(data => {
                 if (data == 1) {
                     alert('로그인 성공(개인회원)');
-                    location.replace('/12Wa.do');
+                    location.replace('/careerplus.do');
 
              //       {      	alert("게시판 및 리뷰작성이 제한되었습니다. 고객센터에 문의하세요.")              }		
                 } 
                 else if (data == 2) {
                     alert('로그인 성공(기업회원)');
-                    location.replace('/12Wa.do');                
+                    location.replace('/careerplus.do');                
                 }
         
                 else if(data == 3){
@@ -163,7 +163,7 @@
                 }
                 else if (data == 5) {
                     alert('로그인 성공(관리자)');
-                    location.replace('/12Wa.do');                
+                    location.replace('/careerplus.do');                
                 }
                 
                 else {

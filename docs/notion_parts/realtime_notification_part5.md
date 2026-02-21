@@ -1,3 +1,14 @@
+﻿## 5) 프론트 연동(서비스 상단 알림)
+
+- 파일: `header.jsp`
+- 내용: 기존과 동일
+  - 로그인 사용자 SSE 구독
+  - `notification` 수신 시 우상단 배너 표시
+  - `linkUrl` 존재 시 클릭 이동
+
+- 토글: header.jsp 파일 내용
+
+```html
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@include file="/WEB-INF/views/common.jsp" %>
@@ -7,11 +18,9 @@
 <meta charset="UTF-8">
 <title></title>
 
-
 <style>
 
 </style>
-
 
 </head>
 <body>
@@ -29,68 +38,68 @@
     <ul id="topMenu">
     	
         <li>
-            <a style="cursor: pointer;" href="javascript:location.replace('/gongGoList.do')">채용정보</a>
+            <a style="cursor: pointer;" href="javascript:location.replace('/gongGoList.do')">梨꾩슜?뺣낫</a>
 <!--             <ul> -->
-<!--                 <li><a href="javascript:location.replace('/gongGoList.do')">지역별</a></li> -->
-<!--                 <li><a href="javascript:location.replace('/gongGoList.do')">업무별</a></li> -->
+<!--                 <li><a href="javascript:location.replace('/gongGoList.do')">吏??퀎</a></li> -->
+<!--                 <li><a href="javascript:location.replace('/gongGoList.do')">?낅Т蹂?/a></li> -->
 <!--                 <li><a href="javascript:location.replace('/gongGoList.do')">TOP100</a></li> -->
 <!--             </ul> -->
         </li>
         <li>
-            <a href="javascript:location.replace('/companyList.do')">기업정보</a>
+            <a href="javascript:location.replace('/companyList.do')">湲곗뾽?뺣낫</a>
         </li>
         <li>
-            <a style="cursor: pointer;" onClick="pushboardname('freeboard','freedome')">커뮤니티</a>
+            <a style="cursor: pointer;" onClick="pushboardname('freeboard','freedome')">而ㅻ??덊떚</a>
             <ul>
-                <li><a onClick="pushboardname('freeboard','freedome')">자유 게시판</a></li>
-                <li><a onClick="pushboardname('newbieboard','newComer')">신입 게시판</a></li>
-                <li><a onClick="pushboardname('qnaboard','qna')">Q&A 게시판</a></li>
-                <li><a onClick="pushboardname('jobsearchboard','jobReady')">취업 게시판</a></li>
-                <li><a onClick="pushboardname('interviewboard','interview')">면접 게시판</a></li>
-                <li><a onClick="pushboardname('tradeboard','joongGo')">중고 게시판</a></li>
+                <li><a onClick="pushboardname('freeboard','freedome')">?먯쑀 寃뚯떆??/a></li>
+                <li><a onClick="pushboardname('newbieboard','newComer')">?좎엯 寃뚯떆??/a></li>
+                <li><a onClick="pushboardname('qnaboard','qna')">Q&A 寃뚯떆??/a></li>
+                <li><a onClick="pushboardname('jobsearchboard','jobReady')">痍⑥뾽 寃뚯떆??/a></li>
+                <li><a onClick="pushboardname('interviewboard','interview')">硫댁젒 寃뚯떆??/a></li>
+                <li><a onClick="pushboardname('tradeboard','joongGo')">以묎퀬 寃뚯떆??/a></li>
             </ul>
         </li>
         <li>
-            <a style="cursor: pointer;" href="javascript:location.replace('/timeShare.do')">타임쉐어</a>
+            <a style="cursor: pointer;" href="javascript:location.replace('/timeShare.do')">??꾩뎽??/a>
             <ul>
-                <li><a href="javascript:location.replace('/timeShare.do')">프리랜서</a></li>
-                <li><a href="javascript:location.replace('/buupList.do')">부업</a></li>
+                <li><a href="javascript:location.replace('/timeShare.do')">?꾨━?쒖꽌</a></li>
+                <li><a href="javascript:location.replace('/buupList.do')">遺??/a></li>
             </ul>
         </li>
         <li>
-            <a href="javascript:location.replace('/prj.do')">프로젝트/공모전</a>
+            <a href="javascript:location.replace('/prj.do')">?꾨줈?앺듃/怨듬え??/a>
             <ul>
-                <li><a href="javascript:location.replace('/prj.do')">프로젝트</a></li>
-                <li><a href="javascript:location.replace('/gongMo.do')">공모전</a></li>
+                <li><a href="javascript:location.replace('/prj.do')">?꾨줈?앺듃</a></li>
+                <li><a href="javascript:location.replace('/gongMo.do')">怨듬え??/a></li>
             </ul>
         </li>
 
         <c:if test="${sessionScope.member == 'person'}">
             <li>
-                <a style="cursor: pointer;" href="javascript:location.replace('/timeShareRegForm.do')">프리랜서 등록</a>
+                <a style="cursor: pointer;" href="javascript:location.replace('/timeShareRegForm.do')">?꾨━?쒖꽌 ?깅줉</a>
             </li>
         </c:if>
         <c:if test="${sessionScope.member == 'company'}">
             <li>
-                <a style="cursor: pointer;" href="javascript:location.replace('/resumeList.do')">이력서 열람</a>
+                <a style="cursor: pointer;" href="javascript:location.replace('/resumeList.do')">?대젰???대엺</a>
             </li>
         
             <li>
-                <a style="cursor: pointer;" href="javascript:location.replace('/gongGoRegForm.do')">공고 등록</a>
+                <a style="cursor: pointer;" href="javascript:location.replace('/gongGoRegForm.do')">怨듦퀬 ?깅줉</a>
             </li>
         </c:if>
                 <c:if test="${sessionScope.member == 'admin'}">
             <li>
-                <a style="cursor: pointer;" href="javascript:location.replace('/memberList.do')">회원 관리</a>
+                <a style="cursor: pointer;" href="javascript:location.replace('/memberList.do')">?뚯썝 愿由?/a>
                  <ul>
-                <li><a href="javascript:location.replace('/memberList.do')">회원 관리</a></li>
-                <li><a href="javascript:location.replace('/blockMemberList.do')">차단 회원 관리</a></li>
+                <li><a href="javascript:location.replace('/memberList.do')">?뚯썝 愿由?/a></li>
+                <li><a href="javascript:location.replace('/blockMemberList.do')">李⑤떒 ?뚯썝 愿由?/a></li>
             </ul>
             </li>
         </c:if>
         <c:if test="${sessionScope.member=='admin'}">
         	<li>
-        	 <a style="cursor: pointer;" href="javascript:location.replace('/resumeList.do')">이력서 열람</a>
+        	 <a style="cursor: pointer;" href="javascript:location.replace('/resumeList.do')">?대젰???대엺</a>
         	</li>
         </c:if>
     </ul>
@@ -98,36 +107,35 @@
 	
 	<div id="welCome">
 		<c:if test="${sessionScope.member=='person'}">
-			${sessionScope.nickname}님, 환영합니다.
+			${sessionScope.nickname}?? ?섏쁺?⑸땲??
 		</c:if>
 		<c:if test="${sessionScope.member=='company'}">
-			${sessionScope.name}님, 환영합니다.
+			${sessionScope.name}?? ?섏쁺?⑸땲??
 		</c:if>
 				<c:if test="${sessionScope.member=='admin'}">
-			관리자님, 환영합니다.
+			愿由ъ옄?? ?섏쁺?⑸땲??
 		</c:if>
 		
 	</div>
     <!-- Login Button -->
     <c:choose>
 				<c:when test="${empty sessionScope.member}">
-					 <a href="javascript:location.replace('/loginForm.do')" id="loginButton">로그인</a>
+					 <a href="javascript:location.replace('/loginForm.do')" id="loginButton">濡쒓렇??/a>
 				</c:when>
 				<c:otherwise>
-					<a href="javascript:location.replace('/loginForm.do')" id="logoutButton">로그아웃</a>
+					<a href="javascript:location.replace('/loginForm.do')" id="logoutButton">濡쒓렇?꾩썐</a>
 				</c:otherwise>  
 			</c:choose>
 
-
 			<c:if test="${sessionScope.member=='company'}">
-				<a onClick="document.forms['MyCompanyForm'].submit()" id="myPageButton">기업마이페이지</a>
+				<a onClick="document.forms['MyCompanyForm'].submit()" id="myPageButton">湲곗뾽留덉씠?섏씠吏</a>
 			</c:if>
 			<c:if test="${sessionScope.member == 'person'}">
-                 <a href="#" onclick="document.MyPageForm.submit();" id="myPageButton">개인마이페이지</a>
+                 <a href="#" onclick="document.MyPageForm.submit();" id="myPageButton">媛쒖씤留덉씠?섏씠吏</a>
            </c:if>
   <input type="hidden" name="p_no" value="${sessionScope.p_no}">
 							<c:if test="${sessionScope.member=='admin'}">
-				<a href="javascript:location.replace('/notice.do')" id="myPageButton">공지사항관리</a>
+				<a href="javascript:location.replace('/notice.do')" id="myPageButton">怨듭??ы빆愿由?/a>
 				</c:if>  
 						
   </header>
@@ -164,7 +172,7 @@
         source.addEventListener("notification", function (event) {
           try {
             var data = JSON.parse(event.data);
-            title.textContent = data.title || "새 알림";
+            title.textContent = data.title || "???뚮┝";
             content.textContent = data.content || "";
             banner.style.display = "block";
 
@@ -201,3 +209,7 @@
     
 </body>
 </html>
+```
+
+---
+

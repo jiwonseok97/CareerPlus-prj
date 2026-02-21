@@ -27,7 +27,8 @@
 		g.opendate,
 		g.closedate,
 		c.name,
-		i.business_industry
+		i.business_industry,
+		(SELECT NVL(TRIM(r.field_detail1), '') FROM role_detail r WHERE r.g_no = g.g_no AND ROWNUM = 1) as "field_detail1"
 
 		FROM
 		gonggo
@@ -45,8 +46,9 @@
 			or
 			upper(career) like upper('%${keyword}%')
 			or
-			upper(c.name) like
-			upper('%${keyword}%')
+			upper(c.name) like upper('%${keyword}%')
+			or
+			EXISTS (SELECT 1 FROM role_detail r WHERE r.g_no = g.g_no AND upper(r.field_detail1) like upper('%${keyword}%'))
 			)
 		</if>
 
@@ -62,20 +64,33 @@
 			)
 
 		</if>
+
+		<if test="field_name !=null and field_name.length()>0">
+			and EXISTS (
+				SELECT 1 FROM role_detail r
+				WHERE r.g_no = g.g_no
+				AND (
+					upper(r.field_detail1) like upper('%${field_name}%')
+					OR upper(r.field_detail2) like upper('%${field_name}%')
+					OR upper(r.field_detail3) like upper('%${field_name}%')
+				)
+			)
+		</if>
+
 		<if test="gonggoStatus == 'ing' ">
 		    and (
 		    trunc(closedate-sysdate) >= 0
 		    )
 		</if>
-	
+
 			<if test="gonggoStatus ==  'end' ">
 		    and (
 		    <![CDATA[
-		     TRUNC(closedate-sysdate) < 0 
+		     TRUNC(closedate-sysdate) < 0
 		     ]]>
 		    )
 		</if>
-		
+
 		<if test="sort!=null and sort.length()>0">
 			order by ${sort}
 			,13 asc
@@ -114,8 +129,9 @@
 				or
 				upper(g.career) like upper('%${keyword}%')
 				or
-				upper(c.name) like
-				upper('%${keyword}%')
+				upper(c.name) like upper('%${keyword}%')
+				or
+				EXISTS (SELECT 1 FROM role_detail r WHERE r.g_no = g.g_no AND upper(r.field_detail1) like upper('%${keyword}%'))
 				)
 			</if>
 
@@ -131,6 +147,19 @@
 				)
 
 			</if>
+
+			<if test="field_name !=null and field_name.length()>0">
+				and EXISTS (
+					SELECT 1 FROM role_detail r
+					WHERE r.g_no = g.g_no
+					AND (
+						upper(r.field_detail1) like upper('%${field_name}%')
+						OR upper(r.field_detail2) like upper('%${field_name}%')
+						OR upper(r.field_detail3) like upper('%${field_name}%')
+					)
+				)
+			</if>
+
 			<if test="gonggoStatus == 'ing' ">
 			    and (
 			    trunc(g.closedate-sysdate) >= 0
@@ -140,7 +169,7 @@
 			<if test="gonggoStatus ==  'end' ">
 			    and (
 			    <![CDATA[
-			     TRUNC(g.closedate-sysdate) < 0 
+			     TRUNC(g.closedate-sysdate) < 0
 			     ]]>
 			    )
 			</if>
@@ -1004,6 +1033,29 @@
 		select count(*) from pertocom where p_no=#{p_no}
 		and
 		g_no=#{g_no} and c_no=#{c_no}
+	</select>
+	<!-- 직무별 공고 수 TOP 5 -->
+	<select id="getJobFieldTop5" resultType="java.util.Map">
+		SELECT * FROM (
+			SELECT field_name, cnt FROM (
+				SELECT TRIM(field_detail1) as field_name, COUNT(*) as cnt
+				FROM role_detail
+				WHERE field_detail1 IS NOT NULL AND TRIM(field_detail1) != ''
+				GROUP BY TRIM(field_detail1)
+				UNION ALL
+				SELECT TRIM(field_detail2) as field_name, COUNT(*) as cnt
+				FROM role_detail
+				WHERE field_detail2 IS NOT NULL AND TRIM(field_detail2) != ''
+				GROUP BY TRIM(field_detail2)
+				UNION ALL
+				SELECT TRIM(field_detail3) as field_name, COUNT(*) as cnt
+				FROM role_detail
+				WHERE field_detail3 IS NOT NULL AND TRIM(field_detail3) != ''
+				GROUP BY TRIM(field_detail3)
+			)
+			GROUP BY field_name
+			ORDER BY SUM(cnt) DESC
+		) WHERE ROWNUM &lt;= 5
 	</select>
 </mapper>
  

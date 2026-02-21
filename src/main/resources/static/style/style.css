@@ -77,9 +77,18 @@ button {
    Layout Container
    =================================== */
 #container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+#wrap {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .wrapper {
@@ -101,14 +110,19 @@ header {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 99999;
     box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    height: 70px;
 }
 
 .header-inner {
-    max-width: 1200px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 60px;
     display: flex;
     align-items: center;
     height: 70px;
@@ -136,12 +150,92 @@ header {
     gap: 8px;
 }
 
+/* ===================================
+   Logo Animation - JobKorea Style Shimmer
+   =================================== */
+.logo-text {
+    display: inline-flex;
+    align-items: center;
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    position: relative;
+}
+
+.logo-career {
+    color: #ffffff;
+    background: linear-gradient(
+        90deg,
+        #ffffff 0%,
+        #ffffff 35%,
+        rgba(255, 255, 255, 0.5) 50%,
+        #ffffff 65%,
+        #ffffff 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 2.5s ease-in-out infinite;
+}
+
+.logo-plus {
+    color: #ffffff;
+    font-size: 48px;
+    font-weight: 900;
+    margin-left: 2px;
+    animation: pulse-glow 2s ease-in-out infinite;
+    text-shadow:
+        0 0 10px rgba(255, 255, 255, 0.8),
+        0 0 20px rgba(255, 255, 255, 0.6),
+        0 0 30px rgba(255, 255, 255, 0.4);
+}
+
+/* Shimmer Animation - 빛이 지나가는 효과 */
+@keyframes shimmer {
+    0% {
+        background-position: 200% center;
+    }
+    100% {
+        background-position: -200% center;
+    }
+}
+
+/* Plus Sign Glow Animation - + 기호 빛나는 효과 */
+@keyframes pulse-glow {
+    0%, 100% {
+        opacity: 1;
+        text-shadow:
+            0 0 10px rgba(255, 255, 255, 0.8),
+            0 0 20px rgba(255, 255, 255, 0.6),
+            0 0 30px rgba(255, 255, 255, 0.4);
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.9;
+        text-shadow:
+            0 0 15px rgba(255, 255, 255, 1),
+            0 0 30px rgba(255, 255, 255, 0.8),
+            0 0 45px rgba(255, 255, 255, 0.6),
+            0 0 60px rgba(255, 255, 255, 0.4);
+        transform: scale(1.05);
+    }
+}
+
+/* Logo Hover Effect */
+#logo a:hover .logo-career {
+    animation: shimmer 1.5s ease-in-out infinite;
+}
+
+#logo a:hover .logo-plus {
+    animation: pulse-glow 0.8s ease-in-out infinite;
+}
+
 /* Navigation */
 nav {
-    flex: 1;
     display: flex;
     justify-content: center;
-    margin: 0 40px;
+    margin: 0 30px;
 }
 
 #topMenu {
@@ -243,6 +337,7 @@ nav {
     padding: 0 15px;
     position: static;
     background: none;
+    margin-left: auto;
 }
 
 #loginButton, #logoutButton, #myPageButton {
@@ -257,6 +352,7 @@ nav {
     font-weight: 500;
     transition: all 0.2s ease;
     border: 1px solid rgba(255,255,255,0.3);
+    margin-left: 10px;
 }
 
 #loginButton:hover, #logoutButton:hover, #myPageButton:hover {
@@ -917,9 +1013,11 @@ footer a:hover {
 }
 
 #bottomMenu {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0 60px;
+    box-sizing: border-box;
 }
 
 #bottomMenu ul {
@@ -1253,9 +1351,9 @@ textarea:focus {
     overflow: hidden;
     position: relative;
     width: 100%;
-    height: 350px;
+    height: 400px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: var(--radius-lg);
+    border-radius: 0;
     margin-bottom: 40px;
 }
 
@@ -1335,6 +1433,9 @@ textarea:focus {
     text-align: center;
     line-height: 1.6;
     margin-bottom: 40px;
+    width: 100%;
+    padding: 0 60px;
+    box-sizing: border-box;
 }
 
 /* ===================================
@@ -1345,6 +1446,10 @@ textarea:focus {
     flex-wrap: wrap;
     gap: 30px;
     margin-top: 40px;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 60px;
+    box-sizing: border-box;
 }
 
 #tabMenu {
@@ -1408,12 +1513,16 @@ textarea:focus {
 #links2 {
     width: 100%;
     margin-top: 30px;
+    max-width: 100%;
+    padding: 0 60px;
+    box-sizing: border-box;
 }
 
 #links2 ul {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
+    width: 100%;
 }
 
 #links2 ul li {

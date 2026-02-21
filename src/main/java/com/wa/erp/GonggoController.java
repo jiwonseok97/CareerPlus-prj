@@ -21,7 +21,7 @@ public class GonggoController {
 
 	@RequestMapping( value ="/gongGoList.do")
 
-	// 공고 리스??
+	// 怨듦퀬 由ъ뒪??
 	public ModelAndView gongGoList(
 
 			BoardSearchDTO boardSearchDTO) {
@@ -30,9 +30,9 @@ public class GonggoController {
 
 		int gonggoListCnt = this.gonggoService.getGonggoListCnt(boardSearchDTO);
 
-		Map<String, Integer> boardMap = Util.getPagingMap(boardSearchDTO.getSelectPageNo() // ?�택???�이지 번호
-				, boardSearchDTO.getRowCntPerPage() // ?�이지 ??보여�?검???�의 개수
-				, gonggoListCnt // 검?�결�?개수
+		Map<String, Integer> boardMap = Util.getPagingMap(boardSearchDTO.getSelectPageNo() // ?좏깮???섏씠吏 踰덊샇
+				, boardSearchDTO.getRowCntPerPage() // ?섏씠吏 ??蹂댁뿬以?寃???됱쓽 媛쒖닔
+				, gonggoListCnt // 寃?됯껐怨?媛쒖닔
 		);
 
 		boardSearchDTO.setSelectPageNo((int) boardMap.get("selectPageNo"));
@@ -50,7 +50,7 @@ public class GonggoController {
 				+ ", gonggoStatus=" + boardSearchDTO.getGonggoStatus()
 				+ ", sort=" + boardSearchDTO.getSort());
 		/*
-		 * System.out.print("?�작"+boardSearchDTO.getBegin_rowNo());
+		 * System.out.print("?쒖옉"+boardSearchDTO.getBegin_rowNo());
 		 * System.out.print("??+boardSearchDTO.getEnd_rowNo());
 		 */
 
@@ -73,7 +73,7 @@ public class GonggoController {
 	}
 	
 	//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
-	// /gonggo ?�테??
+	// /gonggo ?뷀뀒??
 	//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 @RequestMapping(value="/gonggoDetailForm.do")
 public ModelAndView gonggoDetailForm(
@@ -91,7 +91,7 @@ public ModelAndView gonggoDetailForm(
 	
 	return mav;
 }
-// 공고 ?�정
+// 怨듦퀬 ?섏젙
 @RequestMapping( value ="/gongGoRegForm.do")
 public ModelAndView gongGoRegForm(
 		BoardSearchDTO boardSearchDTO
@@ -103,7 +103,7 @@ public ModelAndView gongGoRegForm(
 	return mav;
 }
 
-//공고?�록 ?�이지
+//怨듦퀬?깅줉 ?섏씠吏
 	@RequestMapping( 
 		value="/gongGoReg.do" 
 		,method=RequestMethod.POST
@@ -123,7 +123,7 @@ public Map<String,String> gongGoRegProc (
 	return resultMap;
 }
 	
-	// 공고 ?�정/??��?�이지
+	// 怨듦퀬 ?섏젙/??젣?섏씠吏
 	@RequestMapping(value = "/gonggoUpDelForm.do")
 	
 	public ModelAndView gonggoUpDelForm(
@@ -146,7 +146,7 @@ public Map<String,String> gongGoRegProc (
 		return mav;
 	}
 	
-	// 공고 ??��
+	// 怨듦퀬 ??젣
 	@RequestMapping( 
 			value="/gonggoDelProc.do" 
 			,method=RequestMethod.POST
@@ -165,7 +165,7 @@ public Map<String,String> gongGoRegProc (
 		return resultMap;
 	}
 	
-	// 공고 ?�정
+	// 怨듦퀬 ?섏젙
 	@RequestMapping(value = "/gonggoUpProc.do", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public Map<String, String> gonggoUpProc(
@@ -181,7 +181,7 @@ public Map<String,String> gongGoRegProc (
 		return resultMap;
 	}
 	
-	// 공고 ?�력??지??	
+	// 怨듦퀬 ?대젰??吏??	
 	@RequestMapping(value="/gonggoSupportProc.do"
 			,method=RequestMethod.POST
 			,produces="application/json;charset=UTF-8"

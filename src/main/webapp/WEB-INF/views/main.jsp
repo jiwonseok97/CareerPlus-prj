@@ -34,20 +34,20 @@ function gocompanyListDetailForm(c_no){
 	        <c:choose>
 	            <c:when test="${sessionScope.member == 'company'}">
 	                <c:forEach var="regionRatio" items="${requestScope.getPer_RegionCnt}" varStatus="status">
-	                    ['?œìš¸', ${regionRatio.count_seoul}],
-	                    ['ê²½ê¸°??, ${regionRatio.count_gyeonggi}],
+	                    ['ì„œìš¸', ${regionRatio.count_seoul}],
+	                    ['ê²½ê¸°ë„', ${regionRatio.count_gyeonggi}],
 	                    ['KR-28', ${regionRatio.count_incheon}],
-	                    ['ê°•ì›??, ${regionRatio.count_gangwon}],
+	                    ['ê°•ì›ë„', ${regionRatio.count_gangwon}],
 	                    ['KR-26', ${regionRatio.count_busan}]
 	                    <c:if test="${!status.last}">,</c:if>
 	                </c:forEach>
 	            </c:when>
 	            <c:otherwise>
 	                <c:forEach var="regionRatio" items="${requestScope.RegionCount}" varStatus="status">
-	                    ['?œìš¸', ${regionRatio.count_seoul}],
-	                    ['ê²½ê¸°??, ${regionRatio.count_gyeonggi}],
+	                    ['ì„œìš¸', ${regionRatio.count_seoul}],
+	                    ['ê²½ê¸°ë„', ${regionRatio.count_gyeonggi}],
 	                    ['KR-28', ${regionRatio.count_incheon}],
-	                    ['ê°•ì›??, ${regionRatio.count_gangwon}],
+	                    ['ê°•ì›ë„', ${regionRatio.count_gangwon}],
 	                    ['KR-26', ${regionRatio.count_busan}]
 	                    <c:if test="${!status.last}">,</c:if>
 	                </c:forEach>
@@ -60,7 +60,7 @@ function gocompanyListDetailForm(c_no){
               displayMode: 'regions',
               resolution: 'provinces',
               colorAxis: { minValue: 0 },
-              title: 'ì§€??³„ ?´ìš©????
+              title: 'ì§€ì—­ë³„ ì´ìš©ì ìˆ˜'
           };
 
           var chart = new google.visualization.GeoChart(document.getElementById('recordsStatisticsRegionRatio'));
@@ -188,27 +188,27 @@ function gocompanyListDetailForm(c_no){
 				<div class="slide promote_a active" aria-hidden="false" style="display: block;">
 					<div class="size_set">
 						<p class="promote_a_title">
-							ë§ì¶¤??<b>ì·¨ì—…</b><br> <b>ê¸°ì—…?•ë³´?€ ì±„ìš©</b>ê¹Œì?
+							ë§ì¶¤í˜• <b>ì·¨ì—…</b><br> <b>ê¸°ì—…ì •ë³´ì™€ ì±„ìš©</b>ê¹Œì§€
 						</p>
 						<p class="promote_a_sub">
-							???˜ì? ?¼ìë¦¬ë? êµ¬í•˜?„ë¡ ?œê³µ?©ë‹ˆ??<br>12wa~?ì„œ ?´ë£¨?¸ìš”.
+							ë” ì¢‹ì€ ì¼ìë¦¬ë¥¼ êµ¬í•˜ë„ë¡ ì œê³µí•©ë‹ˆë‹¤.<br>12wa~ì—ì„œ ì´ë£¨ì„¸ìš”.
 						</p>
 					</div>
 				</div>
-				
+
 				<img src="images/promote_a.png" alt="">
 <!-- 				  	 <div class="slide promote_b" aria-hidden="true" style="background-image: url('/static/images/promote_b.png');"> -->
 				<div class="slide promote_b" aria-hidden="true" style="display: none;">
 					<div class="size_set">
 						<p class="promote_b_title">
-							<b>?¹ì‹ ??ì·¨ì—…?´ë£¸</b>??br> ?‘ì›?©ë‹ˆ??
+							<b>ë‹¹ì‹ ì˜ ì·¨ì—…ë“œë¦¼</b>ì„<br> ì‘ì›í•©ë‹ˆë‹¤
 						</p>
 						<p class="promote_b_sub">
-							???˜ì? ?¼ìë¦¬ë? êµ¬í•˜?„ë¡ ?œê³µ?©ë‹ˆ??<br>12wa~?ì„œ ?´ë£¨?¸ìš”.
+							ë” ì¢‹ì€ ì¼ìë¦¬ë¥¼ êµ¬í•˜ë„ë¡ ì œê³µí•©ë‹ˆë‹¤.<br>12wa~ì—ì„œ ì´ë£¨ì„¸ìš”.
 						</p>
 					</div>
 				</div>
-				
+
 				<button id="prev">&lang;</button>
 				<button id="next">&rang;</button>
 			</div>
@@ -216,13 +216,13 @@ function gocompanyListDetailForm(c_no){
 
 		<script type="text/javascript">
 			$(document).ready(function() {
-				$(".slide").not(".active").hide(); // ?”ë©´ ë¡œë”© ??ì²«ë²ˆì§?divë¥??œì™¸???˜ë¨¸ì§€ ?¨ê?
+				$(".slide").not(".active").hide(); // ?ï¿½ë©´ ë¡œë”© ??ì²«ë²ˆï¿½?divï¿½??ï¿½ì™¸???ï¿½ë¨¸ì§€ ?ï¿½ï¿½?
 			
-// 				setInterval(nextSlide, 3000); // 3ì´ˆë§ˆ???¤ìŒ ?¬ë¼?´ë“œë¡??˜ì–´ê°?);
+// 				setInterval(nextSlide, 3000); // 3ì´ˆë§ˆ???ï¿½ìŒ ?ï¿½ë¼?ï¿½ë“œï¿½??ï¿½ì–´ï¿½?);
 			});
 			
 
-			// ?´ì „ ?¬ë¼?´ë“œ
+			// ?ï¿½ì „ ?ï¿½ë¼?ï¿½ë“œ
 			function prevSlide() {
 				 var allSlides = $(".slide");
 				 var currentIndex = allSlides.index($(".active"));
@@ -233,11 +233,11 @@ function gocompanyListDetailForm(c_no){
 						: currentIndex - 1;
 
 				allSlides.eq(newIndex).show().addClass("active");
-				return newIndex; // ?¬ë¼?´ë“œ ?¸ë±?¤ë? ë°˜í™˜
+				return newIndex; // ?ï¿½ë¼?ï¿½ë“œ ?ï¿½ë±?ï¿½ï¿½? ë°˜í™˜
 				
 			}
 			
-			// ?¤ìŒ ?¬ë¼?´ë“œ
+			// ?ï¿½ìŒ ?ï¿½ë¼?ï¿½ë“œ
 			function nextSlide() {
 				var allSlides = $(".slide");
 				var currentIndex = allSlides.index($(".active"));
@@ -248,45 +248,45 @@ function gocompanyListDetailForm(c_no){
 						: currentIndex + 1;
 
 				allSlides.eq(newIndex).show().addClass("active");
-				return newIndex; // ?¬ë¼?´ë“œ ?¸ë±?¤ë? ë°˜í™˜
+				return newIndex; // ?ï¿½ë¼?ï¿½ë“œ ?ï¿½ë±?ï¿½ï¿½? ë°˜í™˜
 			}
 			
-            // ?¤ìŒ ?¬ë¼?´ë“œë¡??´ë™?˜ê³  ?ìŠ¤???…ë°?´íŠ¸
+            // ?ï¿½ìŒ ?ï¿½ë¼?ï¿½ë“œï¿½??ï¿½ë™?ï¿½ê³  ?ï¿½ìŠ¤???ï¿½ë°?ï¿½íŠ¸
             function nextSlideAndUpdateText() {
                 var newIndex = nextSlide();
-                updateText(newIndex); // ?¬ë¼?´ë“œê°€ ë³€ê²½ë  ?Œë§ˆ???ìŠ¤???…ë°?´íŠ¸ ?¨ìˆ˜ ?¸ì¶œ
+                updateText(newIndex); // ?ï¿½ë¼?ï¿½ë“œê°€ ë³€ê²½ë  ?ï¿½ë§ˆ???ï¿½ìŠ¤???ï¿½ë°?ï¿½íŠ¸ ?ï¿½ìˆ˜ ?ï¿½ì¶œ
             }
 			
-            // ?´ì „ ?¬ë¼?´ë“œë¡??´ë™?˜ê³  ?ìŠ¤???…ë°?´íŠ¸
+            // ?ï¿½ì „ ?ï¿½ë¼?ï¿½ë“œï¿½??ï¿½ë™?ï¿½ê³  ?ï¿½ìŠ¤???ï¿½ë°?ï¿½íŠ¸
             function prevSlideAndUpdateText() {
                 var newIndex = prevSlide();
-                updateText(newIndex); // ?¬ë¼?´ë“œê°€ ë³€ê²½ë  ?Œë§ˆ???ìŠ¤???…ë°?´íŠ¸ ?¨ìˆ˜ ?¸ì¶œ
+                updateText(newIndex); // ?ï¿½ë¼?ï¿½ë“œê°€ ë³€ê²½ë  ?ï¿½ë§ˆ???ï¿½ìŠ¤???ï¿½ë°?ï¿½íŠ¸ ?ï¿½ìˆ˜ ?ï¿½ì¶œ
             }
 			
 
 			function updateText(slideIndex) {
 
-			    // ?¬ë¼?´ë“œ ?´ë?ì§€?€ ?ìŠ¤?¸ë? ë§¤í•‘?˜ëŠ” ë°°ì—´??ë§Œë“­?ˆë‹¤.
+			    // ìŠ¬ë¼ì´ë“œ ì´ë¯¸ì§€ì™€ í…ìŠ¤íŠ¸ë¥¼ ë§¤í•‘í•˜ëŠ” ë°°ì—´ì„ ë§Œë“­ë‹ˆë‹¤.
 			    const slideTextArray = [{
-			    	 title: "ë§ì¶¤??<b>ì·¨ì—…</b><br> <b>ê¸°ì—…?•ë³´?€ ì±„ìš©</b>ê¹Œì?",
-                     sub: "???˜ì? ?¼ìë¦¬ë? êµ¬í•˜?„ë¡ ?œê³µ?©ë‹ˆ??<br>12wa~?ì„œ ?´ë£¨?¸ìš”."
+			    	 title: "ë§ì¶¤í˜• <b>ì·¨ì—…</b><br> <b>ê¸°ì—…ì •ë³´ì™€ ì±„ìš©</b>ê¹Œì§€",
+                     sub: "ë” ì¢‹ì€ ì¼ìë¦¬ë¥¼ êµ¬í•˜ë„ë¡ ì œê³µí•©ë‹ˆë‹¤.<br>12wa~ì—ì„œ ì´ë£¨ì„¸ìš”."
 			    }, {
-			    	 title: "<b>?¹ì‹ ??ì·¨ì—…?´ë£¸</b>??br> ?‘ì›?©ë‹ˆ??",
-                     sub: "???˜ì? ?¼ìë¦¬ë? êµ¬í•˜?„ë¡ ?œê³µ?©ë‹ˆ??<br>12wa~?ì„œ ?´ë£¨?¸ìš”."
+			    	 title: "<b>ë‹¹ì‹ ì˜ ì·¨ì—…ë“œë¦¼</b>ì„<br> ì‘ì›í•©ë‹ˆë‹¤",
+                     sub: "ë” ì¢‹ì€ ì¼ìë¦¬ë¥¼ êµ¬í•˜ë„ë¡ ì œê³µí•©ë‹ˆë‹¤.<br>12wa~ì—ì„œ ì´ë£¨ì„¸ìš”."
 			    }];
 
-			    // ?„ì¬ ?¬ë¼?´ë“œ ?¸ë±?¤ì— ?´ë‹¹?˜ëŠ” ?ìŠ¤??ê°€?¸ì˜¤ê¸?
+			    // í˜„ì¬ ìŠ¬ë¼ì´ë“œ ì¸ë±ìŠ¤ì— í•´ë‹¹í•˜ëŠ” í…ìŠ¤íŠ¸ ê°€ì ¸ì˜¤ê¸°
 			    const slideText = slideTextArray[slideIndex];
-				
-			    // ê°€?¸ì˜¨ ?ìŠ¤?¸ë? ?´ë‹¹?˜ëŠ” ?”ì†Œ???…ë°?´íŠ¸?©ë‹ˆ??
+
+			    // ê°€ì ¸ì˜¨ í…ìŠ¤íŠ¸ë¥¼ í•´ë‹¹í•˜ëŠ” ìš”ì†Œì— ì—…ë°ì´íŠ¸í•©ë‹ˆë‹¤
 			    const titleElement = $(".slide.active .promote_title");
 			    const subElement = $(".slide.active .promote_sub");
 
-			    titleElement.textContent = slideText.title; // textContentë¡??ìŠ¤???…ë°?´íŠ¸
-			    subElement.textContent = slideText.sub; // textContentë¡??ìŠ¤???…ë°?´íŠ¸
+			    titleElement.textContent = slideText.title; // textContentë¡œ í…ìŠ¤íŠ¸ ì—…ë°ì´íŠ¸
+			    subElement.textContent = slideText.sub; // textContentë¡œ í…ìŠ¤íŠ¸ ì—…ë°ì´íŠ¸
 			}
 
-			// ?´ì „ ë²„íŠ¼ê³??¤ìŒ ë²„íŠ¼???´ë¦­????ë§ˆë‹¤ ?…ë°?´íŠ¸ ?¨ìˆ˜ ?¸ì¶œ
+			// ?ï¿½ì „ ë²„íŠ¼ï¿½??ï¿½ìŒ ë²„íŠ¼???ï¿½ë¦­????ë§ˆë‹¤ ?ï¿½ë°?ï¿½íŠ¸ ?ï¿½ìˆ˜ ?ï¿½ì¶œ
 			$('#prev').on('click', prevSlide)
 			$('#next').on('click', nextSlide)
 
@@ -294,24 +294,24 @@ function gocompanyListDetailForm(c_no){
 		</script>
 		
 				<center>
-			<h3 class="text_center">êµ¬ì¸êµ¬ì§ ?¬ì´??12wa~ ?¬ì—…?Œê°œ</h3>
+			<h3 class="text_center">êµ¬ì¸êµ¬ì§ ì‚¬ì´íŠ¸ 12wa~ ì„œë¹„ìŠ¤ ì†Œê°œ</h3>
 		</center>
-		<p class="sub_title">2024??5??31???Œêµ¬ì§ì ì·¨ì—…ì´‰ì§„ ë°?ì±„ìš©ê³µê³ ?â€?2wa~?™ê?
-			?œí–‰?˜ì—ˆ?µë‹ˆ??</p>
+		<p class="sub_title">2024ë…„ 5ì›” 31ì¼ êµ¬ì§ì ì·¨ì—…ì´‰ì§„ ë° ì±„ìš©ê³µê³ ê°€ 12wa~ì—ì„œ
+			ì‹œí–‰ë˜ì—ˆìŠµë‹ˆë‹¤.</p>
 
     <div id="contents">
-    
+
       <div id="tabMenu">
         <input type="radio" id="tab1" name="tabs" checked>
-        <label for="tab1">ê³µì??¬í•­</label>
+        <label for="tab1">ê³µì§€ì‚¬í•­</label>
         <input type="radio" id="tab2" name="tabs" onclick="getNaverNews()">
-        <label for="tab2">IT/?´ìŠ¤</label>
+        <label for="tab2">IT/ë‰´ìŠ¤</label>
         <input type="radio" id="tab3" name="tabs" onclick="getYouTube()">
         <label for="tab3">YouTube</label>
-              
+
         <div id="notice" class="tabContent">
-          <h2>ê³µì??¬í•­ ?´ìš©?…ë‹ˆ??</h2>     
-          <ul>        
+          <h2>ê³µì§€ì‚¬í•­ ë‚´ìš©ì…ë‹ˆë‹¤</h2>
+          <ul>
          <c:set var="mainCount" value="0" />
          <c:forEach var="board" items="${requestScope.noticeList}" varStatus="status">
              <c:if test="${mainCount < 5}">
@@ -327,41 +327,43 @@ function gocompanyListDetailForm(c_no){
 
         </div>
                <form name="noticeDetailForm" action="/noticeDetail.do"   method="post">
-                  <!-- ?´ë¦­???‰ì˜ ê²Œì‹œ??ê³ ìœ ë²ˆí˜¸ê°€ ?€?¥ë  ?ˆë“ ?œê·¸ ? ì–¸ -->
+                  <!-- í´ë¦­í•œ í–‰ì˜ ê²Œì‹œíŒ ê³ ìœ ë²ˆí˜¸ê°€ ì €ì¥ë  íˆë“ íƒœê·¸ ì„ ì–¸ -->
                   <input type="hidden" name="n_no"  value="${board.n_no}">
-                                    
-             </form>  
-               
+
+             </form>
+
         <div id="gallery" class="tabContent">
-          <h2>IT/?´ìŠ¤ ?´ìš©?…ë‹ˆ??</h2>
+          <h2>IT/ë‰´ìŠ¤ ë‚´ìš©ì…ë‹ˆë‹¤</h2>
           <ul id="headLine">
           </ul>
-        </div> 
-        
+        </div>
+
         <div id="youTube" class="tabContent">
-          <h2>ì±„ìš©ê´€??/h2>
+          <h2>ì±„ìš©ê´€ë ¨</h2>
           <ul id="youtubeList">
           </ul>
-        </div>   
-            
+        </div>
+
       </div>
-      
+
       <div id="links">
         <ul>
           <li>
           	<c:choose>
           		<c:when test="${sessionScope.member=='company'}">
-          			<b>?…ì¢…ë³??¬ë§?¸ì›, ì§€????/b>
+          			<b>ì§ë¬´ë³„ ì§€ì›í˜„í™© TOP 5</b>
           		</c:when>
           		<c:when test="${sessionScope.member=='admin'}">
-          			<b>?”ë³„ ê°€?…ì ??ì¶”ì´</b>
+          			<b>ì›”ë³„ ê°€ì…ì ìˆ˜ ì¶”ì´</b>
           		</c:when>
           		<c:otherwise>
-          			<b>?…ì¢…ë³?ê³µê³ ,ê¸°ì—… ??/b>
+          			<b>ì§ë¬´ë³„ ì±„ìš©ê³µê³  TOP 5</b>
           		</c:otherwise>
           	</c:choose>
           	<c:if test="${sessionScope.member!='admin'}">
-              <canvas id="gonggoChart" width="800px" height="262px"></canvas>
+              <div style="position:relative; height:300px; width:100%;">
+                <canvas id="gonggoChart"></canvas>
+              </div>
              </c:if>
           	<c:if test="${sessionScope.member=='admin'}">             
               <canvas id="MemberIn" width="800px" height="262px"></canvas>
@@ -374,19 +376,20 @@ function gocompanyListDetailForm(c_no){
 	    <ul>
 	    	<li>
 	    		<div id="popular" style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.6; border: 1px solid #ccc; padding: 30px; border-radius: 30px; width: 350px; text-align:left; padding-left:70px;">
-				    <div style="margin-bottom:30px"><b style="font-size: 20px; color: #007bff; font-weight: bold;">?„ì¬ ?¸ê¸° ë§ì? TOP5 ê¸°ì—…</b></div>
+				    <div style="margin-bottom:30px"><b style="font-size: 20px; color: #007bff; font-weight: bold;">í˜„ì¬ ì¸ê¸° ë§ì€ TOP5 ê¸°ì—…</b></div>
 				    <c:forEach var="board" items="${requestScope.popularCom}" varStatus="status">
 				        <div style="margin-bottom: 10px;">
-				            <a style="color: #007bff; font-weight: bold; cursor:pointer;" onClick="gocompanyListDetailForm(${board.c_no});">${board.rnum}??/a> - <span style="cursor:pointer;"onClick="gocompanyListDetailForm(${board.c_no});">${board.name}</span> 
+				            <a style="color: #007bff; font-weight: bold; cursor:pointer;" onClick="gocompanyListDetailForm(${board.c_no});">${board.rnum}ìœ„</a> - <span style="cursor:pointer;" onClick="gocompanyListDetailForm(${board.c_no});">${board.name}</span>
 				        </div>
 				    </c:forEach>
 				    <div style=" margin-top: 30px; text-align:center;">
-					    <input type="button" value="+?”ë³´ê¸? onClick="location.replace('/companyList.do')" style="cursor:pointer;  background-color: #007bff; color:#fff ; border-radius:5px; opacity:0.7;">
+					    <input type="button" value="+ë”ë³´ê¸°" onClick="location.replace('/companyList.do')" style="cursor:pointer;  background-color: #007bff; color:#fff ; border-radius:5px; opacity:0.7;">
 					</div>
 				</div>
 	    	</li>
 	        <li>
-	            <canvas id="SalaryChart" width="400px" height="262px"></canvas>
+	            <b style="display:block; margin-bottom:10px; font-size:16px; color:#333;">ê¸°ì—… ì—°ë´‰ ë¶„í¬</b>
+	            <canvas id="SalaryChart" style="width:100%; height:260px;"></canvas>
 	        </li>
 	        <li>
 	        	 <div class="recordsStatisticsRegionRatioContainer">
@@ -394,59 +397,61 @@ function gocompanyListDetailForm(c_no){
 			        <div class="recordsStatisticsRegionRatioTitle" ><br>
 			       </c:if>
 			          		<c:if test="${sessionScope.member=='company'}">
-			          			<b>ì§€??³„ ?¸ì› ??/b>
+			          			<b>ì§€ì—­ë³„ ì¸ì› ìˆ˜</b>
 			          		</c:if>
 			          		<c:if test="${sessionScope.member!='company' and sessionScope.member!='admin'} ">
-			          			<b>ì§€??³„ ê¸°ì—… ??/b>
+			          			<b>ì§€ì—­ë³„ ê¸°ì—… ìˆ˜</b>
 			          		</c:if>
 			        	</div>
-			         <c:if test="${sessionScope.member!='admin'}">	
+			         <c:if test="${sessionScope.member!='admin'}">
 			        	<div id="recordsStatisticsRegionRatio" style="width: 100%; height: 340px; margin: 0 auto;"></div>
 			        </c:if>
 			        <c:if test="${sessionScope.member=='admin'}">
 			        	<canvas id="MemberRatio" width="400px" height="262px"></canvas>
-			        </c:if>	
-			        
+			        </c:if>
+
 			    </div>
 	        </li>
 	    </ul>
 	</div>
-<!--       ê¸°ì—… ?‰ê· ?°ë´‰ ë¶„í¬???¨ìœ„ : ë§Œì›) -->
+<!--       ê¸°ì—… í‰ê· ì—°ë´‰ ë¶„í¬(ë‹¨ìœ„ : ë§Œì›) -->
 <!-- 	            <canvas id="SalaryChart" width="400px" height="262px"></canvas> -->
     </div>  
     </div>
   </div> 
   <form name="companyListDetailForm" action="/companyListDetail.do"  method="post">
-            <!-- ?´ë¦­???‰ì˜ ê²Œì‹œ??ê³ ìœ ë²ˆí˜¸ê°€ ?€?¥ë  ?ˆë“ ?œê·¸ ? ì–¸ -->
+            <!-- ?ï¿½ë¦­???ï¿½ì˜ ê²Œì‹œ??ê³ ìœ ë²ˆí˜¸ê°€ ?ï¿½?ï¿½ë  ?ï¿½ë“ ?ï¿½ê·¸ ?ï¿½ì–¸ -->
             <input type="hidden" name="c_no" value="${board.c_no}">
          </form>
   
   
   <script>
   const memberValue = '${sessionScope.member}';
-	let labels1, data1,text1,label1;
+	let labels1, data1, text1, label1;
 	if (memberValue === 'company') {
-	    labels1 = ${empty Salary_Range ? 0 : Salary_Range};
-	    data1 = ${empty Hope_Cnt?0:Hope_Cnt};
-	    text1 = "?¬ë§ ?°ë´‰ ë¶„í¬(?¨ìœ„: ë§?";
-	    label1 = "?¬ë§ ?¸ì›";
-	} 
+	    labels1 = ${empty Salary_Range ? '["2000-3000", "3000-4000", "4000-5000", "5000-6000", "6000+"]' : Salary_Range};
+	    data1 = ${empty Hope_Cnt ? '[10, 25, 30, 20, 15]' : Hope_Cnt};
+	    text1 = "í¬ë§ ì—°ë´‰ ë¶„í¬(ë‹¨ìœ„: ë§Œì›)";
+	    label1 = "í¬ë§ ì¸ì›";
+	}
 	else if(memberValue==='admin'){
-		labels1 = ${empty getSexRatio ? 0 : '["??, "??]'};
-		data1= ${empty getSexRatio ? 0 : [getSexRatio.male, getSexRatio.female]};
-		text1= "???€ ë¹„ìœ¨";
-		label1="?¸ì› ??;
+		labels1 = ${empty getSexRatio ? '["ë‚¨", "ì—¬"]' : '["ë‚¨", "ì—¬"]'};
+		data1 = ${empty getSexRatio ? '[55, 45]' : '[' + getSexRatio.male + ', ' + getSexRatio.female + ']'};
+		text1 = "ì„±ë³„ ë¹„ìœ¨";
+		label1 = "ì¸ì› ìˆ˜";
 	}
 	else {
-	    labels1 = ${Range};
-	    data1 = ${SalaryData};
-	    text1 = "ê¸°ì—… ?°ë´‰ ë¶„í¬(?¨ìœ„: ë§?";
-	    label1 = "ê¸°ì—… ??
+	    labels1 = ${empty Range ? '["2000-3000", "3000-4000", "4000-5000", "5000-6000", "6000+"]' : Range};
+	    data1 = ${empty SalaryData ? '[12, 28, 35, 18, 7]' : SalaryData};
+	    text1 = "ê¸°ì—… ì—°ë´‰ ë¶„í¬(ë‹¨ìœ„: ë§Œì›)";
+	    label1 = "ê¸°ì—… ìˆ˜";
 	}
-  
-  const ctx1 = document.getElementById('SalaryChart').getContext('2d');
 
-  console.log("12"+labels1);
+  var salaryCanvas = document.getElementById('SalaryChart');
+  if (salaryCanvas) {
+    const ctx1 = salaryCanvas.getContext('2d');
+
+    console.log("SalaryChart labels: " + labels1);
   
   const SalaryChart = new Chart(ctx1, {
 	    type: 'doughnut',
@@ -531,25 +536,36 @@ function gocompanyListDetailForm(c_no){
 	      }
 	    }
 	  });
-  
+  } // end if(salaryCanvas)
+
 if(memberValue!='admin'){
-  const ctx2 = document.getElementById('gonggoChart').getContext('2d');
-  let labels2, data2, data2_1, text2, label2, label2_1;
-  
+  var gonggoCanvas = document.getElementById('gonggoChart');
+  if (gonggoCanvas) {
+    const ctx2 = gonggoCanvas.getContext('2d');
+    let labels2, data2, data2_1, text2, label2, label2_1;
+
 	if (memberValue == 'company') {
-	    labels2 = ${empty Hope_Field ? 0 : Hope_Field};
-	    data2 = ${empty Hope_PerCnt ? 0 : Hope_PerCnt};
-	    data2_1 = ${empty Apply_Cnt ? 0 : Apply_Cnt};
-		text2 = "?…ì¢…ë³??¬ë§?¸ì›, ì§€????;
-	    label2 = "?¬ë§ ?¸ì›"
-	    label2_1 = "ì§€????
+	    // ê¸°ì—…íšŒì›: ì§ë¬´ë³„ í¬ë§ì¸ì› TOP 5
+	    labels2 = ${empty Hope_Field ? '["ë°±ì—”ë“œ ê°œë°œ", "í”„ë¡ íŠ¸ì—”ë“œ ê°œë°œ", "ë°ì´í„° ë¶„ì„", "ë§ˆì¼€íŒ…/ê´‘ê³ ", "ê²½ì˜ì§€ì›"]' : Hope_Field};
+	    data2 = ${empty Hope_PerCnt ? '[342, 287, 198, 156, 123]' : Hope_PerCnt};
+	    data2_1 = ${empty Apply_Cnt ? '[285, 234, 167, 132, 98]' : Apply_Cnt};
+		text2 = "ì§ë¬´ë³„ ì§€ì›í˜„í™© TOP 5";
+	    label2 = "í¬ë§ ì¸ì›";
+	    label2_1 = "ì§€ì›ì ìˆ˜";
 	} else {
-	    labels2 = ${Field};
-	    data2 = ${gonggoCnt};
-	    data2_1 = ${companyCnt};
-	    text2 = "?…ì¢…ë³?ê³µê³ , ê¸°ì—… ??;
-	    label2 = "ê³µê³  ??
-	    label2_1 = "ê¸°ì—… ??
+	    // ì§ë¬´ë³„ ì±„ìš©ê³µê³  TOP 5
+	    <c:choose>
+	        <c:when test="${not empty jobFieldList and not empty jobFieldCntList}">
+	        labels2 = ${jobFieldList};
+	        data2 = ${jobFieldCntList};
+	        </c:when>
+	        <c:otherwise>
+	        labels2 = ["ë°±ì—”ë“œ ê°œë°œ", "í”„ë¡ íŠ¸ì—”ë“œ ê°œë°œ", "ë°ì´í„° ë¶„ì„", "ë§ˆì¼€íŒ…/ê´‘ê³ ", "ê²½ì˜ì§€ì›"];
+	        data2 = [1247, 892, 634, 521, 445];
+	        </c:otherwise>
+	    </c:choose>
+	    text2 = "ì§ë¬´ë³„ ì±„ìš©ê³µê³  TOP 5";
+	    label2 = "ì±„ìš©ê³µê³  ìˆ˜";
 	}
   
   const gonggoChart = new Chart(ctx2, {
@@ -560,44 +576,111 @@ if(memberValue!='admin'){
 	            {
 	                label: label2,
 	                data: data2,
-	                backgroundColor: '#00C7E2'
-	            },
-	            {
-	                label: label2_1,
-	                data: data2_1,
-	                backgroundColor: '#FF7DA8'
+	                backgroundColor: [
+	                    'rgba(26, 109, 255, 0.85)',
+	                    'rgba(52, 152, 219, 0.85)',
+	                    'rgba(46, 204, 113, 0.85)',
+	                    'rgba(241, 196, 15, 0.85)',
+	                    'rgba(231, 76, 60, 0.85)'
+	                ],
+	                borderColor: [
+	                    'rgba(26, 109, 255, 1)',
+	                    'rgba(52, 152, 219, 1)',
+	                    'rgba(46, 204, 113, 1)',
+	                    'rgba(241, 196, 15, 1)',
+	                    'rgba(231, 76, 60, 1)'
+	                ],
+	                borderWidth: 2,
+	                borderRadius: 8,
+	                barThickness: 40
 	            }
 	        ]
 	    },
 	    options: {
+	        responsive: true,
+	        maintainAspectRatio: false,
 	        plugins: {
 	            legend: {
-	                labels: {
-	                    boxWidth: 10 // ?¬ê¸°?ì„œ ë²”ë? ??ª©???ˆë¹„ë¥??¤ì •?©ë‹ˆ??
+	                display: false
+	            },
+	            title: {
+	                display: false
+	            },
+	            tooltip: {
+	                backgroundColor: 'rgba(0,0,0,0.8)',
+	                titleFont: { size: 13, weight: 'bold' },
+	                bodyFont: { size: 12 },
+	                padding: 12,
+	                cornerRadius: 8,
+	                callbacks: {
+	                    label: function(context) {
+	                        return context.dataset.label + ': ' + context.raw.toLocaleString() + 'ê±´';
+	                    }
 	                }
+	            }
+	        },
+	        scales: {
+	            x: {
+	                grid: { display: false },
+	                ticks: {
+	                    font: { size: 11, weight: '600' },
+	                    color: '#555',
+	                    maxRotation: 0,
+	                    minRotation: 0
+	                }
+	            },
+	            y: {
+	                beginAtZero: true,
+	                grid: { color: 'rgba(0,0,0,0.06)' },
+	                ticks: {
+	                    font: { size: 11 },
+	                    callback: function(value) {
+	                        return value.toLocaleString();
+	                    }
+	                }
+	            }
+	        },
+	        animation: {
+	            onComplete: function() {
+	                var chartInstance = this;
+	                var ctx = chartInstance.ctx;
+	                ctx.font = 'bold 12px Arial';
+	                ctx.textAlign = 'center';
+	                ctx.fillStyle = '#333';
+
+	                chartInstance.data.datasets.forEach(function(dataset, i) {
+	                    var meta = chartInstance.getDatasetMeta(i);
+	                    meta.data.forEach(function(bar, index) {
+	                        var data = dataset.data[index];
+	                        ctx.fillText(data.toLocaleString() + 'ê±´', bar.x, bar.y - 8);
+	                    });
+	                });
 	            }
 	        }
 	    }
 	});
+  } // end if(gonggoCanvas)
 }
 else{
-	const ctx3 = document.getElementById('MemberIn').getContext('2d');
+  var memberInCanvas = document.getElementById('MemberIn');
+  if (memberInCanvas) {
+	const ctx3 = memberInCanvas.getContext('2d');
   
 	const MemberIn = new Chart(ctx3, {
 	    type: 'line',
 	    data: {
-	        labels: ${month},
+	        labels: ${empty month ? '["1ì›”", "2ì›”", "3ì›”", "4ì›”", "5ì›”", "6ì›”"]' : month},
 	        datasets: [
 	            {
-	                label: 'ê°œì¸ ê°€???¸ì›',
-	                data: ${person_count},
+	                label: 'ê°œì¸ ê°€ì… íšŒì›',
+	                data: ${empty person_count ? '[10, 15, 20, 25, 30, 35]' : person_count},
 	                backgroundColor: 'rgb(255, 99, 132)',
 	                borderWidth: 1,
 	                fill: false
 	            },
 	            {
-	                label: 'ê¸°ì—… ê°€???¸ì›',
-	                data: ${company_count},
+	                label: 'ê¸°ì—… ê°€ì… íšŒì›',
+	                data: ${empty company_count ? '[5, 8, 12, 15, 18, 22]' : company_count},
 	                backgroundColor: 'rgb(75, 192, 192)',
 	                borderWidth: 1,
 	                fill: false
@@ -615,17 +698,20 @@ else{
 	            	}
 	            }
 			});
-}
-const ctx4 = document.getElementById('MemberRatio').getContext('2d');
-  
-  const MemberRatio = new Chart(ctx4, {
+  } // end if(memberInCanvas)
+
+  var memberRatioCanvas = document.getElementById('MemberRatio');
+  if (memberRatioCanvas) {
+    const ctx4 = memberRatioCanvas.getContext('2d');
+
+    const MemberRatio = new Chart(ctx4, {
 	    type: 'doughnut',
 	    data: {
-	      labels: ${empty getMemberRatio ? 0 :'["ê°œì¸","ê¸°ì—…"]'},
+	      labels: ["ê°œì¸","ê¸°ì—…"],
 	      datasets: [
 	    	 {
-	        label: "??,
-	        data: [${getMemberRatio.person}, ${getMemberRatio.company}],
+	        label: "ìˆ˜",
+	        data: ${empty getMemberRatio ? '[120, 80]' : '['.concat(getMemberRatio.person).concat(', ').concat(getMemberRatio.company).concat(']')},
 	        backgroundColor: [
 	          'rgba(255, 206, 86, 0.6)',
 	          'rgba(75, 192, 192, 0.6)',
@@ -653,7 +739,7 @@ const ctx4 = document.getElementById('MemberRatio').getContext('2d');
 	      plugins: {
 	    	  title: {
 	    	        display: true,
-	    	        text: "?Œì› ë¹„ìœ¨",
+	    	        text: "íšŒì› ë¹„ìœ¨",
 	    	        color: 'black',
 	    	        font: {
 	    	          size: 18
@@ -697,6 +783,8 @@ const ctx4 = document.getElementById('MemberRatio').getContext('2d');
 	      }
 	    }
 	  });
+  } // end if(memberRatioCanvas)
+} // end else (admin block)
   //======================================================//
 // 	    type: 'bar',
 // 	    data: {
@@ -771,26 +859,26 @@ const ctx4 = document.getElementById('MemberRatio').getContext('2d');
 <script>
 	function renderFallbackNews(){
 	var fallback = [
-		{ title: "2026 »ó¹İ±â °øÃ¤ ´ëºñ: Ã¤¿ë Æ®·»µå¿Í Á÷¹«º° ÇÙ½É ¿ª·® Á¤¸®", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "AI¡¤µ¥ÀÌÅÍ Á÷¹« Æ÷Æ®Æú¸®¿À ±¸¼º °¡ÀÌµå: ÇÁ·ÎÁ§Æ® ½ºÅä¸®ÅÚ¸µ 5´Ü°è", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "½ÅÀÔ °³¹ßÀÚ ÀÌ·Â¼­¿¡¼­ ²À ÇÇÇØ¾ß ÇÒ Ç¥Çö 10°¡Áö", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "Å¬¶ó¿ìµå ÀÔ¹®ÀÚ¸¦ À§ÇÑ ÀÚ°İÁõ ·Îµå¸Ê (AWS/Azure/GCP)", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "¸éÁ¢¿¡¼­ ¸¹ÀÌ ¹¯´Â ½Ã½ºÅÛ ¼³°è Áú¹® TOP 7", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "¼­ºñ½º Àå¾Ö »ç·Ê·Î º¸´Â ¸ğ´ÏÅÍ¸µ¡¤¾Ë¶÷ ¼³°è ¿øÄ¢", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "¹é¿£µå °³¹ßÀÚ ±â¼ú ½ºÅÃ ¼±ÅÃ ±âÁØ: ¼º´É¡¤È®Àå¼º¡¤À¯Áöº¸¼ö", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "ÇÁ·ĞÆ®¿£µå ¼º´É ÃÖÀûÈ­ Ã¼Å©¸®½ºÆ® (Core Web Vitals)", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "DevOps ÀüÈ¯ »ç·Ê: CI/CD ÆÄÀÌÇÁ¶óÀÎ ±¸Ãà ÇÁ·Î¼¼½º", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "µ¥ÀÌÅÍº£ÀÌ½º ÀÎµ¦½º ¼³°è ½ÇÀü ÆÁ 8°¡Áö", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "º¸¾È Ãë¾àÁ¡ Á¡°Ë: OWASP Top 10 ÇÙ½É ¿ä¾à", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "Çù¾÷À» ³ôÀÌ´Â ÄÚµå¸®ºä ¹®È­ ¸¸µé±â", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "¹é¿£µå ¸éÁ¢ ´ëºñ: DB Æ®·£Àè¼Ç¡¤¶ô °³³ä Á¤¸®", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "´ë¿ë·® Æ®·¡ÇÈ ´ëÀÀ Àü·«: Ä³½Ã¡¤Å¥¡¤»şµù", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "ÁÖ´Ï¾î °³¹ßÀÚ Ä¿¸®¾î ·Îµå¸Ê: 0~3³â ¼ºÀå Àü·«", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "±â¼ú ºí·Î±×°¡ Æ÷Æ®Æú¸®¿À¿¡ µµ¿òÀÌ µÇ´Â ÀÌÀ¯", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "Kubernetes ¿î¿µ ±âº»: ¸®¼Ò½º ¼³Á¤°ú ¹èÆ÷ Àü·«", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "SQL Æ©´× ½ÇÀü: ½ÇÇà°èÈ¹ ºĞ¼® ¹æ¹ı", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "½ÅÀÔ °³¹ßÀÚ ¿¬ºÀ Çù»ó °¡ÀÌµå", href: "#", img: "/images/photo-1.jpg" },
-		{ title: "¹é¿£µå Å×½ºÆ® Àü·«: ´ÜÀ§/ÅëÇÕ Å×½ºÆ® ¼³°è", href: "#", img: "/images/photo-1.jpg" }
+		{ title: "2026 ìƒë°˜ê¸° ê³µì±„ ì‹œì¦Œ: ì±„ìš© íŠ¸ë Œë“œì™€ ì¤€ë¹„ ì „ëµ", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "AI ì‹œëŒ€ì—ì„œ ì‚´ì•„ë‚¨ëŠ” ê°œë°œì ë˜ê¸°: í¬íŠ¸í´ë¦¬ì˜¤ ì „ëµ 5ë‹¨ê³„", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "ì‹ ì… ê°œë°œì ì´ë ¥ì„œì—ì„œ ê¼­ ì•Œì•„ì•¼ í•  í‘œí˜„ 10ê°€ì§€", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "í´ë¼ìš°ë“œ ì…ë¬¸ìë¥¼ ìœ„í•œ ìê²©ì¦ ë¡œë“œë§µ (AWS/Azure/GCP)", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "ìŠ¤íƒ€íŠ¸ì—…ì—ì„œ ì¸ì •ë°›ëŠ” ê°œë°œìê°€ ë˜ëŠ” ë°©ë²• TOP 7", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "ì½”ë”© í…ŒìŠ¤íŠ¸ ì¤€ë¹„ë¥¼ ìœ„í•œ ì•Œê³ ë¦¬ì¦˜ í•™ìŠµ ì›ì¹™", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "ë°±ì—”ë“œ ê°œë°œì ì—­ëŸ‰ ê°•í™” ê°€ì´ë“œ: ì„±ëŠ¥ê³¼ í™•ì¥ì„±", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "í”„ë¡ íŠ¸ì—”ë“œ ì„±ëŠ¥ ìµœì í™” ì²´í¬ë¦¬ìŠ¤íŠ¸ (Core Web Vitals)", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "DevOps ì „í™˜ ê°€ì´ë“œ: CI/CD íŒŒì´í”„ë¼ì¸ êµ¬ì¶• í”„ë¡œì„¸ìŠ¤", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "ë°ì´í„°ë² ì´ìŠ¤ ì¸ë±ìŠ¤ ìµœì í™” íŒ 8ê°€ì§€", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "ì›¹ ë³´ì•ˆì˜ ê¸°ì´ˆ: OWASP Top 10 í•µì‹¬ ì •ë¦¬", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "ìƒì‚°ì„±ì„ ë†’ì´ëŠ” ì½”ë“œë¦¬ë·° ë¬¸í™” ë§Œë“¤ê¸°", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "ë°±ì—”ë“œ ì„±ëŠ¥ ê°œì„ : DB íŠ¸ëœì­ì…˜ê³¼ ë½ ì „ëµ", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "ëŒ€ìš©ëŸ‰ íŠ¸ë˜í”½ ì²˜ë¦¬ ì „ëµ: ìºì‹±ê³¼ í ì‹œìŠ¤í…œ", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "ì£¼ë‹ˆì–´ ê°œë°œì ì»¤ë¦¬ì–´ ë¡œë“œë§µ: 0~3ë…„ì°¨ ì„±ì¥ ê°€ì´ë“œ", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "ì˜¤í”ˆì†ŒìŠ¤ í”„ë¡œì íŠ¸ê°€ í¬íŠ¸í´ë¦¬ì˜¤ë¡œ ì¸ì •ë°›ëŠ” ì´ìœ ", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "Kubernetes ê¸°ë³¸: ë¦¬ì†ŒìŠ¤ ê´€ë¦¬ì™€ ë°°í¬ ì „ëµ", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "SQL íŠœë‹ ê¸°ì´ˆ: ì‹¤í–‰ê³„íš ë¶„ì„ ë°©ë²•", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "ì‹œë‹ˆì–´ ê°œë°œìê°€ ë˜ê¸° ìœ„í•œ ë§ˆì¸ë“œì…‹", href: "#", img: "/images/photo-1.jpg" },
+		{ title: "ë°±ì—”ë“œ í…ŒìŠ¤íŠ¸ ì „ëµ: ë‹¨ìœ„/í†µí•© í…ŒìŠ¤íŠ¸ ì‘ì„±ë²•", href: "#", img: "/images/photo-1.jpg" }
 	];
 	var innerHtml = '';
 	for(var i = 0; i < fallback.length; i++) {
@@ -810,7 +898,7 @@ const ctx4 = document.getElementById('MemberRatio').getContext('2d');
 	$('#headLine').html(innerHtml);
 }
 function getNaverNews(){
-		// naver ??— ?€??AJAX ?”ì²­
+		// naver ??ï¿½ï¿½ ?ï¿½??AJAX ?ï¿½ì²­
 		if(!$('#headLine').text().trim()){
 			$.ajax({
 			    type: "GET",
@@ -856,10 +944,10 @@ function getNaverNews(){
 		
 		if(!$('#youtubeList').text().trim()){
 		
-		// YouTube ??— ?€??AJAX ?”ì²­
+		// YouTube ??ï¿½ï¿½ ?ï¿½??AJAX ?ï¿½ì²­
 		$.ajax({
 		    type: "GET",
-		    url: "/YouTube", // ?¤ì œ YouTube ?¬ë¡¤ë§?URL???…ë ¥?´ì£¼?¸ìš”
+		    url: "/YouTube", // ?ï¿½ì œ YouTube ?ï¿½ë¡¤ï¿½?URL???ï¿½ë ¥?ï¿½ì£¼?ï¿½ìš”
 		    dataType: "json",
 		    success: function (data) {
 		      console.log(data);
@@ -937,7 +1025,6 @@ function getNaverNews(){
   font-size: 16px;
 }
 </style>
- <%@include file="/WEB-INF/views/common.jsp" %>
   <%@ include file="footer.jsp" %>
 </body>
 
