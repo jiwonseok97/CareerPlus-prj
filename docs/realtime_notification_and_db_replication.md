@@ -58,27 +58,27 @@
 1. 실시간 사용자 알림 필요
 - 선택: SSE
 - 이유: 서버→클라이언트 단방향 푸시에 적합, WebSocket 대비 구조 단순, 운영 부담 낮음
-- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/portfolio_requirement_details.md#1-실시간-사용자-알림-필요)
+- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationSseService.java)
 
 2. 멀티 인스턴스 알림 동기화 필요
 - 선택: Redis Pub/Sub
 - 이유: 인스턴스 간 fan-out 단순, 실시간 전달에 적합
-- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/portfolio_requirement_details.md#2-멀티-인스턴스-알림-동기화-필요)
+- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/RedisNotificationConfig.java)
 
 3. 대량 알림(100만+) 처리 필요
 - 선택: Redis Stream + Consumer Group
 - 이유: 적재/소비 분리, ACK 기반 재처리, 수평 확장 구조 유리
-- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/portfolio_requirement_details.md#3-대량-알림100만-처리-필요)
+- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/notification/NotificationQueueService.java)
 
 4. 반복 조회 부하 완화 필요
 - 선택: Caffeine(L1) + Redis(L2)
 - 이유: 로컬 초저지연 응답 + 분산 공유 캐시 동시 확보
-- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/portfolio_requirement_details.md#4-반복-조회-부하-완화-필요)
+- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/BoardServiceImpl.java)
 
 5. DB 읽기 부하 분산 필요
 - 선택: Master/Slave 라우팅
 - 이유: Read/Write 분리로 병목 완화
-- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/docs/portfolio_requirement_details.md#5-db-읽기-부하-분산-필요)
+- [상세보기](https://github.com/jiwonseok97/CareerPlus-prj/blob/main/src/main/java/com/wa/erp/config/datasource/DatabaseReplicationConfig.java)
 
 ## ⚙️ 문제 → 과정 → 해결
 
@@ -154,3 +154,53 @@
 - 성능 개선은 단일 기술이 아니라 아키텍처 설계 문제임을 체감
 - “요구사항 -> 병목 식별 -> 검증 가능한 해결” 흐름이 가장 큰 설득 포인트
 - 다음 단계: 200만+ 기준 Stream 샤딩, DLQ 운영 기준, lag 모니터링 자동화
+
+## 📊 도표형 요약
+
+### 1) 담당 역할 매트릭스
+
+| 도메인 | 핵심 기능 | 성능/안정화 포인트 |
+|---|---|---|
+| 채용 공고 | CRUD, 검색/정렬, 조회수/관심공고 | 메인 리스트 조회 최적화 |
+| 프리랜서 | 프로필 등록/수정, 기술스택 검색 | 매칭 조건 조회 최적화 |
+| 개인 마이페이지 | 지원현황, 열람기록, 관심공고, 알림 연동 | 사용자별 조회/알림 흐름 안정화 |
+| 부업 | 게시글 CRUD, 조건 필터링 | 중복 체크 로직 + 인덱스 설계 |
+
+### 2) 기술 스택 표
+
+| 구분 | 사용 기술 | 적용 목적 |
+|---|---|---|
+| Backend | Java, Spring Boot, Spring MVC | API/비즈니스 로직 |
+| Cache | Spring Cache, Redis, Caffeine | 반복 조회 부하 완화 |
+| Data | Oracle, MyBatis | 트랜잭션/쿼리 처리 |
+| Messaging | Redis Pub/Sub, Redis Stream | 실시간 알림, 대량 비동기 처리 |
+| View | JSP, JavaScript, SSE | 실시간 알림 UI 연동 |
+| Build/Collab | Gradle, GitHub | 빌드/협업/배포 기반 |
+
+### 3) 아키텍처 구성표 (Notion 호환)
+
+| 레이어 | 구성 요소 | 역할 |
+|---|---|---|
+| Client | Browser + SSE(EventSource) | API 호출 및 실시간 알림 수신 |
+| App | Spring Boot | API/비즈니스 로직 처리 |
+| Cache L1 | Caffeine | 인스턴스 로컬 초저지연 캐시 |
+| Cache L2 | Redis Cache | 분산 캐시 공유 |
+| Messaging 1 | Redis Pub/Sub | 멀티 인스턴스 알림 동기화 |
+| Messaging 2 | Redis Stream + Consumer Group | 대량 알림 적재/소비/ACK |
+| DB | Oracle Master/Slave | Write/Read 분리 |
+
+아키텍처 흐름(요약):
+1. 사용자가 API 요청 또는 SSE 구독
+2. 조회 요청은 Caffeine -> Redis -> DB 순으로 fallback
+3. 읽기 트랜잭션은 Slave, 쓰기 트랜잭션은 Master로 라우팅
+4. 단건 알림은 Pub/Sub으로 발행 후 각 인스턴스에서 디스패치
+5. 대량 알림은 Stream에 적재 후 Consumer가 batch 처리 + ACK
+6. 디스패처가 채널별 Handler(IN_APP/WEB_PUSH/EMAIL)로 전달
+
+### 4) 성과 지표 표
+
+| 지표 | 개선 전 | 개선 후 | 비고 |
+|---|---:|---:|---|
+| 메인 조회 응답시간 | 245ms | 6ms | Cache HIT 기준 |
+| 요청당 DB 접근 | 다중 조회 | 0회 | Cache HIT 기준 |
+| 알림 처리 구조 | 단건 중심 | 비동기 파이프라인 | Stream + Consumer Group |
